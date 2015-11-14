@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Providers;
+namespace Tiqueso\Providers;
 
 use Illuminate\Support\ServiceProvider;
 

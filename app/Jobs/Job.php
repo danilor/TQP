@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Jobs;
+namespace Tiqueso\Jobs;
 
 use Illuminate\Bus\Queueable;
 

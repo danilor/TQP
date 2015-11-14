@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace Tiqueso\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
+use Tiqueso\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 
 class PasswordController extends Controller

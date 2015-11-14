@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands;
+namespace Tiqueso\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Foundation\Inspiring;
