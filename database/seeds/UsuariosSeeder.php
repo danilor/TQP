@@ -14,7 +14,7 @@ class UsuariosSeeder extends Seeder
         $fecha = new \DateTime();
         DB::table('usuarios')->insert([
             'usuario'                   =>  "dramirez",
-            'contrasena'                =>  bcrypt('123456'),
+            'password'                =>  Hash::make('123456'),
             'nombre'                    => 'Danilo',
             'apellido'                  => 'Ramìrez',
             'apodo'                     => '',

@@ -16,7 +16,7 @@ class CreateUsuariosTable extends Migration
             //Campos principales
             $table->bigIncrements('id');
             $table->string("usuario",255);
-            $table->string("contrasena",512);
+            $table->string("password",512);
             $table->string("cedula",255);
             $table->string("nombre",255);
             $table->string("apellido",255);

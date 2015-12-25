@@ -1,3 +1,9 @@
+<?php
+    $Usuario = null;
+    if(Auth::check()){
+        $Usuario = new \App\clases\Usuario(Auth::user());
+    }
+?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -39,6 +45,9 @@
         <div class="container">
             <div class="content">
                 <div class="title">Laravel 5</div>
+                @if(Auth::check())
+                    ¡{{ "Bienvenido" }} {{  $Usuario->obtenerNombreCompleto()  }}!
+                @endif
             </div>
         </div>
     </body>

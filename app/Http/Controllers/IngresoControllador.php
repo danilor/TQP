@@ -7,6 +7,10 @@ use Auth;
 use Validator;
 use Config;
 use Hash;
+use Session;
+use DB;
+use App\clases\Comunes;
+
 
 //This class will take care of the login information
 class IngresoControllador extends Controller {
@@ -49,19 +53,57 @@ class IngresoControllador extends Controller {
 		}
 		return view('ingreso/recordar')->with($data);
 	}
-	/*
-	public function forgot(){
+
+
+	public function accion_ingresar(){
 		if(Auth::check()){
-			return Redirect::to("/home");
+			return Redirect::to("/");
 		}
-		$data = array();
-		$data["title"] = Str::title(trans('messages.forgot_password'));
-		$data["button"] = Str::title(trans('messages.log-in'));
-		$data["user"] = Str::title(trans('messages.username'));
-		$data["password"] = Str::title(trans('messages.password'));
-		return view('login.forgot')->with($data);
+
+		$url_original = "/";
+		if(Request::input("url") != null && Request::input("url") != ""){
+			$url_original = Request::input("url");
+		}
+		$rules = array(
+			'usuario'              		=>  Comunes::reglas("usuario", true),
+			'contrasena'              	=>  Comunes::reglas("contrasena", true),
+		);
+		// run the validation rules on the inputs from the form
+		$validador = Validator::make(Input::all(), $rules);
+		// if the validator fails, redirect back to the form
+		if ($validador->fails()) {
+			return Redirect::to('/ingresar')
+				->withErrors($validador) // devolvemos los errores al formulario
+				->withInput(Input::except('contrasena')); // devolvemos todo excepto la contraseña
+		} else {
+			$recordar = false;
+			$r = Input::get('recordar');
+			if(($r)=="y"){
+				$recordar = true;
+			}
+			// creamos nuestro objeto de usuario para validarlo e
+			// intenemos hacer el ingreso
+
+			$usuario = ['usuario' => Input::get('usuario'), 'password' => Input::get('contrasena'),"activo"=>1];
+			if (Auth::attempt($usuario,$recordar)) {
+				return Redirect::to($url_original);
+			} else {
+				return Redirect::to('/ingresar?e')->withInput(Input::except('password','_token')); // Lo devolvemos con el error de que el usuario no existe
+			}
+		}
 	}
 
+	/*
+	 * Función para ejecutar el deslogueo
+	 * */
+	public function accion_salir(){
+		Auth::logout();
+		\Session::flush();
+		return Redirect::to("/");
+	}
+
+
+	/*
 	public function recover(){
 		Auth::logout();
 		$data = array();
@@ -106,58 +148,6 @@ class IngresoControllador extends Controller {
 	}
 
 	//This function is suppose to get the login valid or not, and if valid, then return to the original screen. If not, then show the error
-	
-	public function doLogin(){
-		if(Auth::check()){
-			return Redirect::to("/home");
-		}
-
-		// process the form
-		$originalPath = "/";
-		if(Request::input("path") != null && Request::input("path") != ""){
-			$originalPath = Request::input("path"); 
-		}
-		$rules = array(
-			'email'              	=>  Common::getValRule("email", true),
-			'password'              =>  Common::getValRule("password", true),
-		);
-		// run the validation rules on the inputs from the form
-		$validator = Validator::make(Input::all(), $rules);
-		// if the validator fails, redirect back to the form
-		if ($validator->fails()) {
-			return Redirect::to('/login')
-					->withErrors($validator) // send back all errors to the login form
-					->withInput(Input::except('password')); // send back the input (not the password) so that we can repopulate the form
-		} else {
-			$remember = false;
-			$r = Input::get('remember');
-			if(($r)=="y"){
-				$remember = true;
-			}
-			// create our user data for the authentication
-			$userdata = array(
-				'email' 		=> 	Input::get('email'),
-				'password' 		=> 	Input::get('password'),
-                'status'        => 	'1',
-				'licenced'		=>	'1',
-			);
-			// attempt to do the login
-			if (Auth::attempt($userdata,$remember)) {
-                   //We have to store the login log (this log is a successfull one)
-                   $GUser = new GUser(Auth::user()->id,Auth::user());
-				   if($GUser->organization->isValid() == false){
-				   		Auth::logout();
-		 				\Session::flush();
-				   		return Redirect::to('/login?oe')->withInput(Input::except('password','_token')); // send back the input (not the password) so that we can repopulate the form
-				   }
-                   Login::logLogin(Auth::user()->id);
-				Logs::saveLog("login","success","",Auth::user()->id);
-				return Redirect::to($originalPath);
-			} else {
-				return Redirect::to('/login?e')->withInput(Input::except('password','_token')); // send back the input (not the password) so that we can repopulate the form
-			}
-		}
-	}
 
 	public function doForgot(){
 		if(Auth::check()){
@@ -207,13 +197,7 @@ class IngresoControllador extends Controller {
 		}
 	}
 
-	//This will only generate the logout function. It doesnt have a page or anything similar
-	public function dologout(){
-		echo "Please wait"; //This line shouldnt appear. If it does then something is wrong.
-		Auth::logout();
-		 \Session::flush();
-		return Redirect::to("/");
-	}
+
 */
 
 }
