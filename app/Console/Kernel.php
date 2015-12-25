@@ -14,6 +14,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         \Tiqueso\Console\Commands\Inspire::class,
+        'Tiqueso\Console\Commands\EnviarCorreos', /*Esta linea añade el proceso de enviar correos a a lista de comandos de artisan*/
     ];
 
     /**
@@ -24,7 +25,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('inspire')
-                 ->hourly();
+        $schedule->command('inspire')->hourly();
+        $schedule->command('EnviarCorreo')->everyMinute();
     }
 }

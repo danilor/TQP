@@ -1,5 +1,4 @@
 @extends("plantillas/control_ingreso")
-
 @section("mainform")
   <p class="login-box-msg">{{ "Por favor ingrese sus datos" }}</p>
   @foreach ($errors->all() as $message)
@@ -12,6 +11,12 @@
     <div class="alert alert-danger alert-dismissable">
       <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
       {{ "Credenciales inválidas" }}
+    </div>
+  @endif
+  @if( isset($_GET["snd"]) )
+    <div class="alert alert-success alert-dismissable">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+      {{ "Si el correo corresponde a un usuario activo pronto se le estará enviando un mensaje con los pasos a seguir para recuperar y reiniciar su contraseña" }}
     </div>
   @endif
   {!! Form::open(array('url' => '/ingresar', 'method' => 'post',"class"=>'requiereValidacion')) !!}
@@ -37,8 +42,5 @@
       </div><!-- /.col -->
     </div>
   {!! Form::close() !!}
-
   <a href="/recordar">{{ "¿Olvidó su contraseña?" }}</a><br>
-  <!-- Se elimina el registro dado que solamente los administradores podrán crear los usuarios nuevos -->
-  <!--<a href="register.html" class="text-center">{{ "Registrarse" }}</a>-->
 @stop

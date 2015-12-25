@@ -2,7 +2,13 @@
 
 @section("mainform")
   <p class="login-box-msg">{{ "Por favor ingrese su correo para así recuperar su contraseña" }}</p>
-  {!! Form::open(array('url' => '', 'method' => 'post',"class"=>'requiereValidacion')) !!}
+  @foreach ($errors->all() as $message)
+    <div class="alert alert-danger alert-dismissable">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+      {{ $message }}
+    </div>
+  @endforeach
+  {!! Form::open(array('url' => '/recordar', 'method' => 'post',"class"=>'requiereValidacion')) !!}
 
     <div class="form-group has-feedback">
       <input type="email" class="form-control" placeholder="{{ "Correo" }}" minlength="3" name="{{ "correo" }}" id="{{ "correo" }}" required>

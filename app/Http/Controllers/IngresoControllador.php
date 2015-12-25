@@ -10,6 +10,8 @@ use Hash;
 use Session;
 use DB;
 use App\clases\Comunes;
+use App\clases\Usuario;
+use App\clases\Correo;
 
 
 //This class will take care of the login information
@@ -94,6 +96,54 @@ class IngresoControllador extends Controller {
 	}
 
 	/*
+	 * Esta función va a generar todo el proceso para el empezar los pasos para recuperar la contraseña
+	 * */
+	public function accion_recordar(){
+		if (Auth::check()) {
+			return Redirect::to("/");
+		}
+		$url_original = "/";
+		if (Request::input("url") != null && Request::input("url") != "") {
+			$url_original = Request::input("url");
+		}
+		$rules = array(
+			'correo' => Comunes::reglas("correo", true),
+		);
+		// Tenemos que validar todo antes de que podamos continuar.
+		$validador = Validator::make(Input::all(), $rules);
+		// if the validator fails, redirect back to the form
+		if ($validador->fails()) {
+			return Redirect::to('/recordar')
+				->withErrors($validador); // Devolvemos los errores
+		} else {
+			$usuario = \Tiqueso\usuario::where("correo",Input::get("correo"))->where("activo",1)->first();
+			if ($usuario != null) {
+				//Primero generamos y obtenemos el código con el que vamos a trabajar
+				$codigo = Usuario::registrarRecuperarContrasena($usuario->id);
+				//Ahora generamos el correo. Aunque no se envíe inmediatamente, hay un proceso existente que lo envía luego.
+				$url = Request::root() . "/recobrar/$codigo";
+
+				$cuerpo = "
+					<p>Este correo le ha sido enviado porque se ha solicitado un proceso de recuperación de contraseña. Si usted no ha solicitado este proceso por favor hacer caso omiso a este mensaje.</p>
+					<p>Para recuperar y reestablecer su contraseña por favor hacer clic al siguiente vínculo:</p>
+					<ul>
+						<li><a href='$url'>$url</a></li>
+					</ul>
+					<p>Si al hacer clic no se abre su navegador, por favor copiar el enlace y pegarlo directamente en su navegador para poder acceder al proceso indicado.</p>
+					<p>Si tiene alguna duda o consulta puede contactarnos mediante nuestro sistema de <i>CONTACTO</i> y le atenderemos lo más pronto posible.</p>
+				";
+
+				Correo::generarCorreo("Recuperación de Contraseña","basica",$usuario->correo,"$usuario->nombre $usuario->apellido",$cuerpo);
+				//Con el correo generado solo queda esperar que el proceso prosiga su camino automáticamente
+
+			}
+
+			return Redirect::to("/ingresar?snd");
+		}
+	}
+
+
+	/*
 	 * Función para ejecutar el deslogueo
 	 * */
 	public function accion_salir(){
@@ -149,52 +199,7 @@ class IngresoControllador extends Controller {
 
 	//This function is suppose to get the login valid or not, and if valid, then return to the original screen. If not, then show the error
 
-	public function doForgot(){
-		if(Auth::check()){
-			return Redirect::to("/home");
-		}
 
-		// process the form
-		$originalPath = "/";
-		if(Request::input("path") != null && Request::input("path") != ""){
-			$originalPath = Request::input("path");
-		}
-		$rules = array(
-			'email'              =>  Common::getValRule("email", true),
-		);
-		// run the validation rules on the inputs from the form
-		$validator = Validator::make(Input::all(), $rules);
-		// if the validator fails, redirect back to the form
-		if ($validator->fails()) {
-			return Redirect::to('/forgot_password')
-				->withErrors($validator); // send back all errors to the login form
-		} else {
-			$remember = false;
-			$r = Input::get('remember-me');
-			if(($r)=="1"){
-				$remember = true;
-			}
-			// create our user data for the authentication
-
-				$GUser = GUsers::findUserByEmail(Input::get("email"));
-				if($GUser != null){
-
-						//We have to store the token and everything else
-					$token = Login::log_forgot_password($GUser->id);
-					//echo $token;
-
-
-					$link = Request::root()."/recover_password/$token";
-					//We have to send the email now
-					$body = trans("mail_messages.forgot_password.body");
-					$body = str_replace("[LINK]", $link, $body);
-					$emailData = ['title' => trans("mail_messages.forgot_password.title"),'content'=>$body];
-					Email::sendEmail(trans("mail_messages.forgot_password.subject"),'emails.basic',$emailData,$GUser->email,$GUser->getFullName());
-
-				}
-
-			return Redirect::to("/login?snd");
-		}
 	}
 
 

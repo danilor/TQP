@@ -21,4 +21,12 @@ Route::get('/', function () {
 Route::get('/ingresar', 'IngresoControllador@ingreso');
 Route::post('/ingresar', 'IngresoControllador@accion_ingresar');
 Route::get('/recordar', 'IngresoControllador@recordar');
+Route::post('/recordar', 'IngresoControllador@accion_recordar');
 Route::any('/cerrar_sesion', 'IngresoControllador@accion_salir');
+
+
+
+//Rutas de correo: las siguientes rutas no deberían ser accesibles para nadie excepto los que sabemos que están aquí
+Route::get('/correo_demostracion/basico/verde', function () {
+    return view('correo.basica');
+});

@@ -3,6 +3,15 @@
 return [
 
     /*
+     * Añadido por Danilo
+     *
+     * */
+
+    'correo_notificaciones'         =>      'tiquesocoprolac@gmail.com',
+    'nombre_notificaciones'         =>      'Tiqueso',
+
+
+    /*
     |--------------------------------------------------------------------------
     | Mail Driver
     |--------------------------------------------------------------------------
