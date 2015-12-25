@@ -14,3 +14,7 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+//Esta sentencia manda la dirección de "ingresar" al controlador para que muestre la página respectiva
+Route::get('/ingresar', 'IngresoControllador@ingreso');
+Route::get('/recordar', 'IngresoControllador@recordar');

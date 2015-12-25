@@ -1,7 +1,11 @@
 <?php
 
 return [
-
+	
+	/*AÑADIDAS POR DANILO*/
+	'nombre_app'				=>		'Tiqueso',
+	'version_app'				=>		'0.0.1',
+	/*********************/
     /*
     |--------------------------------------------------------------------------
     | Application Debug Mode
@@ -12,9 +16,7 @@ return [
     | application. If disabled, a simple generic error page is shown.
     |
     */
-
     'debug' => env('APP_DEBUG', false),
-
     /*
     |--------------------------------------------------------------------------
     | Application URL
@@ -25,7 +27,6 @@ return [
     | your application so that it is used when running Artisan tasks.
     |
     */
-
     'url' => env('APP_URL','http://localhost'),
 
     /*
@@ -145,8 +146,12 @@ return [
         Tiqueso\Providers\EventServiceProvider::class,
         Tiqueso\Providers\RouteServiceProvider::class,
 
-    ],
+        /*
+         * Añadido por Danilo
+         * */
+        'Illuminate\Html\HtmlServiceProvider', /*Esto le indica a laravel que use los HTML service providers*/
 
+    ],
     /*
     |--------------------------------------------------------------------------
     | Class Aliases
@@ -157,7 +162,6 @@ return [
     | the aliases are "lazy" loaded so they don't hinder performance.
     |
     */
-
     'aliases' => [
 
         'App'       => Illuminate\Support\Facades\App::class,
@@ -193,6 +197,11 @@ return [
         'URL'       => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View'      => Illuminate\Support\Facades\View::class,
+
+        /*
+         * Añadido por Danilo
+         * */
+        'Form'=> 'Illuminate\Html\FormFacade', 'HTML'=> 'Illuminate\Html\HtmlFacade', /*Esto permite el usar los tags de FORM que fueron eliminados en LARAVEL 5*/
 
     ],
 
