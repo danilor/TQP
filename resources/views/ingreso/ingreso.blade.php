@@ -19,6 +19,12 @@
       {{ "Si el correo corresponde a un usuario activo pronto se le estará enviando un mensaje con los pasos a seguir para recuperar y reiniciar su contraseña" }}
     </div>
   @endif
+  @if( isset($_GET["new"]) )
+    <div class="alert alert-success alert-dismissable">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+      {{ "Su contraseña ha sido modificada. Por favor ingrese sus datos a continuación" }}
+    </div>
+  @endif
   {!! Form::open(array('url' => '/ingresar', 'method' => 'post',"class"=>'requiereValidacion')) !!}
 
     <div class="form-group has-feedback">

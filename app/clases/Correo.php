@@ -42,6 +42,8 @@ class Correo{
                     $m->to($r->para_correo, $r->para_nombre)->subject($r->tema);
                     $m->from(Config::get("mail.correo_notificaciones"), Config::get("mail.nombre_notificaciones"));
                 });
+
+                DB::table("registro_correos")->where("id",$r->id)->update(["estado"=>1]);
             }
             return true;
         }catch (\Exception $e){

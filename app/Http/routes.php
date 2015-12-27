@@ -23,6 +23,8 @@ Route::post('/ingresar', 'IngresoControllador@accion_ingresar');
 Route::get('/recordar', 'IngresoControllador@recordar');
 Route::post('/recordar', 'IngresoControllador@accion_recordar');
 Route::any('/cerrar_sesion', 'IngresoControllador@accion_salir');
+Route::get('/recobrar/{codigo}', 'IngresoControllador@recobrar');
+Route::post('/recobrar/{codigo}', 'IngresoControllador@accion_recobrar');
 
 
 

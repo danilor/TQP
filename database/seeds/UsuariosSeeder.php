@@ -14,7 +14,7 @@ class UsuariosSeeder extends Seeder
         $fecha = new \DateTime();
         DB::table('usuarios')->insert([
             'usuario'                   =>  "dramirez",
-            'password'                =>  Hash::make('123456'),
+            'password'                  =>  Hash::make('123456'),
             'nombre'                    => 'Danilo',
             'apellido'                  => 'Ramìrez',
             'apodo'                     => '',
@@ -36,5 +36,32 @@ class UsuariosSeeder extends Seeder
             'updated_at'                => $fecha,
 
         ]);
+
+        DB::table('usuarios')->insert([
+            'usuario'                   =>  "mchacon",
+            'password'                  =>  Hash::make('123456'),
+            'nombre'                    => 'Marvin',
+            'apellido'                  => 'Chacon',
+            'apodo'                     => '',
+            'correo'                    => 'marvinchacon.cr@gmail.com',
+            'sexo'                      => 'm',
+            'foto'                      => '',
+            'telefono'                  => '000000',
+            'celular'                   => '0000',
+            'direccion'                 => 'Aserrí',
+            'direccion2'                => 'Aserrí',
+            'caracteristicas'           => 'Programador',
+            'notas'                     => 'Desarrollador',
+            'activo'                    => 1,
+            'super_administrador'       => 1,
+            'fecha_nacimiento'          => null,
+            'ultimo_ingreso'            => null,
+            'ultimo_cambio_contrasena'  => null,
+            'created_at'                => $fecha,
+            'updated_at'                => $fecha,
+
+        ]);
+
+
     }
 }
