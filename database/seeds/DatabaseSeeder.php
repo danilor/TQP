@@ -13,9 +13,10 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         Model::unguard();
-
-        $this->call(UsuariosSeeder::class);
-
+        $this->call(UsuariosSeeder::class); //Añade datos básicos de usuarios a la tabla de usuarios
+        $this->call(PermisosSeeder::class); //Añade datos básicos de permisos a la table de permisos
+        $this->call(RolesSeeder::class); //Añade datos básicos de roles a la table de roles
+        $this->call(RolesUsuariosSeeder::class); //Asigna los usuarios de ejemplo a varios roles de ejemplo
         Model::reguard();
     }
 }

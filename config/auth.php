@@ -28,7 +28,13 @@ return [
     |
     */
 
-    'model' => Tiqueso\User::class,
+    /*
+     * Originalmente esta linea decía: "User::class"; se tuvo que modificar dado a que
+     * ahora necesitamos usar una nueva clase de usuarios que es una personalizada para nuestros propósitos,
+     * particularmente el mover todo el código posible a español por motivos del proyecto.
+     * */
+
+    'model' => Tiqueso\usuario::class,
 
     /*
     |--------------------------------------------------------------------------
