@@ -8,7 +8,7 @@ return array(
     'nombre_completo'       =>      '|min:3',
     'usuario'             	=>      'min:2',
     'correo'                =>      'email',
-    'contrasena'            =>      'min:6',
+    'contrasena'            =>      'min:4',
     'textogenerico'         =>      'min:2',
 
 

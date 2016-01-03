@@ -32,3 +32,7 @@ Route::post('/recobrar/{codigo}', 'IngresoControllador@accion_recobrar');
 Route::get('/correo_demostracion/basico/verde', function () {
     return view('correo.basica');
 });
+
+
+//Áreas de administración general
+Route::any('/admin_general/{extra?}/{extra2?}/{extra3?}/{extra4?}/{extra5?}/{extra6?}', 'AdminGeneralControllador@principal');

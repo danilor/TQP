@@ -17,30 +17,11 @@ use App\clases\Correo;
 //This class will take care of the login information
 class IngresoControllador extends Controller {
 
-	/*
-	|--------------------------------------------------------------------------
-	| Login Controller
-	|--------------------------------------------------------------------------
-	|
-	| This controller is in charge to manage everything about the login, with this I mean login, forgot password,
-	| recover, session and everything realated
-	|
-	*/
 
-	/**
-	 * Create a new controller instance.
-	 *
-	 * @return void
-	 */
 	public function __construct(){
 		//$this->middleware('guest');
 	}
 
-	/**
-	 * Show the application login screen
-	 *
-	 * @return Response
-	 */
 	public function ingreso(){
 		$data = [];
 		if(Auth::check()){
@@ -84,10 +65,11 @@ class IngresoControllador extends Controller {
 			// creamos nuestro objeto de usuario para validarlo e
 			// intenemos hacer el ingreso
 			$usuario = ['usuario' => Input::get('usuario'), 'password' => Input::get('contrasena'),"activo"=>1];
+
 			if (Auth::attempt($usuario,$recordar)) {
 				return Redirect::to($url_original);
 			} else {
-				return Redirect::to('/ingresar?e')->withInput(Input::except('password','_token')); // Lo devolvemos con el error de que el usuario no existe
+				return Redirect::to('/ingresar?e')->withInput(Input::except('contrasena','_token')); // Lo devolvemos con el error de que el usuario no existe
 			}
 		}
 	}

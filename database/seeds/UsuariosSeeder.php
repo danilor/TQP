@@ -14,9 +14,9 @@ class UsuariosSeeder extends Seeder
         $fecha = new \DateTime();
         DB::table('usuarios')->insert([
             'usuario'                   =>  "dramirez",
-            'password'                  =>  Hash::make('1234'),
+            'password'                  =>  Hash::make('123456'),
             'nombre'                    => 'Danilo',
-            'apellido'                  => 'Ramìrez',
+            'apellido'                  => 'Ramírez',
             'apodo'                     => '',
             'correo'                    => 'daniloramirez.cr@gmail.com',
             'sexo'                      => 'm',
@@ -39,9 +39,9 @@ class UsuariosSeeder extends Seeder
 
         DB::table('usuarios')->insert([
             'usuario'                   =>  "mchacon",
-            'password'                  =>  Hash::make('1234'),
+            'password'                  =>  Hash::make('123456'),
             'nombre'                    => 'Marvin',
-            'apellido'                  => 'Chacon',
+            'apellido'                  => 'Chacón',
             'apodo'                     => '',
             'correo'                    => 'marvinchacon.cr@gmail.com',
             'sexo'                      => 'm',

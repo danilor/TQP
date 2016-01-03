@@ -22,8 +22,16 @@ class usuario extends Model implements AuthenticatableContract,
     private $roles = null; //Empezamos la variable de roles en nulo. Cuando alguna función tenga que obtener los roles, de una vez los introducimos acá, así si se tienen que obtener de nuevo solamente devolvemos esta variable y no volvemos a llamar a la base de datos para obtenerlos.
     private $permisos = null;  //Empezamos la variable de permisos en nulo. Cuando alguna función tenga que obtener los permisos, de una vez los introducimos acá, así si se tienen que obtener de nuevo solamente devolvemos esta variable y no volvemos a llamar a la base de datos para obtenerlos.
 
+    protected $fillable = ['nombre', 'correo', 'password'];
+    protected $hidden = ['password', 'remember_token'];
+
+
+    //Las siguientes dos funciones están hechas para indicarle al sistema de no usar los campos por defecto
     public function getAuthPassword() {
-        return $this->contrasena;
+        return $this->password;
+    }
+    public function setPasswordAttribute($password){
+        $this->attributes['password'] = bcrypt($password);
     }
 
 

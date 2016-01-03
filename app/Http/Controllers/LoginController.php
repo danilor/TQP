@@ -11,30 +11,12 @@ use Hash;
 //This class will take care of the login information
 class IngresoControllador extends Controller {
 
-	/*
-	|--------------------------------------------------------------------------
-	| Login Controller
-	|--------------------------------------------------------------------------
-	|
-	| This controller is in charge to manage everything about the login, with this I mean login, forgot password,
-	| recover, session and everything realated
-	|
-	*/
 
-	/**
-	 * Create a new controller instance.
-	 *
-	 * @return void
-	 */
 	public function __construct(){
 		//$this->middleware('guest');
 	}
 
-	/**
-	 * Show the application login screen
-	 *
-	 * @return Response
-	 */
+
 	public function ingreso(){
 		$data = [];
 		if(Auth::check()){
