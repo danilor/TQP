@@ -26,8 +26,8 @@ class PermisosSeeder extends Seeder
         );
         DB::table('permisos')->insert(
             [
-                'alias'                   =>  "administrar_tipo_productos",
-                'nombre'                  =>  "Administrar los Tipos de Productos",
+                'alias'                   =>  "administrar_productos",
+                'nombre'                  =>  "Administrar los Productos",
             ]
         );
         DB::table('permisos')->insert(

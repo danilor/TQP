@@ -11,6 +11,7 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use DB;
+use Config;
 
 class usuario extends Model implements AuthenticatableContract,
                                     AuthorizableContract,
@@ -40,11 +41,9 @@ class usuario extends Model implements AuthenticatableContract,
      * Para saber esto, existe un campo en la base de datos (columna) que es 1 si el usuario es super administrador y 0 si no lo es.
      * A como está hecha esta función, cualquier número distinto de 0 debería devolver que es super administrador.
      * */
-
     public function esAdministrador(){
         return (bool) $this -> super_administrador;
     }
-
 
     /**
      * Esta función pretende devolver un bool si el usuario tiene el permiso que se especifica. Si es super administrador simplemente devuelve siempre
@@ -136,4 +135,13 @@ class usuario extends Model implements AuthenticatableContract,
         return;
     }
 
+    /*Esta función obtiene la fecha de creación del usuario y la devuelve. Puede ser formateada o no*/
+    public function obtenerFechaCreacion($formato = true){
+        if($formato == false){
+            return $this -> created_at;
+        }
+
+        return date(Config::get("region.formato_fecha"),strtotime($this->created_at));
+
+    }
 }

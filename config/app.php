@@ -4,6 +4,7 @@ return [
 	
 	/*AÑADIDAS POR DANILO*/
 	'nombre_app'				=>		'Tiqueso',
+    'nombre_app_abreviada'		=>		'TQP',
 	'version_app'				=>		'0.0.1',
 	/*********************/
     /*
