@@ -28,10 +28,10 @@ class CreateUsuariosTable extends Migration
             $table->string("foto",255);
 
             //Direcciones y extras
-            $table->string("telefono",255);
-            $table->string("celular",255);
+            $table->string("telefono",255)->nullable();
+            $table->string("celular",255)->nullable();
             $table->string("direccion",255);
-            $table->string("direccion2",255);
+            $table->string("direccion2",255)->nullable();
 
             //Notas
             $table->longText("caracteristicas")->nullable();

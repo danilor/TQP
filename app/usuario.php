@@ -140,8 +140,6 @@ class usuario extends Model implements AuthenticatableContract,
         if($formato == false){
             return $this -> created_at;
         }
-
         return date(Config::get("region.formato_fecha"),strtotime($this->created_at));
-
     }
 }

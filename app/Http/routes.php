@@ -36,3 +36,4 @@ Route::get('/correo_demostracion/basico/verde', function () {
 
 //Áreas de administración general
 Route::any('/admin_general/{extra?}/{extra2?}/{extra3?}/{extra4?}/{extra5?}/{extra6?}', 'AdminGeneralControllador@principal');
+Route::any('/perfil/{extra?}/{extra2?}/{extra3?}/{extra4?}/{extra5?}/{extra6?}', 'PerfilControlador@principal');

@@ -6,7 +6,7 @@
 
     @include("plantillas.general.cabecera_nav")
 
-    @include("plantillas.secadmin.sidebar")
+    @include("plantillas.secperfil.sidebar")
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
@@ -15,20 +15,19 @@
             <h1>
                 @section("nombre_pagina")
                 {{  "Perfil de Usuario" }}
-                @stop
-                <!--<small>{{ "Panel de Control"  }}</small>-->
+                @show
             </h1>
             <ol class="breadcrumb">
                 @yield("guia_navegacion")
-                        <!--<li><a href="#"><i class="fa fa-dashboard"></i> {{ "Inicio" }}</a></li>
+                <!--<li><a href="#"><i class="fa fa-dashboard"></i> {{ "Inicio" }}</a></li>
                 <li class="active">{{ "Tablero Princpal" }}</li>-->
             </ol>
         </section>
 
         <!-- Main content -->
         <section class="content">
-            @yield("contenido")
 
+            @yield("contenido")
         </section><!-- /.content -->
     </div><!-- /.content-wrapper -->
     @include("plantillas.secadmin.footer")
