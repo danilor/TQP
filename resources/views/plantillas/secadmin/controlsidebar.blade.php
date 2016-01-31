@@ -15,7 +15,7 @@
                     <a href="javascript::;">
                         <i class="menu-icon fa fa-check bg-red"></i>
                         <div class="menu-info">
-                            <h4 class="control-sidebar-subheading"{{ "Nada que reportar"  }}</h4>
+                            <h4 class="control-sidebar-subheading">{{ "Nada que reportar"  }}</h4>
                             <p>{{ date(Config::get("region.formato_fecha"))  }}</p>
                         </div>
                     </a>

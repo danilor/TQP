@@ -9,8 +9,8 @@
 <!-- Bootstrap 3.3.5 -->
 <script src="/bootstrap/js/bootstrap.min.js"></script>
 <!-- Morris.js charts -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
-<script src="/plugins/morris/morris.min.js"></script>
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+<script src="/plugins/morris/morris.min.js"></script>-->
 <!-- Sparkline -->
 <script src="/plugins/sparkline/jquery.sparkline.min.js"></script>
 <!-- jvectormap -->
@@ -19,7 +19,7 @@
 <!-- jQuery Knob Chart -->
 <script src="/plugins/knob/jquery.knob.js"></script>
 <!-- daterangepicker -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.2/moment.min.js"></script>
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.2/moment.min.js"></script>-->
 <script src="/plugins/daterangepicker/daterangepicker.js"></script>
 <!-- datepicker -->
 <script src="/plugins/datepicker/bootstrap-datepicker.js"></script>
@@ -32,6 +32,40 @@
 <!-- AdminLTE App -->
 <script src="/dist/js/app.min.js"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="/dist/js/pages/dashboard.js"></script>
+<!--<script src="/dist/js/pages/dashboard.js"></script>-->
 <!-- AdminLTE for demo purposes -->
 <script src="/dist/js/demo.js"></script>
+
+<script src="/js/jquery.validate.min.js"></script>
+<script type="text/javascript" src="/js/localization/messages_es.js"></script>
+<script src="/js/jquery.noty.js"></script>
+<script src="/js/general.js"></script>
+<script type="text/javascript">
+    $( document).ready(function(){
+        @if(Input::get("salvado") === "y")
+        var n = noty({
+            text: '{{  "Información Salvada" }}',
+            layout: 'top',
+            theme: 'defaultTheme',
+                    timeout: 3000,
+            /*
+            timeout: 3000,
+            maxVisible: 5,
+            closeWith: ['click'],
+            animation: {
+                open: 'animated bounceInLeft', // Animate.css class names
+                close: 'animated bounceOutLeft', // Animate.css class names
+                easing: 'swing', // unavailable - no need
+                speed: 500 // unavailable - no need
+            },
+            callback: {
+                onShow: function() {},
+                afterShow: function() {},
+                onClose: function() {},
+                afterClose: function() {},
+                onCloseClick: function() {},
+            },*/
+        });
+        @endif
+    });
+</script>

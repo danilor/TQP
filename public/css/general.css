@@ -5,3 +5,7 @@
 	color:red;
 	text-align: center;
 }
+
+form .form-group label span{
+	color:red;
+}

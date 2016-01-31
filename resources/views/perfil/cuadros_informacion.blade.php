@@ -14,7 +14,7 @@
 
             </ul>
 
-            <a href="#" class="btn btn-primary btn-block"><b>{{ "Modificar Perfil"  }}</b></a>
+            <a href="/perfil/informacion_basica" class="btn btn-primary btn-block"><b>{{ "Modificar Perfil"  }}</b></a>
         </div><!-- /.box-body -->
     </div><!-- /.box -->
 

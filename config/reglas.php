@@ -10,6 +10,7 @@ return array(
     'correo'                =>      'email',
     'contrasena'            =>      'min:4',
     'textogenerico'         =>      'min:2',
+    'textogenerico_min'     =>      'min:1',
 
 
 );
