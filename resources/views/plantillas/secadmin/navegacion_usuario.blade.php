@@ -196,7 +196,7 @@
             <ul class="dropdown-menu">
                 <!-- User image -->
                 <li class="user-header">
-                    <img src="/img/user.png" class="img-circle" alt="User Image">
+                    <img src="{{ Auth::user()->obtenerFoto()  }}" class="img-circle" alt="User Image">
                     <p>
                         {{ Auth::user()->nombre  }} {{ Auth::user()->apellido  }}
                         <small>{{ "Miembro desde:"  }} {{ Auth::user()->obtenerFechaCreacion(true)  }}</small>

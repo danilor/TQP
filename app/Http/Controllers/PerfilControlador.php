@@ -21,8 +21,12 @@ class PerfilControlador extends Controller {
 		/*DASHBOARD*/
 		'get|'                      	=>  'tablero',
 		'get|informacion_basica'       	=>  'informacion_basica',
+		'get|contrasena'       			=>  'contrasena',
+		'get|foto'       				=>  'fotografia',
 
-		'post|salvar_informacion_basica'			=>		'salvarInformacionBasica'
+		'post|salvar_informacion_basica'			=>		'salvarInformacionBasica',
+		'post|salvar_contrasena'					=>		'salvarContrasena',
+		'post|salvar_fotografia'					=>		'salvarFotografia',
 
 	);
 
@@ -65,6 +69,21 @@ class PerfilControlador extends Controller {
 		return view('perfil/informacion_basica')->with($data);
 	}
 
+	public function contrasena($usuario){
+		$data["usuario"] = $usuario;
+		if(!Auth::check()){
+			return Redirect::to('/ingresar?accesso&url='.Request::url());
+		}
+		return view('perfil/contrasena')->with($data);
+	}
+	public function fotografia($usuario){
+		$data["usuario"] = $usuario;
+		if(!Auth::check()){
+			return Redirect::to('/ingresar?accesso&url='.Request::url());
+		}
+		return view('perfil/foto')->with($data);
+	}
+
 	public function salvarInformacionBasica($usuario){
 		$url = "/perfil/informacion_basica/";
 		$rules = array(
@@ -76,12 +95,10 @@ class PerfilControlador extends Controller {
 			'sexo' 			=> Comunes::reglas('textogenerico_min', true),
 			'direccion' 	=> Comunes::reglas('textogenerico_min', true),
 			'direccion2' 	=> Comunes::reglas('textogenerico_min', false),
-
-
 		);
 		$validador = Validator::make(Input::all(), $rules);
 		if ($validador -> fails()) {
-			return Redirect::back() -> withErrors($validador);
+			return Redirect::to($url) -> withErrors($validador);
 		}
 		//we have to check if the email already exists
 		if(		Input::get("correo")  != $usuario->correo ){
@@ -110,6 +127,45 @@ class PerfilControlador extends Controller {
 		$url = "/perfil/informacion_basica/"."?salvado=y";
 		return Redirect::to( $url  );
 		//return "All good";
+
+	}
+
+
+	public function salvarContrasena($usuario){
+		$url = "/perfil/contrasena/";
+		$rules = array(
+			'contrasena' 					=> Comunes::reglas('contrasena', true,"|confirmed"),
+			'contrasena_confirmation' 		=> Comunes::reglas('contrasena', true),
+		);
+		$validador = Validator::make(Input::all(), $rules);
+		if ($validador -> fails()) {
+			return Redirect::to($url) -> withErrors($validador);
+		}
+
+		DB::table("usuarios")->where("id",$usuario->id)->update(["password"=>bcrypt(Input::get('contrasena'))]);
+		//Información almacenada
+		return Redirect::to( $url ."?salvado=y" );
+	}
+
+	public function salvarFotografia($usuario){
+
+		$url = "/perfil/foto/";
+		if(Input::file("image") != null){
+			$IMAGE = Input::file("image");
+			$nuevoNombre = "USUARIO_". $usuario->id.  "_" . date("Ymd").str_random(8) . '.' . $IMAGE->getClientOriginalExtension(); //Creamos el nuevo nombre con que lo vamos a almacenar
+
+			if( (int)$IMAGE->getClientSize() > (int)Config::get("archivos.tamano_maximo")		){
+				return Redirect::to($url) -> withErrors(["Imágen supera el tamaño máximo"]);
+			}
+			//dd(base_path() . '/public/'.Config::get("paths.UPLOADS").'/'.Config::get("paths.USERS").'/'. $imageName);
+			$ruta = public_path() . '/'.Config::get("rutas.contenidos").'/'.Config::get("rutas.usuarios").'/';
+			$IMAGE->move($ruta, $nuevoNombre);
+			$usuario->foto = $nuevoNombre;
+			$usuario->save();
+			return Redirect::to($url."?salvado=y");
+		}else{
+			return Redirect::to($url) -> withErrors(["Debe indicar la fotografia"]);
+		}
 
 	}
 

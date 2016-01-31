@@ -1,6 +1,6 @@
 <div class="user-panel">
     <div class="pull-left image">
-        <img src="/img/user.png" class="img-circle" alt="User Image">
+        <img src="{{ Auth::user()->obtenerFoto()  }}" class="img-circle" alt="User Image">
     </div>
     <div class="pull-left info">
         <p>{{ Auth::user()->nombre  }} {{ Auth::user()->apellido  }}</p>

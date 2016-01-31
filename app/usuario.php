@@ -142,4 +142,17 @@ class usuario extends Model implements AuthenticatableContract,
         }
         return date(Config::get("region.formato_fecha"),strtotime($this->created_at));
     }
+
+    /*
+     * Esta función busca obtener la foto del usuario para poder mostrarla. Si la foto no existe muestra la predeterminada
+     * */
+    public function obtenerFoto(){
+            if($this->foto == ""){
+                return Config::get("archivos.avatar_predeterminado");
+            }else{
+                //Tenemos que construir la ruta
+                $ruta = "/" . Config::get("rutas.contenidos") . "/" . Config::get("rutas.usuarios") . "/" . $this->foto;
+                return $ruta;
+            }
+    }
 }
