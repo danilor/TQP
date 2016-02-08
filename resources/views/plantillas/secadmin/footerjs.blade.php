@@ -39,33 +39,79 @@
 <script src="/js/jquery.validate.min.js"></script>
 <script type="text/javascript" src="/js/localization/messages_es.js"></script>
 <script src="/js/jquery.noty.js"></script>
+<script src="/js/jquery.confirm.js"></script>
 <script src="/js/general.js"></script>
+
 <script type="text/javascript">
-    $( document).ready(function(){
-        @if(Input::get("salvado") === "y")
+
+    function notification(t){
         var n = noty({
-            text: '{{  "Información Salvada" }}',
+            text: t ,
             layout: 'top',
             theme: 'defaultTheme',
-                    timeout: 3000,
-            /*
             timeout: 3000,
-            maxVisible: 5,
-            closeWith: ['click'],
-            animation: {
-                open: 'animated bounceInLeft', // Animate.css class names
-                close: 'animated bounceOutLeft', // Animate.css class names
-                easing: 'swing', // unavailable - no need
-                speed: 500 // unavailable - no need
-            },
-            callback: {
-                onShow: function() {},
-                afterShow: function() {},
-                onClose: function() {},
-                afterClose: function() {},
-                onCloseClick: function() {},
-            },*/
+            /*
+             timeout: 3000,
+             maxVisible: 5,
+             closeWith: ['click'],
+             animation: {
+             open: 'animated bounceInLeft', // Animate.css class names
+             close: 'animated bounceOutLeft', // Animate.css class names
+             easing: 'swing', // unavailable - no need
+             speed: 500 // unavailable - no need
+             },
+             callback: {
+             onShow: function() {},
+             afterShow: function() {},
+             onClose: function() {},
+             afterClose: function() {},
+             onCloseClick: function() {},
+             },*/
         });
+    }
+
+    function preparar_dialogo_confirmacion(){
+        logM("Preparando los diálogos de confirmación");
+        $("form.confirmar_accion").submit(function(e){
+            logM("Formulario Sumitido");
+            var formulario = $(this);
+            //Los siguientes son campos predeterminados
+            var titulo = "{{"Confirmar acción"}}";
+            var contenido = "{{ '¿Está seguro de que desea realizar esta acción?' }}";
+
+            //Si encontramos el campo en el formulario lo modificamos.
+            if(     formulario.attr("confirmacion_titulo") != ""     ){     titulo = formulario.attr("confirmacion_titulo");      }
+            if(     formulario.attr("confirmacion_contenido") != ""     ){       contenido = formulario.attr("confirmacion_contenido");       }
+
+
+            $.confirm({
+                text: contenido,
+                title: titulo,
+                confirm: function(button) {
+                    formulario.unbind().submit(); //Si confirma, le quitamos los "binds" al formulario y lo sumiteamos
+                },
+                cancel: function(button) {
+                    e.preventDefault(); //Cancelamos el formulario
+                },
+                confirmButton: "{{"Confirmar"}}",
+                cancelButton: "{{"Cancelar"}}",
+                post: true,
+                /*confirmButtonClass: "btn-danger",
+                cancelButtonClass: "btn-default",*/
+                confirmButtonClass: "btn-success",
+                cancelButtonClass: "btn-danger",
+                dialogClass: "modal-dialog modal-md" // Bootstrap classes for large modal
+            });
+
+            e.preventDefault();
+        });
+    }
+
+    $( document).ready(function(){
+        @if(Input::get("salvado") === "y")
+                notification('{{  "Información Salvada" }}')
         @endif
+        preparar_dialogo_confirmacion();
+
     });
 </script>

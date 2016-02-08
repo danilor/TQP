@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
         $this->call(RolesSeeder::class); //Añade datos básicos de roles a la table de roles
         $this->call(RolesUsuariosSeeder::class); //Asigna los usuarios de ejemplo a varios roles de ejemplo
         $this->call(TiposSeeder::class); //Asigna los tipos de productos iniciales
+        $this->call(CategoriasSeeder::class); //Asigna las categorías
         Model::reguard();
     }
 }

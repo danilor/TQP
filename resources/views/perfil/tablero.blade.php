@@ -51,5 +51,5 @@
                 </div><!-- /.nav-tabs-custom -->
             </div><!-- /.col -->
         </div><!-- /.row -->
-
+</div>
     @stop
