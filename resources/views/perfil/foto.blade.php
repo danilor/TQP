@@ -16,13 +16,14 @@
                         {{ $message }}
                     </div>
                 @endforeach
-
+                    {!! Form::open(array('url' => '/perfil/salvar_fotografia','class'=>'form-horizontal requiereValidacion','method'=>'post',"files"=>true,"file"=>true)) !!}
                 <div class="box box-info">
                     <div class="box-header with-border">
                         <h3 class="box-title">{{ "Contraseña"  }}</h3>
+                        <button type="submit" class="btn btn-info pull-right">{{ "Actualizar Fotografía"  }}</button>
                     </div><!-- /.box-header -->
                     <!-- form start -->
-                    {!! Form::open(array('url' => '/perfil/salvar_fotografia','class'=>'form-horizontal requiereValidacion','method'=>'post',"files"=>true,"file"=>true)) !!}
+
 
                         <div class="box-body">
                             <div class="fileupload fileupload-new" data-provides="fileupload">
@@ -41,16 +42,18 @@
                             </div>
                             <span class="label label-danger">{{ "Nota!"  }}</span>
                                              <span>
-                                             {{ "Máximo de tamaño 3Mb. Se aceptan imágenes con formato JPG, JPEG, GIF y PNG"  }}
+                                             {{ config("mensajes.maximo_foto")  }}
                                              </span>
 
                         <div class="box-footer">
                             <button type="submit" class="btn btn-info pull-right">{{ "Actualizar Fotografía"  }}</button>
                         </div><!-- /.box-footer -->
-                    {!! Form::close() !!}
-                </div><!-- /.box -->
+                        </div><!-- /.box -->
+
+
 
             </div>
+                    {!! Form::close() !!}
         </div>
 
 </div>

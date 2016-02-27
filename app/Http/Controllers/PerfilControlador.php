@@ -103,8 +103,8 @@ class PerfilControlador extends Controller {
 		//we have to check if the email already exists
 		if(		Input::get("correo")  != $usuario->correo ){
 			//he is trying to change its email
-			$r = usuario::where("correo",Input::get("correo"));
-			if($r !== false ){
+			$r = usuario::where("correo",Input::get("correo"))->where("activo",1)->first();
+			if($r != null ){
 				//There is another use with that email
 				return Redirect::to($url) -> withErrors(["Correo [".Input::get("correo")."] ya está siendo utilizado por otro usuario"]);
 			}
@@ -126,10 +126,7 @@ class PerfilControlador extends Controller {
 		//Información almacenada
 		$url = "/perfil/informacion_basica/"."?salvado=y";
 		return Redirect::to( $url  );
-		//return "All good";
-
 	}
-
 
 	public function salvarContrasena($usuario){
 		$url = "/perfil/contrasena/";
@@ -148,7 +145,6 @@ class PerfilControlador extends Controller {
 	}
 
 	public function salvarFotografia($usuario){
-
 		$url = "/perfil/foto/";
 		if(Input::file("image") != null){
 			$IMAGE = Input::file("image");

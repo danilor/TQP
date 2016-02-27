@@ -18,13 +18,14 @@
                     </div>
                 @endforeach
 
-
+                    {!! Form::open(array('url' => '/perfil/salvar_informacion_basica','class'=>'form-horizontal requiereValidacion','method'=>'post')) !!}
                 <div class="box box-info">
                     <div class="box-header with-border">
                         <h3 class="box-title">{{ "Información Básica"  }}</h3>
+                        <button type="submit" class="btn btn-info pull-right">{{ "Salvar"  }}</button>
                     </div><!-- /.box-header -->
                     <!-- form start -->
-                    {!! Form::open(array('url' => '/perfil/salvar_informacion_basica','class'=>'form-horizontal requiereValidacion','method'=>'post')) !!}
+
 
                         <div class="box-body">
                             <div class="form-group">
@@ -85,8 +86,9 @@
                         <div class="box-footer">
                             <button type="submit" class="btn btn-info pull-right">{{ "Salvar"  }}</button>
                         </div><!-- /.box-footer -->
-                    {!! Form::close() !!}
+
                 </div><!-- /.box -->
+                    {!! Form::close() !!}
 
             </div>
         </div>

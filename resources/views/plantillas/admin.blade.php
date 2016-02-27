@@ -13,11 +13,10 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                @section("nombre_pagina")
-                {{  "Perfil de Usuario" }}
-                @stop
+                @yield("nombre_pagina")
                 <!--<small>{{ "Panel de Control"  }}</small>-->
             </h1>
+            @yield("extra_cabecera")
             <ol class="breadcrumb">
                 @yield("guia_navegacion")
                         <!--<li><a href="#"><i class="fa fa-dashboard"></i> {{ "Inicio" }}</a></li>

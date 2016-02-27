@@ -21,10 +21,9 @@
                     <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href=""><i class="fa fa-circle-o"></i> {{ "Ver Usuarios"  }}</a></li>
-                    <li><a href=""><i class="fa fa-circle-o"></i> {{ "Agregar Usuario Nuevo"  }}</a></li>
-                    <li><a href=""><i class="fa fa-circle-o"></i> {{ "Administrar Permisos"  }}</a></li>
-                    <li><a href=""><i class="fa fa-circle-o"></i> {{ "Ver Usuarios"  }}</a></li>
+                    <li><a href="/admin_usuarios/ver_todos"><i class="fa fa-circle-o"></i> {{ "Ver Usuarios"  }}</a></li>
+                    <li><a href="/admin_usuarios/permisos"><i class="fa fa-circle-o"></i> {{ "Roles de Usuario"  }}</a></li>
+                    <li><a href="/admin_usuarios/permisos"><i class="fa fa-circle-o"></i> {{ "Administrar Permisos"  }}</a></li>
                 </ul>
             </li>
             @endif

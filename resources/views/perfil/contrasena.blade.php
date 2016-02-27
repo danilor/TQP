@@ -16,13 +16,14 @@
                         {{ $message }}
                     </div>
                 @endforeach
-
+                    {!! Form::open(array('url' => '/perfil/salvar_contrasena','class'=>'form-horizontal requiereValidacion','method'=>'post')) !!}
                 <div class="box box-info">
                     <div class="box-header with-border">
                         <h3 class="box-title">{{ "Contraseña"  }}</h3>
+                        <button type="submit" class="btn btn-info pull-right">{{ "Cambiar Contraseña"  }}</button>
                     </div><!-- /.box-header -->
                     <!-- form start -->
-                    {!! Form::open(array('url' => '/perfil/salvar_contrasena','class'=>'form-horizontal requiereValidacion','method'=>'post')) !!}
+
 
                         <div class="box-body">
                             <div class="form-group">
@@ -41,9 +42,9 @@
                         <div class="box-footer">
                             <button type="submit" class="btn btn-info pull-right">{{ "Cambiar Contraseña"  }}</button>
                         </div><!-- /.box-footer -->
-                    {!! Form::close() !!}
-                </div><!-- /.box -->
 
+                </div><!-- /.box -->
+                    {!! Form::close() !!}
             </div>
         </div>
     @stop
