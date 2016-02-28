@@ -20,7 +20,7 @@ class AdminUsuariosControllador  extends Controller {
 	private $reglas = array(
 		/*DASHBOARD*/
 		'get|ver_todos'                      	=>  'verUsuarios',
-
+		'get|directorio'                      	=>  'verDirectorio',
 		'get|borrar_usuario'                   	=>  'borrarUsuario',
 		'get|modificar_usuario'					=>	'modificarUsuario',
 		'post|salvar_informacion_de_usuario'	=>	'salvarInformacionDeUsuario',
@@ -54,11 +54,22 @@ class AdminUsuariosControllador  extends Controller {
 	}
 
 	/*
-	 * Esta función se encarga solamente de mostrar los usuarios activos actualmente
+	 * Esta función se encarga solamente de mostrar los usuarios activos actualmente en formato de directorio. No va a incluir el formulario de añadir
 	 * */
 	public function verUsuarios($usuario){
 		$data["usuario"] = $usuario;
 		return view('admin_usuarios/ver')->with($data);
+	}
+
+	public function verDirectorio($usuario){
+		$data["usuario"] = $usuario;
+		$data["lista_usuarios"] = [];
+		if(Request::segment(3) == ""){
+			$data["lista_usuarios"] = \Tiqueso\usuario::where("activo",1)->orderBy("nombre","asc")->get();
+		}else{
+			$data["lista_usuarios"] = \Tiqueso\usuario::where("activo",1)->where("nombre","like",Request::segment(3)."%")->orderBy("nombre","asc")->get();
+		}
+		return view('admin_usuarios/directorio')->with($data);
 	}
 
 	/*

@@ -143,6 +143,13 @@ class usuario extends Model implements AuthenticatableContract,
         return date(Config::get("region.formato_fecha"),strtotime($this->created_at));
     }
 
+    /**
+     * Esta función se dedica a devolver el nombre completo nada más
+     */
+    public function obtenerNombreCompleto(){
+        return $this->nombre . " " . $this->apellido;
+    }
+
     /*
      * Esta función busca obtener la foto del usuario para poder mostrarla. Si la foto no existe muestra la predeterminada
      * */
@@ -154,5 +161,13 @@ class usuario extends Model implements AuthenticatableContract,
                 $ruta = "/" . Config::get("rutas.contenidos") . "/" . Config::get("rutas.usuarios") . "/" . $this->foto;
                 return $ruta;
             }
+    }
+
+    /*
+     * Esta función busca obtener la foto del usuario para poder mostrarla y modificar su tamaño. Si la foto no existe muestra la predeterminada
+     * */
+    public function obtenerFotoEspecial($ancho = 300,$alto=300){
+        $ruta = "/general/foto_usuario/" . $this->id . "?w=$ancho&h=$alto&type=fit";
+        return $ruta;
     }
 }

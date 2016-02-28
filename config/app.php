@@ -151,6 +151,7 @@ return [
          * Añadido por Danilo
          * */
         'Illuminate\Html\HtmlServiceProvider', /*Esto le indica a laravel que use los HTML service providers*/
+        Intervention\Image\ImageServiceProvider::class,
 
     ],
     /*
@@ -203,6 +204,7 @@ return [
          * Añadido por Danilo
          * */
         'Form'=> 'Illuminate\Html\FormFacade', 'HTML'=> 'Illuminate\Html\HtmlFacade', /*Esto permite el usar los tags de FORM que fueron eliminados en LARAVEL 5*/
+        'Image' => Intervention\Image\Facades\Image::class,
 
     ],
 

@@ -127,6 +127,7 @@
                     // Animation complete.
                     if(!$(".nuevoUsuarioFormulario").is(":visible")  ){
                         $("#id_permiso").val("");
+                        $(".nuevoUsuarioFormulario").find("input").val("");
                     }
                 });
                 e.preventDefault();

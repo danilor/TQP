@@ -35,6 +35,7 @@ Route::get('/correo_demostracion/basico/verde', function () {
 
 
 //Áreas de administración general
+Route::any('/general/{extra?}/{extra2?}/{extra3?}/{extra4?}/{extra5?}/{extra6?}', 'GeneralControllador@principal');
 Route::any('/admin_general/{extra?}/{extra2?}/{extra3?}/{extra4?}/{extra5?}/{extra6?}', 'AdminGeneralControllador@principal');
 Route::any('/admin_usuarios/{extra?}/{extra2?}/{extra3?}/{extra4?}/{extra5?}/{extra6?}', 'AdminUsuariosControllador@principal');
 Route::any('/productos/{extra?}/{extra2?}/{extra3?}/{extra4?}/{extra5?}/{extra6?}', 'ProductosControllador@principal');
