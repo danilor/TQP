@@ -55,7 +55,6 @@ class usuario extends Model implements AuthenticatableContract,
         if($this -> esAdministrador()){
             return true;
         }
-
         //Primero vemos si el $t es un array. Si lo es, entonces tenemos que verificar por cada uno (se convierte en una cláusula "Y" (&&)
         if(is_array($t)){
             $contador = 0;
@@ -75,6 +74,17 @@ class usuario extends Model implements AuthenticatableContract,
             //Es uno simple, así que tenemos que verificar solamente uno.
             return in_array($t,$this -> permisos);
         }
+    }
+
+    public function estaAsignadoARol($id){
+        $this->llenarRoles();
+        foreach($this -> roles AS $key => $rol){
+            if(  (int)$key == (int)$id  ){
+                return true; //Si lo encontramos, nos devolvemos de una vez
+            }
+        }
+        return false;
+
     }
 
     /**
@@ -101,12 +111,10 @@ class usuario extends Model implements AuthenticatableContract,
      * El objetivo de esto es que esta función solo se va a llamar cuando se necesita y no va a llamar a la base de datos innecesariamente.
      */
     public function llenarRoles(){
-
         if($this -> roles != null){
             //Si ya no es null, no volvemos a llamar a la base de datos
             return;
         }
-
         //Traemos los roles del usuario
         $q = DB::table("usuarios_roles");
         $q -> select("roles.*");
@@ -116,7 +124,7 @@ class usuario extends Model implements AuthenticatableContract,
         $res = $q -> get();
         if($res != null){ //Hay roles que usar
             foreach($res AS $r){
-                $this -> roles[] = $r -> nombre;
+                $this -> roles[$r->id] = $r -> nombre;
                 $permisos = explode(",",$r -> permisos); //Ahora vamos por los permisos
                 foreach($permisos AS $p){
                     if($p != null && $p != "") $this -> permisos[] = $p;

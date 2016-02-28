@@ -144,7 +144,29 @@
                                              <span>
                                              {{ config("mensajes.maximo_foto")  }}
                                              </span>
+                    <br />
+                    <br />
+                    <div class="form-group">
+                        <label for="" class="col-sm-12 ">{{ "Roles"  }} </label>
 
+                        @foreach( \App\clases\Comunes::getListaRolesSelect() AS $key => $value )
+                            <div class="col-xs-12">
+                                <input value="{{ $key  }}"  @if(  $u->estaAsignadoARol($key)  ) checked="checked"  @endif id="checkbox-{{ $key }}" class="checkbox-custom" name="roles[]" type="checkbox">
+                                <label for="checkbox-{{ $key }}" class="checkbox-custom-label">{{$value}}</label>
+                            </div>
+                        @endforeach
+
+                    </div>
+
+                    @if(Auth::user()->esAdministrador())
+                    <div class="form-group">
+                        <label for="" class="col-sm-12 ">{{ "Administrador"  }} </label>
+                            <div class="col-xs-12">
+                                <input value="y"  @if(  $u->esAdministrador()  ) checked="checked"  @endif id="checkbox-{{ "administrador" }}" class="checkbox-custom" name="administrador" type="checkbox">                                <label for="checkbox-{{ "administrador" }}" class="checkbox-custom-label">{{ "Administrador del Sitio"  }}</label>
+                            </div>
+
+                    </div>
+                        @endif
                 </div><!-- /.box-body -->
 
             </div><!-- /.box -->

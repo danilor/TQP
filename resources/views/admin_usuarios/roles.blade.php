@@ -1,15 +1,14 @@
 @extends("plantillas.admin")
 
 @section("nombre_pagina")
-    {{ "Permisos" }}
+    {{ "Roles" }}
 @stop
 
 @section("extra_cabecera")
     <ol class="breadcrumb">
-        <li><button class="btn btn-block btn-primary anadirUsuario"><i class="fa fa-user-secret"></i> {{ "Añadir Permiso"  }}</button></li>
+        <li><button class="btn btn-block btn-primary anadirUsuario"><i class="fa fa-child"></i> {{ "Añadir Rol"  }}</button></li>
     </ol>
     @stop
-
 @section("contenido")
 <div class="row formOverTable">
     <div class="col-xs-12">
@@ -23,37 +22,25 @@
     @endforeach
     </div>
 </div>
-    {!! Form::open(array('url' => '/admin_usuarios/salvar_permiso','class'=>'form-horizontal requiereValidacion','method'=>'post',"files"=>true,"file"=>true)) !!}
-{!! Form::hidden("id_permiso", Input::old("id_permiso"),array("id"=>'id_permiso')) !!}
+    {!! Form::open(array('url' => '/admin_usuarios/salvar_rol','class'=>'form-horizontal requiereValidacion','method'=>'post')) !!}
     <div class="row formOverTable nuevoUsuarioFormulario" style="display: none;">
         <div class="col-xs-12">
             <div class="box box-info">
                 <div class="box-header with-border">
-                    <h3 class="box-title">{{ "Información de Permiso"  }}</h3> <button type="submit" class="btn btn-info pull-right">{{ "Salvar"  }}</button>
+                    <h3 class="box-title">{{ "Información de Rol"  }}</h3> <button type="submit" class="btn btn-info pull-right">{{ "Salvar"  }}</button>
                 </div><!-- /.box-header -->
                 <!-- form start -->
-
-
                 <div class="box-body">
-
                     <div class="form-group">
                         <label for="" class="col-sm-2 control-label">{{ "Nombre"  }} <span>*</span></label>
                         <div class="col-sm-10">
                             {!! Form::text("nombre", Input::old("nombre"), array('placeholder'=>"Nombre",'class'=>'form-control','required'=>'required')) !!}
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="" class="col-sm-2 control-label">{{ "Alias"  }} <span>*</span></label>
-                        <div class="col-sm-10">
-                            {!! Form::text("alias", Input::old("alias"), array('placeholder'=>"Alias",'class'=>'form-control','required'=>'required')) !!}
-                        </div>
-                    </div>
-
                 </div><!-- /.box-body -->
                 <div class="box-footer">
                     <button type="submit" class="btn btn-info pull-right">{{ "Salvar"  }}</button>
                 </div><!-- /.box-footer -->
-
             </div><!-- /.box -->
         </div>
     </div>
@@ -62,47 +49,45 @@
         <div class="col-xs-12">
             <div class="box">
                 <div class="box-header">
-                    <h3 class="box-title">{{ "Permisos"  }}</h3>
+                    <h3 class="box-title">{{ "Roles"  }}</h3>
                 </div><!-- /.box-header -->
                 <div class="box-body">
                     <table id="example1" class="table table-bordered table-striped tabla_completa">
                         <thead>
                         <tr>
-                            <th>{{ "NOMBRE DE PERMISO"  }}</th>
-                            <th>{{ "ALIAS"  }}</th>
+                            <th>{{ "NOMBRE"  }}</th>
+                            <th>{{ "PERMISOS"  }}</th>
                             <th>{{ "MODIFICAR"  }}</th>
                             <th>{{ "ELIMINAR"  }}</th>
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach(\Tiqueso\permiso::all() AS $u)
+                        @foreach(\Tiqueso\rol::all() AS $u)
                             <tr>
-                                <td class="permisoNombre">{{ $u->nombre  }}</td>
-                                <td class="permisoAlias">{{ $u->alias  }}</td>
+                                <td>{{ $u -> nombre  }}</td>
+                                <td>{{ $u -> obtenerPermisos_String(", ")  }}</td>
                                 <td>
-                                    <a href="#" pid="{{$u->id}}" class="btn btn-block btn-success modificarPermiso"><span class="fa fa-pencil"></span> {{ "Modificar"  }}</a>
+                                    <a href="/admin_usuarios/modificar_rol/{{$u->id}}" class="btn btn-block btn-success"><span class="fa fa-pencil"></span> {{ "Modificar"  }}</a>
                                 </td>
                                 <td>
-
                                     {!!  Form::open(array(
-                                                            'url'                   =>  '/admin_usuarios/borrar_permiso/'.$u->id,
+                                                            'url'                   =>  '/admin_usuarios/borrar_rol/'.$u->id,
                                                             "class"                 =>  'confirmar_accion',
                                                             "method"                =>  "get",
-                                                            "confirmacion_titulo"   =>  "Eliminar Permiso",
-                                                            "confirmacion_contenido"=>  "¿Está seguro que desea eliminar este Permiso? Los usuarios que cuenta con este permiso lo conservarán hasta que sean actualizados.",
+                                                            "confirmacion_titulo"   =>  "Eliminar Rol",
+                                                            "confirmacion_contenido"=>  "¿Está seguro que desea eliminar este Rol? Los usuarios que tengan este rol asignado perderán los permisos pertenecientes a este rol",
                                                     )) !!}
                                     {!! Form::token() !!}
                                     <button type="submit" class="btn btn-block btn-danger"><span class="fa fa-pencil"></span> {{ "Eliminar"  }}</button>
                                     {!!  Form::close() !!}
-
                                 </td>
                             </tr>
                         @endforeach
                         </tbody>
                         <tfoot>
                         <tr>
-                            <th>{{ "NOMBRE DE PERMISO"  }}</th>
-                            <th>{{ "ALIAS"  }}</th>
+                            <th>{{ "NOMBRE"  }}</th>
+                            <th>{{ "PERMISOS"  }}</th>
                             <th>{{ "MODIFICAR"  }}</th>
                             <th>{{ "ELIMINAR"  }}</th>
                         </tr>
@@ -110,9 +95,6 @@
                     </table>
                 </div><!-- /.box-body -->
             </div><!-- /.box -->
-
-
-
         </div><!-- /.row -->
     </div>
 @stop

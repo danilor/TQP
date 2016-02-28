@@ -18,5 +18,23 @@ class Comunes{
         return Response::make(View::make('errores/404'), 404);
         dd("Pàgina 404");
     }
+
+    public static function getListaRolesSelect(){
+        $aux = [];
+        $roles = \Tiqueso\rol::orderBy("nombre","asc")->get();
+        foreach($roles AS $r){
+            $aux[$r->id] = $r->nombre;
+        }
+        return $aux;
+    }
+
+    public static function getListaPermisosSelect(){
+        $aux = [];
+        $roles = \Tiqueso\permiso::orderBy("nombre","asc")->get();
+        foreach($roles AS $r){
+            $aux[$r->alias] = $r->nombre;
+        }
+        return $aux;
+    }
 }
 ?>
