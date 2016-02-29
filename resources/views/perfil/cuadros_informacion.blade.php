@@ -26,7 +26,11 @@
         <div class="box-body">
             <strong><i class="fa fa-book margin-r-5"></i>  {{ "Educación"  }}</strong>
             <p class="text-muted">
-                {{ "Ninguna Registrada"  }}
+                @if($usuario->educacion != "")
+                {{ $usuario->educacion  }}
+                    @else
+                {{ "Ninguna educación registrada"  }}
+                @endif
             </p>
 
             <hr>
