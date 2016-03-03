@@ -35,14 +35,14 @@ class ProductosControllador extends Controller {
 		if(!Auth::check()){
 			return Redirect::to('/ingresar?accesso&url='.Request::url());
 		}
-		$segmento = strtolower(Request::segment(2)); //we get the section the user wants to access
+		$segmento = strtolower(Request::segment(2));
 		$request = strtolower(Request::getMethod());
 		$urlrule = "$request|$segmento";
 		if(isset($this->reglas[$urlrule])){
 			$g = $this->reglas[$urlrule];
 			return $this->$g($usuario);
 		}else{
-			return Comunes::enviar404(); //We are not sure what type of request was this, so we throw a 404 error.
+			return Comunes::enviar404();
 		}
 	}
 

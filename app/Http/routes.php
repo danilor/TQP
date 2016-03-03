@@ -27,12 +27,10 @@ Route::get('/recobrar/{codigo}', 'IngresoControllador@recobrar');
 Route::post('/recobrar/{codigo}', 'IngresoControllador@accion_recobrar');
 
 
-
 //Rutas de correo: las siguientes rutas no deberían ser accesibles para nadie excepto los que sabemos que están aquí
 Route::get('/correo_demostracion/basico/verde', function () {
     return view('correo.basica');
 });
-
 
 //Áreas de administración general
 Route::any('/general/{extra?}/{extra2?}/{extra3?}/{extra4?}/{extra5?}/{extra6?}', 'GeneralControllador@principal');
@@ -40,3 +38,4 @@ Route::any('/admin_general/{extra?}/{extra2?}/{extra3?}/{extra4?}/{extra5?}/{ext
 Route::any('/admin_usuarios/{extra?}/{extra2?}/{extra3?}/{extra4?}/{extra5?}/{extra6?}', 'AdminUsuariosControllador@principal');
 Route::any('/productos/{extra?}/{extra2?}/{extra3?}/{extra4?}/{extra5?}/{extra6?}', 'ProductosControllador@principal');
 Route::any('/perfil/{extra?}/{extra2?}/{extra3?}/{extra4?}/{extra5?}/{extra6?}', 'PerfilControlador@principal');
+Route::any('/seguimientos/{extra?}/{extra2?}/{extra3?}/{extra4?}/{extra5?}/{extra6?}', 'SeguimientosControllador@principal');

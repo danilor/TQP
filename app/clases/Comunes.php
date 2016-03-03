@@ -36,5 +36,25 @@ class Comunes{
         }
         return $aux;
     }
+
+    /*
+     * Obtenemos la lista de usuarios para montarla sobre un SELECT.
+     * @param excepcion Si la excepcion es distinta de null quiere decir que queremos excluir a un usuario en particular
+     * */
+    public static function getUsuariosSelect($excepcion = null){
+        $usuarios = \Tiqueso\usuario::where("activo",1)->get();
+        $aux = [];
+        foreach($usuarios AS $key => $value){ //Iteramos por toda la lista de usuarios existentes
+            if($excepcion != null){
+                if( (int)$value->id != (int)$excepcion ){
+                    $aux[$value->id] = $value->obtenerNombreCompleto();
+                }
+            }else{
+                $aux[$value->id] = $value->obtenerNombreCompleto();
+            }
+        }
+        return $aux; //Retornamos el auxiliar que contiene los IDS y NOMBRES de los usuarios solamente
+    }
+
 }
 ?>

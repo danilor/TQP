@@ -18,15 +18,12 @@ class usuario extends Model implements AuthenticatableContract,
                                     CanResetPasswordContract
 {
     use Authenticatable, Authorizable, CanResetPassword;
-
     //Atributos de la clase
     private $roles = null; //Empezamos la variable de roles en nulo. Cuando alguna función tenga que obtener los roles, de una vez los introducimos acá, así si se tienen que obtener de nuevo solamente devolvemos esta variable y no volvemos a llamar a la base de datos para obtenerlos.
     private $permisos = null;  //Empezamos la variable de permisos en nulo. Cuando alguna función tenga que obtener los permisos, de una vez los introducimos acá, así si se tienen que obtener de nuevo solamente devolvemos esta variable y no volvemos a llamar a la base de datos para obtenerlos.
-
+    private $seguimientos = null; //Inicializamos la variable de seguimientos, así si es necesario el volver a leer los valores ya los tenemos
     protected $fillable = ['nombre', 'correo', 'password'];
     protected $hidden = ['password', 'remember_token'];
-
-
     //Las siguientes dos funciones están hechas para indicarle al sistema de no usar los campos por defecto
     public function getAuthPassword() {
         return $this->password;
@@ -104,8 +101,6 @@ class usuario extends Model implements AuthenticatableContract,
         $this -> llenarRoles();
         return $this -> permisos;
     }
-
-
     /**
      * Esta función se dedica a revisar los roles del usuario, si son nulos entonces los llena, y si tienen contenido simplemente no hace nada.
      * El objetivo de esto es que esta función solo se va a llamar cuando se necesita y no va a llamar a la base de datos innecesariamente.
@@ -142,7 +137,6 @@ class usuario extends Model implements AuthenticatableContract,
         }
         return;
     }
-
     /*Esta función obtiene la fecha de creación del usuario y la devuelve. Puede ser formateada o no*/
     public function obtenerFechaCreacion($formato = true){
         if($formato == false){
@@ -150,14 +144,12 @@ class usuario extends Model implements AuthenticatableContract,
         }
         return date(Config::get("region.formato_fecha"),strtotime($this->created_at));
     }
-
     /**
      * Esta función se dedica a devolver el nombre completo nada más
      */
     public function obtenerNombreCompleto(){
         return $this->nombre . " " . $this->apellido;
     }
-
     /*
      * Esta función busca obtener la foto del usuario para poder mostrarla. Si la foto no existe muestra la predeterminada
      * */
@@ -170,12 +162,29 @@ class usuario extends Model implements AuthenticatableContract,
                 return $ruta;
             }
     }
-
     /*
      * Esta función busca obtener la foto del usuario para poder mostrarla y modificar su tamaño. Si la foto no existe muestra la predeterminada
      * */
     public function obtenerFotoEspecial($ancho = 300,$alto=300){
         $ruta = "/general/foto_usuario/" . $this->id . "?w=$ancho&h=$alto&type=fit";
         return $ruta;
+    }
+
+    /*
+     * Esta función obtiene todos los seguimientos asignados a un usuario
+     * */
+    public function obtenerSeguimientos($estado = [1]){
+        if($this -> seguimientos == null){
+            $this -> seguimientos = \Tiqueso\seguimiento::whereIn("estado",$estado)->where("asignado_a", $this->id ) -> orderBy("creado","desc")->get();
+        }
+        return $this -> seguimientos;
+    }
+
+    /*
+     * Esta función devuelve el total se seguimientos asignados a un usuario
+     * */
+    public function totalSeguimientos($estado = [1]){
+            $this   ->  obtenerSeguimientos($estado);
+            return count( $this -> seguimientos );
     }
 }

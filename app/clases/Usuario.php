@@ -22,7 +22,6 @@ class Usuario{
 
         }
     }
-
     public function obtenerNombreCompleto(){
         return "$this->nombre $this->apellido";
     }

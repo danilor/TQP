@@ -136,3 +136,7 @@ li.disabled a{
 .checkbox-custom:focus + .checkbox-custom-label, .radio-custom:focus + .radio-custom-label {
 	outline: 1px solid #ddd; /* focus style */
 }
+
+.modal-backdrop {
+	z-index: -1;
+}

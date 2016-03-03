@@ -40,14 +40,14 @@ class PerfilControlador extends Controller {
 		if(!Auth::check()){
 			return Redirect::to('/ingresar?accesso&url='.Request::url());
 		}
-		$segmento = strtolower(Request::segment(2)); //we get the section the user wants to access
+		$segmento = strtolower(Request::segment(2));
 		$request = strtolower(Request::getMethod());
 		$urlrule = "$request|$segmento";
 		if(isset($this->reglas[$urlrule])){
 			$g = $this->reglas[$urlrule];
 			return $this->$g($usuario);
 		}else{
-			return Comunes::enviar404(); //We are not sure what type of request was this, so we throw a 404 error.
+			return Comunes::enviar404();
 		}
 
 		return view('perfil/tablero')->with($data);
@@ -121,8 +121,6 @@ class PerfilControlador extends Controller {
 		$usuario->direccion2 = Input::get("direccion2");
 		$usuario->updated_at = new \DateTime(); //Actualizamos la fecha de la actualización
 		$usuario->save(); //Salvamos la información
-
-
 		//Información almacenada
 		$url = "/perfil/informacion_basica/"."?salvado=y";
 		return Redirect::to( $url  );
@@ -138,7 +136,6 @@ class PerfilControlador extends Controller {
 		if ($validador -> fails()) {
 			return Redirect::to($url) -> withErrors($validador);
 		}
-
 		DB::table("usuarios")->where("id",$usuario->id)->update(["password"=>bcrypt(Input::get('contrasena'))]);
 		//Información almacenada
 		return Redirect::to( $url ."?salvado=y" );
@@ -153,7 +150,6 @@ class PerfilControlador extends Controller {
 			if( (int)$IMAGE->getClientSize() > (int)Config::get("archivos.tamano_maximo")		){
 				return Redirect::to($url) -> withErrors(["Imágen supera el tamaño máximo"]);
 			}
-			//dd(base_path() . '/public/'.Config::get("paths.UPLOADS").'/'.Config::get("paths.USERS").'/'. $imageName);
 			$ruta = public_path() . '/'.Config::get("rutas.contenidos").'/'.Config::get("rutas.usuarios").'/';
 			$IMAGE->move($ruta, $nuevoNombre);
 			$usuario->foto = $nuevoNombre;

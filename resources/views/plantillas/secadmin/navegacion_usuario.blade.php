@@ -1,6 +1,17 @@
 <div class="navbar-custom-menu">
     <ul class="nav navbar-nav">
-
+        <li class="dropdown messages-menu">
+            <a href="#" class="" data-toggle="modal" data-target="#nuevoSeguimientoModal">
+                <i class="fa fa-hand-o-right"></i>
+                <span class="label label-success ">{{"+"}}</span>
+            </a>
+        </li>
+        <li class="dropdown messages-menu seguimientosIconoNotificacion">
+            <a href="/perfil" class="">
+                <i class="fa fa-hand-stop-o"></i>
+                <span class="label label-warning totalSeguimientos">{{number_format(Auth::user()->totalSeguimientos())}}</span>
+            </a>
+        </li>
         <!-- User Account: style can be found in dropdown.less -->
         <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -16,19 +27,6 @@
                         <small>{{ "Miembro desde:"  }} {{ Auth::user()->obtenerFechaCreacion(true)  }}</small>
                     </p>
                 </li>
-                <!-- Menu Body -->
-                <!--<li class="user-body">
-                    <div class="col-xs-4 text-center">
-                        <a href="#">Followers</a>
-                    </div>
-                    <div class="col-xs-4 text-center">
-                        <a href="#">Sales</a>
-                    </div>
-                    <div class="col-xs-4 text-center">
-                        <a href="#">Friends</a>
-                    </div>
-                </li>-->
-                <!-- Menu Footer-->
                 <li class="user-footer">
                     <div class="pull-left">
                         <a href="/perfil" class="btn btn-default btn-flat">{{ "Perfil"  }}</a>
@@ -44,4 +42,41 @@
             <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
         </li>
     </ul>
+</div>
+<div id="nuevoSeguimientoModal" class="modal fade" role="dialog">
+    {!! Form::open(array('url' => '/seguimientos/nuevo_seguimiento','id'=>'nuevoSeguimientoFormulario','class'=>'form-horizontal requiereValidacionAjax','method'=>'post')) !!}
+    <div class="modal-dialog modal-md">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">{{ "Nuevo Seguimiento"  }}</h4>
+            </div>
+            <div class="modal-body">
+                <div class="">
+                    <!-- form start -->
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label for="" class="col-sm-2 control-label">{{ "Usuario"  }} <span>*</span></label>
+                            <div class="col-sm-10">
+                                {!!  Form::select('usuario', [""=>"Seleccionar Usuario"] + \App\clases\Comunes::getUsuariosSelect(null), $usuario->sexo,array("required"=>'required',"class"=>"form-control"))  !!}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="" class="col-sm-2 control-label">{{ "Detalle"  }} <span>*</span></label>
+                            <div class="col-sm-10">
+                                {!! Form::textarea("detalle", null, array('placeholder'=>"Detalle",'class'=>'form-control','required'=>'required')) !!}
+                            </div>
+                        </div>
+                    </div><!-- /.box-body -->
+                </div><!-- /.box -->
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-info pull-right">{{ "Salvar"  }}</button>
+            </div>
+        </div>
+
+    </div>
+    {!! Form::close() !!}
 </div>

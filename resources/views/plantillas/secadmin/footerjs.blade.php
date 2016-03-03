@@ -43,32 +43,7 @@
 <script src="/js/general.js"></script>
 
 <script type="text/javascript">
-
-    function notification(t){
-        var n = noty({
-            text: t ,
-            layout: 'top',
-            theme: 'defaultTheme',
-            timeout: 3000,
-            /*
-             timeout: 3000,
-             maxVisible: 5,
-             closeWith: ['click'],
-             animation: {
-             open: 'animated bounceInLeft', // Animate.css class names
-             close: 'animated bounceOutLeft', // Animate.css class names
-             easing: 'swing', // unavailable - no need
-             speed: 500 // unavailable - no need
-             },
-             callback: {
-             onShow: function() {},
-             afterShow: function() {},
-             onClose: function() {},
-             afterClose: function() {},
-             onCloseClick: function() {},
-             },*/
-        });
-    }
+    var lang = "{{ \App::getLocale()  }}"; //Variable de lenguaje
 
     function preparar_dialogo_confirmacion(){
         logM("Preparando los diálogos de confirmación");
@@ -78,12 +53,9 @@
             //Los siguientes son campos predeterminados
             var titulo = "{{"Confirmar acción"}}";
             var contenido = "{{ '¿Está seguro de que desea realizar esta acción?' }}";
-
             //Si encontramos el campo en el formulario lo modificamos.
             if(     formulario.attr("confirmacion_titulo") != ""     ){     titulo = formulario.attr("confirmacion_titulo");      }
             if(     formulario.attr("confirmacion_contenido") != ""     ){       contenido = formulario.attr("confirmacion_contenido");       }
-
-
             $.confirm({
                 text: contenido,
                 title: titulo,
@@ -102,16 +74,13 @@
                 cancelButtonClass: "btn-danger",
                 dialogClass: "modal-dialog modal-md" // Bootstrap classes for large modal
             });
-
             e.preventDefault();
         });
     }
-
     $( document).ready(function(){
         @if(Input::get("salvado") === "y")
                 notification('{{  "Información Salvada" }}')
         @endif
         preparar_dialogo_confirmacion();
-
     });
 </script>

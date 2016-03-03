@@ -25,21 +25,13 @@
                     <h3 class="box-title">{{ "Información del Rol"  }}</h3> <button type="submit" class="btn btn-info pull-right">{{ "Salvar"  }}</button>
                 </div><!-- /.box-header -->
                 <!-- form start -->
-
-
                 <div class="box-body">
-
                     <div class="form-group">
                         <label for="" class="col-sm-2 control-label">{{ "Nombre"  }} <span>*</span></label>
                         <div class="col-sm-10">
                             {!! Form::text("nombre", $r->nombre, array('placeholder'=>"Nombre",'class'=>'form-control','required'=>'required')) !!}
                         </div>
                     </div>
-
-
-
-
-
                     <div class="form-group">
                         <label for="" class="col-sm-2 control-label">{{ "Permisos"  }}</label>
                         <div class="col-sm-10">

@@ -9,7 +9,7 @@
 
             <ul class="list-group list-group-unbordered">
                 <li class="list-group-item">
-                    <b>{{ "Seguimientos"  }}</b> <a class="pull-right">{{ number_format(0)  }}</a>
+                    <b>{{ "Seguimientos"  }}</b> <a class="pull-right">{{ number_format($usuario->totalSeguimientos())  }}</a>
                 </li>
 
             </ul>
