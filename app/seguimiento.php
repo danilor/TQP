@@ -29,4 +29,10 @@ class seguimiento extends Model
         }
         return  $this -> usuario_creado;
     }
+    public function obtenerUsuarioAsignado(){
+        if( $this -> usuario_asignado == null ){
+            $this -> usuario_asignado = usuario::find( $this -> asignado_a );
+        }
+        return  $this -> usuario_asignado;
+    }
 }

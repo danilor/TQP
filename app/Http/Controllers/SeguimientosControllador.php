@@ -19,6 +19,7 @@ use App\clases\RespuestaAjax;
 class SeguimientosControllador extends Controller {
 
 	private $reglas = array(
+		'get|historial'						=>	'historialSeguimiento',
 		'post|nuevo_seguimiento'         	=>  'nuevoSeguimiento', //AJAX
 		'get|seguimientos_de_usuario'    	=>  'seguimientoDeUsuario', //AJAX
 	);
@@ -48,7 +49,7 @@ class SeguimientosControllador extends Controller {
 	 * con algún historial, así que debería de funcionar para ambos casos sin problemas.
 	 * MODO: AJAX
 	 * */
-	public function nuevoSeguimiento($usuario){
+	public function nuevoSeguimiento(\Tiqueso\usuario $usuario){
 		$respuesta = new RespuestaAjax("Seguimiento","Nuevo");
 
 		$reglas = array(
@@ -97,11 +98,19 @@ class SeguimientosControllador extends Controller {
 		return $respuesta -> imprimirRespuesta();
 	}
 
-	public function seguimientoDeUsuario(){
+	public function seguimientoDeUsuario(\Tiqueso\usuario $usuario){
 		$respuesta = new RespuestaAjax("Seguimiento","Usuario");
 		$respuesta -> setRespuesta( [ "total" => Auth::user()->totalSeguimientos() ] );
 
 		return $respuesta -> imprimirRespuesta();
+	}
+
+	/*
+	 * Esta función y página relacionada se encarga de mostrar el historial completo de un seguimiento usando su UNICO.
+	 * */
+	public function historialSeguimiento(\Tiqueso\usuario $usuario){
+		$data["usuario"] = Auth::user();
+		return view('admin_seguimientos/historial')->with($data);
 	}
 
 }

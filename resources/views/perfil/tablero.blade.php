@@ -25,7 +25,7 @@
                         <span class="username">
                           <a href="javascript:void(0);">{{ $seguimiento->obtenerUsuarioCreado()->obtenerNombreCompleto()  }}</a>
                         </span>
-                                    <span class="description">{{ $seguimiento->obtenerFecha()  }}</span>
+                                    <span class="description">{{ $seguimiento->obtenerFecha()  }} <a href="/seguimientos/historial/{{ $seguimiento->unico  }}">{{ "Historial"  }}</a></span>
                                 </div><!-- /.user-block -->
                                 {!! Form::open(array('url' => '/seguimientos/nuevo_seguimiento','id'=>'','class'=>'requiereValidacionAjax modificarSeguimientoFormulario','method'=>'post')) !!}
                                 <input type="hidden" value="{{ $seguimiento->creado_por  }}" name="usuario" />
