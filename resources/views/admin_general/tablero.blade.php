@@ -31,7 +31,7 @@
                 <p>{{ "Seguimientos"  }}</p>
             </div>
             <div class="icon">
-                <i class="ion ion-stats-bars"></i>
+                <i class="fa fa-hand-o-right"></i>
             </div>
             <a href="#" class="small-box-footer">
                 {{ "Más Información"  }} <i class="fa fa-arrow-circle-right"></i>
@@ -46,7 +46,7 @@
                 <p>{{ "Usuarios Activos"  }}</p>
             </div>
             <div class="icon">
-                <i class="ion ion-person-add"></i>
+                <i class="fa fa-users"></i>
             </div>
             <a href="/admin_usuarios/ver_todos/" class="small-box-footer">{{ "Más Información"  }} <i class="fa fa-arrow-circle-right"></i>
             </a>
@@ -60,7 +60,7 @@
                 <p>{{ "Productos Activos"  }}</p>
             </div>
             <div class="icon">
-                <i class="ion ion-pie-graph"></i>
+                <i class="fa fa-archive"></i>
             </div>
             <a href="#" class="small-box-footer">
                 {{ "Más Información"  }} <i class="fa fa-arrow-circle-right"></i>
