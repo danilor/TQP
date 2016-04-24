@@ -183,13 +183,18 @@ function llamarAtencion(selector){
 }
 
 function inicializarWYSIWYG(){
-	$('.summernote').summernote({
-		height: 300,                 // el tamaño (alto)
-		minHeight: null,             // tamaño minimo para el editor
-		maxHeight: null,             // tamaño máximo para el editor
-		focus: false,                // no se quiere que obtenga foco justo despues de inicializar
-		lang: 'es-ES' 				 // Establecemos el idioma
-	});
+	try{
+		$('.summernote').summernote({
+			height: 300,                 // el tamaño (alto)
+			minHeight: null,             // tamaño minimo para el editor
+			maxHeight: null,             // tamaño máximo para el editor
+			focus: false,                // no se quiere que obtenga foco justo despues de inicializar
+			lang: 'es-ES' 				 // Establecemos el idioma
+		});
+	}catch(err){
+		//Existen página donde no se carga el summer note. Este try catch es para evitar que de errores en dichas páginas
+	}
+
 }
 
 $( document ).ready(function(){

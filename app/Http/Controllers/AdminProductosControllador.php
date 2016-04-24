@@ -29,6 +29,7 @@ class AdminProductosControllador extends Controller {
 		'get|modificar_tipo'       		=>  'modificarTipo',
 		'post|salvar_tipo_producto'		=>	'salvarTipoProducto',
 		'post|anadir_tipo_producto'		=>	'anadirTipoProducto',
+		'get|borrar_tipo'          		=>  'borrar_tipo',
 
 	);
 
@@ -246,8 +247,14 @@ class AdminProductosControllador extends Controller {
 		$tp -> save();
 
 		return Redirect::to("/admin_productos/modificar_tipo/" . $tp -> codigo);
+	}
 
-
+	/*Función que se encarga únicamente de borrar un tipo de producto*/
+	public function borrar_tipo($usuario){
+		$id = Request::segment(3);
+		$cat = \Tiqueso\tipo_producto::where("codigo",$id);
+		if($cat != null) $cat->delete(); //Borramos solamente si no es nulo
+		return Redirect::to("/admin_productos/tipos"); //Redirigimos de nuevo a la página de categorías
 	}
 
 }

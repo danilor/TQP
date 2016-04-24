@@ -80,7 +80,7 @@
                             </td>
                             <td>
                                 {!!  Form::open(array(
-                                                        'url'                   =>  '/admin_productos/borrar_tipo/'.$c->id,
+                                                        'url'                   =>  '/admin_productos/borrar_tipo/'.$c->codigo,
                                                         "class"                 =>  'confirmar_accion',
                                                         "method"                =>  "get",
                                                         "confirmacion_titulo"   =>  "Eliminar Tipo",
