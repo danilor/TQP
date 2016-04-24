@@ -94,7 +94,7 @@
 
                     <div class="fileupload fileupload-new" data-provides="fileupload">
                         <div class="fileupload-new thumbnail" style="width: 200px; height: 150px;">
-                            <img src="{{ @$pt->obtenerFoto()  }}" alt="" />
+                            <img src="{{ @$pt->obtenerFotoEspecial()  }}" alt="" />
                         </div>
                         <div class="fileupload-preview fileupload-exists thumbnail" style="max-width: 200px; max-height: 150px; line-height: 20px;"></div>
                         <div>

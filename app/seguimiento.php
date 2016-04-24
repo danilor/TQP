@@ -11,6 +11,7 @@ class seguimiento extends Model
     private $usuario_creado = null; //Inicializamos la variable de usuario para reutilizarla sin necesidad de volver a consultar la base de datos.
     private $usuario_asignado = null; //Inicializamos la variable de usuario para reutilizarla sin necesidad de volver a consultar la base de datos.
 
+
     //
     /*
      * Esta función pretende el obtener la fecha de manera de "formato" para mostrar a los usuarios. También
@@ -34,5 +35,12 @@ class seguimiento extends Model
             $this -> usuario_asignado = usuario::find( $this -> asignado_a );
         }
         return  $this -> usuario_asignado;
+    }
+
+    /* Esta función obtiene la URL de GOOGLE MAPS para mostrar */
+    public function obtenerURLMapa($zoom = '14z'){
+        $base = 'http://www.google.com/maps/place/[LAT],[LON]/@[LAT],[LON],' . $zoom; //La URL Base
+        $url = str_replace([ "[LAT]" , "[LON]" ],[ $this -> latitud ,  $this -> longitud] , $base);
+        return $url;
     }
 }

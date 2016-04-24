@@ -1,13 +1,13 @@
 <div class="navbar-custom-menu">
     <ul class="nav navbar-nav">
         <li class="dropdown messages-menu">
-            <a href="#" class="" data-toggle="modal" data-target="#nuevoSeguimientoModal">
+            <a href="#" class="" data-toggle="modal" title="{{ "Crear nuevo seguimiento"  }}" data-target="#nuevoSeguimientoModal">
                 <i class="fa fa-hand-o-right"></i>
                 <span class="label label-success ">{{"+"}}</span>
             </a>
         </li>
         <li class="dropdown messages-menu seguimientosIconoNotificacion">
-            <a href="/perfil" class="">
+            <a title="{{ "Seguimientos asignados" }}" href="/perfil" class="">
                 <i class="fa fa-hand-stop-o"></i>
                 <span class="label label-warning totalSeguimientos">{{number_format(Auth::user()->totalSeguimientos())}}</span>
             </a>
@@ -45,6 +45,8 @@
 </div>
 <div id="nuevoSeguimientoModal" class="modal fade" role="dialog">
     {!! Form::open(array('url' => '/seguimientos/nuevo_seguimiento','id'=>'nuevoSeguimientoFormulario','class'=>'form-horizontal requiereValidacionAjax','method'=>'post')) !!}
+    <input type="hidden" name="geo_lat" value="" />
+    <input type="hidden" name="geo_lon" value="" />
     <div class="modal-dialog modal-md">
         <!-- Modal content-->
         <div class="modal-content">
@@ -62,7 +64,6 @@
                                 {!!  Form::select('usuario', [""=>"Seleccionar Usuario"] + \App\clases\Comunes::getUsuariosSelect(null), $usuario->sexo,array("required"=>'required',"class"=>"form-control"))  !!}
                             </div>
                         </div>
-
                         <div class="form-group">
                             <label for="" class="col-sm-2 control-label">{{ "Detalle"  }} <span>*</span></label>
                             <div class="col-sm-10">

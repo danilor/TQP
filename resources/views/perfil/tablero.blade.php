@@ -24,10 +24,18 @@
                                     <img class="img-circle img-bordered-sm" src="{{ $seguimiento->obtenerUsuarioCreado()->obtenerFotoEspecial(100,100)  }}" alt="user image">
                         <span class="username">
                           <a href="javascript:void(0);">{{ $seguimiento->obtenerUsuarioCreado()->obtenerNombreCompleto()  }}</a>
+
                         </span>
-                                    <span class="description">{{ $seguimiento->obtenerFecha()  }} <a href="/seguimientos/historial/{{ $seguimiento->unico  }}">{{ "Historial"  }}</a></span>
+                                    <span class="description">{{ $seguimiento->obtenerFecha()  }}
+                                        <a href="/seguimientos/historial/{{ $seguimiento->unico  }}"><i class="fa fa-history"></i> {{ "Historial"  }}</a>
+                                        @if( $seguimiento -> latitud != "" && $seguimiento -> longitud != "")
+                                            &nbsp;<a target="_blank" href="{{ $seguimiento -> obtenerURLMapa()  }}"><i class="fa fa-map"></i> {{ "Localización"  }}</a>
+                                        @endif
+                                    </span>
                                 </div><!-- /.user-block -->
                                 {!! Form::open(array('url' => '/seguimientos/nuevo_seguimiento','id'=>'','class'=>'requiereValidacionAjax modificarSeguimientoFormulario','method'=>'post')) !!}
+                                <input type="hidden" name="geo_lat" value="" />
+                                <input type="hidden" name="geo_lon" value="" />
                                 <input type="hidden" value="{{ $seguimiento->creado_por  }}" name="usuario" />
                                 <input type="hidden" value="{{ $seguimiento->unico  }}" name="unico" />
                                 <div class="col-xs-12">

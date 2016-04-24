@@ -22,4 +22,12 @@ class tipo_producto extends Model
             return $ruta;
         }
     }
+
+    /*
+     * Esta función busca obtener la foto del tipo de producto para poder mostrarla y modificar su tamaño. Si la foto no existe muestra la predeterminada
+     * */
+    public function obtenerFotoEspecial($ancho = 300,$alto=300){
+        $ruta = "/general/foto_tipo_producto/" . $this->codigo . "?w=$ancho&h=$alto&type=fit";
+        return $ruta;
+    }
 }

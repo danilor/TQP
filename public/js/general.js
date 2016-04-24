@@ -1,6 +1,11 @@
 
 var error_formulario = "Ha ocurrido un error desconocido. Por favor intentarlo más tarde. Si el error persiste por favor comuníquese con su adminsitrador";//variable para errores desconocidos en los envíos ajax (por ejemplo errores 500)
 var lang = 'es'; //El idioma de la aplicación. Se declara como una variable común
+
+/*Variables globales de latitud y longitud*/
+var latitude;
+var longitude;
+
 /*Función para desplegar mensajes de consola. Además de acortar la forma, se asegura de que ciertos navegadores con problemas de consola no causen error*/
 function logM(t){
 	try{
@@ -197,10 +202,45 @@ function inicializarWYSIWYG(){
 
 }
 
+function geo_success(position) {
+	latitude  = position.coords.latitude; //Obtenemos la latitud
+	longitude = position.coords.longitude; //Obtenemos la longitud
+
+	logM("Localización: LAT:" + latitude + ' | LON:' + longitude);
+	actualizar_campos_localizacion( latitude , longitude );
+};
+
+function geo_error() {
+	logM("Localización negada.");
+};
+
+function obtenerLocalizacion(){
+	if ("geolocation" in navigator) {
+		navigator.geolocation.getCurrentPosition(geo_success, geo_error); // Obtenemos la pocisión actual
+	} else {
+		logM("Locación no disponible");
+	}
+}
+
+/*
+* Esta función va a obtener los datos de latitud y longitud y los va a poner en todos y cada uno de los inputs que lo requieran.
+* Dado que estos datos son opcionales puede que algunos formularios no los tengan.
+* Poco a poco se deben de ir implementando.
+* */
+function actualizar_campos_localizacion(lat,lon){
+	logM("Actualizando los campos de ubicación");
+	$( "input[name='geo_lat']").val(lat);
+	$( "input[name='geo_lon']").val(lon);
+}
+
+
 $( document ).ready(function(){
 	validacionDeFormulario();
 	nuevoSeguimientoSubmit();
 	modificarSeguimientoSubmit();
 	revisionDeSeguimientos();
 	inicializarWYSIWYG();
+
+	/*La función de geolocalización siempre tiene que llamarse al final.*/
+	obtenerLocalizacion();
 });

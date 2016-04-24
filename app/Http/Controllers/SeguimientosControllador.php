@@ -73,8 +73,10 @@ class SeguimientosControllador extends Controller {
 			\Tiqueso\seguimiento::where("unico",$id_unico) -> update(["estado"=>0]);
 		}
 
-		$uid = (int)Input::get("usuario");
-		$detalle = Input::get("detalle");
+		$uid 		= (int)Input::get("usuario");
+		$detalle 	= Input::get("detalle");
+		$lat 		= Input::get("geo_lat");
+		$lon 		= Input::get("geo_lon");
 
 		$seguimiento = new \Tiqueso\seguimiento();
 
@@ -82,6 +84,8 @@ class SeguimientosControllador extends Controller {
 		$seguimiento -> creado_por 	=	$usuario -> id;
 		$seguimiento -> asignado_a 	=	$uid;
 		$seguimiento -> mensaje 	=	$detalle;
+		$seguimiento -> latitud		=	$lat;
+		$seguimiento -> longitud	=	$lon;
 
 		$seguimiento -> creado 		=	new \DateTime();
 

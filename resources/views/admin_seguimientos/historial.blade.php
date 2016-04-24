@@ -22,7 +22,11 @@
             <li>
                 <i class="fa fa-comments bg-green"></i>
                 <div class="timeline-item">
-                    <span class="time"><i class="fa fa-clock-o"></i> {{ $seguimiento->obtenerFecha()  }}</span>
+                    <span class="time">
+                         @if( $seguimiento -> latitud != "" && $seguimiento -> longitud != "")
+                            <a target="_blank" href="{{ $seguimiento -> obtenerURLMapa()  }}"><i class="fa fa-map"></i> {{ "Localización"  }}</a>&nbsp;
+                        @endif
+                        <i class="fa fa-clock-o"></i> {{ $seguimiento->obtenerFecha()  }}</span>
                     <h3 class="timeline-header"><a href="javascript:void(0);">
                             <a href="javascript:void(0);"><img src="{{ $seguimiento->obtenerUsuarioCreado()->obtenerFotoEspecial(25,25)  }}" width="20" height="20" alt="" title="{{ $seguimiento->obtenerUsuarioCreado()->obtenerNombreCompleto()  }}" />
                             {{ $seguimiento->obtenerUsuarioCreado()->obtenerNombreCompleto()  }}</a>

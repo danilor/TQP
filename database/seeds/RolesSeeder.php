@@ -53,6 +53,15 @@ class RolesSeeder extends Seeder
             ]
         );
 
+        DB::table('roles')->insert(
+            [
+                'nombre'                        =>  "Invitado",
+                'permisos'                      =>  "",
+                'created_at'                    =>  $fecha,
+                'updated_at'                    =>  $fecha,
+            ]
+        );
+
 
 
 
