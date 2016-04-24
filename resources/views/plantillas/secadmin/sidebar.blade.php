@@ -60,7 +60,7 @@
             @if( Auth::user()->puede("administrar_contenido") )
                 <li class="treeview">
                     <a href="#">
-                        <i class="fa fa-bar-chart"></i>
+                        <i class="fa fa-file"></i>
                         <span>{{ "Contenidos"  }}</span>
                         <i class="fa fa-angle-left pull-right"></i>
                     </a>
@@ -73,7 +73,7 @@
             @if( Auth::user()->puede("ver_reportes") )
                 <li class="treeview">
                     <a href="#">
-                        <i class="fa fa-file"></i>
+                        <i class="fa fa-bar-chart"></i>
                         <span>{{ "Reportes"  }}</span>
                         <i class="fa fa-angle-left pull-right"></i>
                     </a>
