@@ -1,6 +1,10 @@
 # TQP
 Proyecto final de Graduación para la UNED (2015-2016)
 
+Este proyecto fue hecho con fines Academicos para el Trabajo final de Graduación de la Universidad Estatal a Distancia de Costa Rica. Todo su contenido de librerías externas así como sus licencias pertenecen a cada uno de sus autores.
+
+Tiqueso y COPROLAC son marcas registradas y este proyecto hace uso de sus nombres con el permiso expreso de su dueño.
+
 ## Laravel PHP Framework
 [![Build Status](https://travis-ci.org/laravel/framework.svg)](https://travis-ci.org/laravel/framework) [![Total 
 Downloads](https://poser.pugx.org/laravel/framework/d/total.svg)](https://packagist.org/packages/laravel/framework) [![Latest Stable 
