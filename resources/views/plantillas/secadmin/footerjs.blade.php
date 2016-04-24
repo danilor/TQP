@@ -1,7 +1,7 @@
 <!-- jQuery 2.1.4 -->
 <script src="/plugins/jQuery/jQuery-2.1.4.min.js"></script>
 <!-- jQuery UI 1.11.4 -->
-<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+<script src="/js/jquery-ui.min.js"></script>
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
 <script>
     $.widget.bridge('uibutton', $.ui.button);
@@ -23,8 +23,9 @@
 <script src="/plugins/daterangepicker/daterangepicker.js"></script>
 <!-- datepicker -->
 <script src="/plugins/datepicker/bootstrap-datepicker.js"></script>
-<!-- Bootstrap WYSIHTML5 -->
-<script src="/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
+<!-- Bootstrap WYSIHTML EDITOR -->
+<script src="/js/assets/summernote/summernote.min.js"></script>
+<script src="/js/assets/summernote/lang/summernote-es-ES.js"></script>
 <!-- Slimscroll -->
 <script src="/plugins/slimScroll/jquery.slimscroll.min.js"></script>
 <!-- FastClick -->
@@ -40,11 +41,11 @@
 <script type="text/javascript" src="/js/localization/messages_es.js"></script>
 <script src="/js/jquery.noty.js"></script>
 <script src="/js/jquery.confirm.js"></script>
+<script src="/js/assets/tipso/tipso.min.js"></script>
 <script src="/js/general.js"></script>
 
 <script type="text/javascript">
     var lang = "{{ \App::getLocale()  }}"; //Variable de lenguaje
-
     function preparar_dialogo_confirmacion(){
         logM("Preparando los diálogos de confirmación");
         $("form.confirmar_accion").submit(function(e){
@@ -77,10 +78,22 @@
             e.preventDefault();
         });
     }
+    function ejecutarTipso(){
+        /* Tipso es una librería para mostrar tooltips.
+        * La idea es solamente usar ciertos elementos que realmente lo requieran para no sobrecargar la página
+        * */
+        $('.tipso').tipso({
+            useTitle : true //Le indicamos que use el título de manera predeterminada.
+        });
+    }
     $( document).ready(function(){
         @if(Input::get("salvado") === "y")
-                notification('{{  "Información Salvada" }}')
+                notification('{{  "Información Salvada" }}');
+        @endif
+         @if(Input::get("error") != "")
+                error('{{  Input::get("error") }}');
         @endif
         preparar_dialogo_confirmacion();
+        ejecutarTipso();
     });
 </script>

@@ -3,7 +3,11 @@
 @section("nombre_pagina")
     {{ "Categorías de Productos" }}
 @stop
-
+@section("extra_cabecera")
+    <ol class="breadcrumb">
+        <li><button onclick="location.href='/admin_productos/modificar_categoria';" class="btn btn-block btn-primary anadirUsuario"><i class="fa fa-user-plus"></i> {{ "Añadir Categoría"  }}</button></li>
+    </ol>
+@stop
 @section("contenido")
 
     <div class="row">
@@ -31,13 +35,13 @@
                         <tr>
                             <td>{{ $c->id  }}</td>
                             <td>{{ $c->nombre  }}</td>
-                            <td>{{ $c->detalle  }}</td>
+                            <td>{{ $c->detalles  }}</td>
                             <td>
-                                <a href="/productos/modificar_categoria/{{$c->id}}" class="btn btn-block btn-success"><span class="fa fa-pencil"></span> {{ "Modificar"  }}</a>
+                                <a href="/admin_productos/modificar_categoria/{{$c->id}}" class="btn btn-block btn-success"><span class="fa fa-pencil"></span> {{ "Modificar"  }}</a>
                             </td>
                             <td>
                                 {!!  Form::open(array(
-                                                        'url'                   =>  '/productos/borrar_categoria/'.$c->id,
+                                                        'url'                   =>  '/admin_productos/borrar_categoria/'.$c->id,
                                                         "class"                 =>  'confirmar_accion',
                                                         "method"                =>  "get",
                                                         "confirmacion_titulo"   =>  "Eliminar Categoría",

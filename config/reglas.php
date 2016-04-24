@@ -11,6 +11,7 @@ return array(
     'contrasena'            =>      'min:4',
     'textogenerico'         =>      'min:2',
     'textogenerico_min'     =>      'min:1',
+    'numero'                =>      'integer',
 
 
 );

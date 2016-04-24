@@ -37,9 +37,9 @@
                         <i class="fa fa-angle-left pull-right"></i>
                     </a>
                     <ul class="treeview-menu">
-                        <li><a href="/productos/lista"><i class="fa fa-circle-o"></i> {{ "Productos"  }}</a></li>
-                        <li><a href="/productos/tipos"><i class="fa fa-circle-o"></i> {{ "Tipos de Productos"  }}</a></li>
-                        <li><a href="/productos/categorias"><i class="fa fa-circle-o"></i> {{ "Categorías de Productos"  }}</a></li>
+                        <li><a href="/admin_productos/lista"><i class="fa fa-circle-o"></i> {{ "Productos"  }}</a></li>
+                        <li><a href="/admin_productos/tipos"><i class="fa fa-circle-o"></i> {{ "Tipos de Productos"  }}</a></li>
+                        <li><a href="/admin_productos/categorias"><i class="fa fa-circle-o"></i> {{ "Categorías de Productos"  }}</a></li>
                     </ul>
                 </li>
             @endif

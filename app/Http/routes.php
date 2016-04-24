@@ -36,6 +36,6 @@ Route::get('/correo_demostracion/basico/verde', function () {
 Route::any('/general/{extra?}/{extra2?}/{extra3?}/{extra4?}/{extra5?}/{extra6?}', 'GeneralControllador@principal');
 Route::any('/admin_general/{extra?}/{extra2?}/{extra3?}/{extra4?}/{extra5?}/{extra6?}', 'AdminGeneralControllador@principal');
 Route::any('/admin_usuarios/{extra?}/{extra2?}/{extra3?}/{extra4?}/{extra5?}/{extra6?}', 'AdminUsuariosControllador@principal');
-Route::any('/productos/{extra?}/{extra2?}/{extra3?}/{extra4?}/{extra5?}/{extra6?}', 'ProductosControllador@principal');
+Route::any('/admin_productos/{extra?}/{extra2?}/{extra3?}/{extra4?}/{extra5?}/{extra6?}', 'AdminProductosControllador@principal');
 Route::any('/perfil/{extra?}/{extra2?}/{extra3?}/{extra4?}/{extra5?}/{extra6?}', 'PerfilControlador@principal');
 Route::any('/seguimientos/{extra?}/{extra2?}/{extra3?}/{extra4?}/{extra5?}/{extra6?}', 'SeguimientosControllador@principal');

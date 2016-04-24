@@ -100,7 +100,7 @@
                             <th>{{ "CELULAR"  }}</th>
                             <th>{{ "SEXO"  }}</th>
                             <th>{{ "MODIFICAR"  }}</th>
-                            <th>{{ "ROLES"  }}</th>
+
                             <th>{{ "ELIMINAR"  }}</th>
                         </tr>
                         </thead>
@@ -117,9 +117,7 @@
                                 <td>
                                     <a href="/admin_usuarios/modificar_usuario/{{$u->id}}" class="btn btn-block btn-success"><span class="fa fa-pencil"></span> {{ "Modificar"  }}</a>
                                 </td>
-                                <td>
-                                    <a href="/admin_usuarios/modificar_usuario_rol/{{$u->id}}" class="btn btn-block btn-success"><span class="fa fa-pencil"></span> {{ "Roles"  }}</a>
-                                </td>
+
                                 <td>
                                     @if($usuario->id != $u->id)
                                     {!!  Form::open(array(
@@ -147,7 +145,6 @@
                             <th>{{ "CELULAR"  }}</th>
                             <th>{{ "SEXO"  }}</th>
                             <th>{{ "MODIFICAR"  }}</th>
-                            <th>{{ "ROLES"  }}</th>
                             <th>{{ "ELIMINAR"  }}</th>
                         </tr>
                         </tfoot>
