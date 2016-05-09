@@ -70,21 +70,18 @@ class AdminProveedoresControllador  extends Controller {
 	/*
 	 * Esta función verificar que el usuario exista y lo cambia de estado a 0 para no borrarlo realmente. Luego vuelve al listado
 	 * */
-	public function borrarUsuario($usuario){
-		$id = Request::segment(3);
-		$u = \Tiqueso\usuario::find($id); //Busca al usuario con el ID
-		if($u != null ){ //No es nulo, podemos borrar (desactivar)
-			$u->activo = 0;
-			$u->save();
-		}
-		return Redirect::to("admin_usuarios/ver_todos");
+	public function borrarProveedor($usuario){
+		$codigo = Request::segment(3);
+		$p = \Tiqueso\proveedor::where("codigo","$codigo"); //Busca al proveedor con el codigo
+                $p ->delete();
+		return Redirect::to("admin_proveedores/ver_todos");
 	}
 
 	/*
 	 * Estas función muestra la página de modificar usuario. Va a contener mucha información del mismo perfil pero añadiendo ciertos
 	 * campos especiales que solamente una persona con permisos podría modificar, por ejemplo grados académicos entre otros.
 	 * */
-	public function modificarUsuario($usuario){
+	public function modificarProveedor($usuario){
 		$id = Request::segment(3);
 		$u = \Tiqueso\usuario::where("activo",1)->where("id",$id)->first(); //Busca al usuario con el ID
 		if($u == null ){ //Es nulo! Volvamos a la lista de usuarios porque posiblemente sea un error.
@@ -201,131 +198,18 @@ class AdminProveedoresControllador  extends Controller {
 		return Redirect::to( $url  );
 	}
 
-	/*
-	 * Esta función solamente muestra la página de permisos
-	 * */
-	public function verPermisos($usuario){
-		$data["usuario"] = $usuario;
-		return view('admin_usuarios/permisos')->with($data);
-	}
-
-	/*
-         * Este proceso es el encargado de salvar la información del permiso. Debería de funcionar tanto para permisos nuevos como para permisos ya existentes.
-         * */
-	public function salvarPermiso($usuario){
-		$url = "admin_usuarios/permisos/";
-		$url = explode("?",$url)[0]; //Removemos el query string en caso de que exista
-
-		if(Input::get("id_permiso") != ""){ //Verificamos si el permiso existe o es nuevo
-			$p = \Tiqueso\permiso::where("id",Input::get("id_permiso"))->first();
-			if($p == null){
-				return Redirect::to($url) -> withErrors(["Permiso Inválido"])->withInput();;
-			}
-		}else{
-			$p = new \Tiqueso\permiso();
-		}
 
 
-		$rules = array(
-			'nombre' 		=> Comunes::reglas('textogenerico', true),
-			'alias' 		=> Comunes::reglas('textogenerico', true),
-		);
-		$validador = Validator::make(Input::all(), $rules);
-		if ($validador -> fails()) {
-			return Redirect::to($url) -> withErrors($validador)->withInput();;
-		}
 
-		//Es momento de salvar la información
 
-		$p->nombre = Input::get("nombre");
-		$p->alias = str_slug(Input::get("alias"),"_");
-		$p->save();
 
-		//Información almacenada
-		$url = $url.$p->id."?salvado=y&" . str_random(16); //Le añadimos un string random al final del URL para evitar el cache y para volver la URL más difícil de leer.
-		return Redirect::to( $url  );
-	}
 
-	/*
-	 * Esta función verificar que el usuario exista y lo cambia de estado a 0 para no borrarlo realmente. Luego vuelve al listado
-	 * */
-	public function borrarPermiso($usuario){
-		$id = Request::segment(3);
-		$u = \Tiqueso\permiso::find($id); //Busca al permiso con el ID
-		if($u != null ){ //No es nulo, podemos borrar
-			$u->delete();
-		}
-		return Redirect::to("admin_usuarios/permisos");
-	}
 
-	/*
-	 * Esta función solamente muestra la página de permisos
-	 * */
-	public function verRoles($usuario){
-		$data["usuario"] = $usuario;
-		return view('admin_usuarios/roles')->with($data);
-	}
 
-	/*
-	 * Esta función va a salvar el rol. Debería de funcionar tanto para roles nuevos como para ya existentes
-	 * */
-	public function salvarRol($usuario){
-		$url = \URL::previous();
-		$url = explode("?",$url)[0]; //Removemos el query string en caso de que exista
-		if(Input::get("id") != ""){ //Verificamos si el permiso existe o es nuevo
-			$p = \Tiqueso\rol::where("id",Input::get("id"))->first();
-			if($p == null){
-				return Redirect::to($url) -> withErrors(["Rol Inválido"])->withInput();;
-			}
-		}else{
-			$p = new \Tiqueso\rol();
-		}
-		$rules = array(
-			'nombre' 		=> Comunes::reglas('textogenerico', true),
-		);
-		$validador = Validator::make(Input::all(), $rules);
-		if ($validador -> fails()) {
-			return Redirect::to($url) -> withErrors($validador)->withInput();;
-		}
-		//Es momento de salvar la información
 
-		$p->nombre = Input::get("nombre");
 
-		//Ahora revisamos los permisos
-		if(  Input::get("permisos") != null && is_array(Input::get("permisos")) ){
-				$p->permisos = implode( "," , Input::get("permisos") );
-		}
-		$p->save();
-		//Información almacenada
-		$url = $url."?salvado=y&" . str_random(16); //Le añadimos un string random al final del URL para evitar el cache y para volver la URL más difícil de leer.
-		return Redirect::to( $url  );
-	}
 
-	/*
-	 * Estas función muestra la página de modificar rol.
-	 * */
-	public function modificarRol($usuario){
-		$id = Request::segment(3);
-		$r = \Tiqueso\rol::where("id",$id)->first(); //Busca al rol con el ID
-		if($r == null ){ //Es nulo! Volvamos a la lista de roles porque posiblemente sea un error.
-			return Redirect::to("admin_usuarios/roles?modificar=usuario_no_encontrado&".str_random(16)); //añadimos un string aleatorio para dificultar la lectura del URL.
-		}
-		//Podemos mostrar la página
-		$data["usuario"] = $usuario;
-		$data["r"] = $r; //Este es el usuario que estamos modificando, y no el que tenemos la sesión abierta (Aunque puede ser el mismo en ciertos momentos).
-		return view('admin_usuarios/modificar_rol')->with($data);
-	}
 
-	public function borrarRol($usuario){
-		$id = Request::segment(3);
-		$r = \Tiqueso\rol::where("id",$id)->first(); //Busca al rol con el ID
-		if($r == null ){ //Es nulo! Volvamos a la lista de roles porque posiblemente sea un error.
-			return Redirect::to("admin_usuarios/roles?modificar=usuario_no_encontrado&".str_random(16)); //añadimos un string aleatorio para dificultar la lectura del URL.
-		}
-		DB::table("usuarios_roles")->where("id_rol",$id)->delete();
-		$r->delete();
-		return Redirect::to("admin_usuarios/roles?borrado=y&".str_random(16));
 
-	}
 
 }

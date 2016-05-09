@@ -92,58 +92,48 @@
                     <table id="example1" class="table table-bordered table-striped tabla_completa">
                         <thead>
                         <tr>
-                            <th>{{ "NOMBRE DE USUARIO"  }}</th>
-                            <th>{{ "CÉDULA"  }}</th>
+                            <th>{{ "CÓDIGO"  }}</th>
                             <th>{{ "NOMBRE"  }}</th>
-                            <th>{{ "APELLIDO"  }}</th>
-                            <th>{{ "CORREO"  }}</th>
-                            <th>{{ "CELULAR"  }}</th>
-                            <th>{{ "SEXO"  }}</th>
+                            <th>{{ "DETALLE"  }}</th>
+                            <th>{{ "CREADO"  }}</th>
+                            <th>{{ "ACTUALIZADO"  }}</th>
                             <th>{{ "MODIFICAR"  }}</th>
-
                             <th>{{ "ELIMINAR"  }}</th>
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach(\Tiqueso\usuario::where("activo",1)->orderBy("nombre","asc")->get() AS $u)
+                        @foreach(\Tiqueso\proveedor::all()  AS $p)
                             <tr>
-                                <td>{{ $u->usuario  }}</td>
-                                <td>{{ $u->cedula  }}</td>
-                                <td>{{ $u->nombre  }}</td>
-                                <td>{{ $u->apellido  }}</td>
-                                <td>{{ $u->correo  }}</td>
-                                <td>{{ $u->celular  }}</td>
-                                <td>{{ $u->sexo  }}</td>
+                                <td>{{ $p->codigo }}</td>
+                                <td>{{ $p->nombre  }}</td>
+                                <td>{{ $p->detalle  }}</td>
+                                <td>{{ $p->created_at  }}</td>
+                                <td>{{ $p->updated_at  }}</td>
                                 <td>
-                                    <a href="/admin_usuarios/modificar_usuario/{{$u->id}}" class="btn btn-block btn-success"><span class="fa fa-pencil"></span> {{ "Modificar"  }}</a>
+                                    <a href="/admin_usuarios/modificar_proveedor/{{$p->codigo}}" class="btn btn-block btn-success"><span class="fa fa-pencil"></span> {{ "Modificar"  }}</a>
                                 </td>
-
                                 <td>
-                                    @if($usuario->id != $u->id)
                                     {!!  Form::open(array(
-                                                            'url'                   =>  '/admin_usuarios/borrar_usuario/'.$u->id,
+                                                            'url'                   =>  '/admin_proveedores/borrar_proveedor/'.$p->codigo,
                                                             "class"                 =>  'confirmar_accion',
                                                             "method"                =>  "get",
-                                                            "confirmacion_titulo"   =>  "Eliminar Usuario",
-                                                            "confirmacion_contenido"=>  "¿Está seguro que desea eliminar este usuario? Esta acción no puede ser revertida.",
+                                                            "confirmacion_titulo"   =>  "Eliminar Proveedor",
+                                                            "confirmacion_contenido"=>  "¿Está seguro que desea eliminar el provedor {{$p->codigo}} ? Esta acción no puede ser revertida.",
                                                     )) !!}
                                     {!! Form::token() !!}
                                     <button type="submit" class="btn btn-block btn-danger"><span class="fa fa-pencil"></span> {{ "Eliminar"  }}</button>
                                     {!!  Form::close() !!}
-                                    @endif
                                 </td>
                             </tr>
                         @endforeach
                         </tbody>
                         <tfoot>
                         <tr>
-                            <th>{{ "NOMBRE DE USUARIO"  }}</th>
-                            <th>{{ "CÉDULA"  }}</th>
+                            <th>{{ "CÓDIGO"  }}</th>
                             <th>{{ "NOMBRE"  }}</th>
-                            <th>{{ "APELLIDO"  }}</th>
-                            <th>{{ "CORREO"  }}</th>
-                            <th>{{ "CELULAR"  }}</th>
-                            <th>{{ "SEXO"  }}</th>
+                            <th>{{ "DETALLE"  }}</th>
+                            <th>{{ "CREADO"  }}</th>
+                            <th>{{ "ACTUALIZADO"  }}</th>
                             <th>{{ "MODIFICAR"  }}</th>
                             <th>{{ "ELIMINAR"  }}</th>
                         </tr>
