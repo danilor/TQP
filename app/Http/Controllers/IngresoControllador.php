@@ -67,7 +67,7 @@ class IngresoControllador extends Controller {
 			$usuario = ['usuario' => Input::get('usuario'), 'password' => Input::get('contrasena'),"activo"=>1];
 
 			if (Auth::attempt($usuario,$recordar)) {
-				return Redirect::to($url_original);
+				return Redirect::to( "/admin_general" /*$url_original*/);
 			} else {
 				return Redirect::to('/ingresar?e')->withInput(Input::except('contrasena','_token')); // Lo devolvemos con el error de que el usuario no existe
 			}
