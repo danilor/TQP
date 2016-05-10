@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
         $this->call(RolesUsuariosSeeder::class); //Asigna los usuarios de ejemplo a varios roles de ejemplo
         $this->call(TiposSeeder::class); //Asigna los tipos de productos iniciales
         $this->call(CategoriasSeeder::class); //Asigna las categorías
-        $this->call(ProveedoresSeeder::class); //Asigna las categorías
+        $this->call(ProveedoresSeeder::class); //Asigna los proveedores
         Model::reguard();
     }
 }
