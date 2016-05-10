@@ -31,6 +31,7 @@ class IngresoControllador extends Controller {
 	}
 	public function recordar(){
 		$data = [];
+
 		if(Auth::check()){
 			return Redirect::to("/");
 		}
@@ -67,7 +68,10 @@ class IngresoControllador extends Controller {
 			$usuario = ['usuario' => Input::get('usuario'), 'password' => Input::get('contrasena'),"activo"=>1];
 
 			if (Auth::attempt($usuario,$recordar)) {
-				return Redirect::to( "/admin_general" /*$url_original*/);
+                            if( Request::segment(1) != "ingresar" ) // Si la solicitud no viene de la vista de ingresar entonces enviar a la url original
+				return Redirect::to( $url_original );
+                            else
+                                return Redirect::to( "/admin_general" );//Redirigir la vista de ingresar al admin general
 			} else {
 				return Redirect::to('/ingresar?e')->withInput(Input::except('contrasena','_token')); // Lo devolvemos con el error de que el usuario no existe
 			}
