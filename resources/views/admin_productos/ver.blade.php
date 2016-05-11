@@ -43,6 +43,7 @@
                         <tr>
                             <th>{{ "CÓDICO"  }}</th>
                             <th>{{ "TIPO"  }}</th>
+                            <th>{{ "PROVEEDOR"  }}</th>
                             <th>{{ "UNIDADES"  }}</th>
                             <th>{{ "REGISTRADO POR"  }}</th>
                             <th>{{ "VENCIMIENTO"  }}</th>
@@ -54,6 +55,9 @@
                             <td>{{ $c->codigo  }}</td>
                             <td>
                                 {{ $c->nombre_tipo  }}
+                            </td>
+                            <td>
+                                {{$c->nombre_proveedor}}
                             </td>
                             <td>
                                 {{$c->unidades}}
@@ -68,6 +72,7 @@
                         <tfoot>
                         <tr>
                             <th>{{ "CÓDICO"  }}</th>
+                            <th>{{ "PROVEEDOR"  }}</th>
                             <th>{{ "TIPO"  }}</th>
                             <th>{{ "UNIDADES"  }}</th>
                             <th>{{ "REGISTRADO POR"  }}</th>
