@@ -12,6 +12,8 @@ return array(
     'textogenerico'         =>      'min:2',
     'textogenerico_min'     =>      'min:1',
     'numero'                =>      'integer',
+    'numero_libre'          =>      'numeric',
+    'fecha'                 =>      'date_format:d/m/Y',
 
 
 );

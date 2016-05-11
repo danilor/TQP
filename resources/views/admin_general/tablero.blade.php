@@ -56,7 +56,7 @@
         <!-- small box -->
         <div class="small-box bg-red">
             <div class="inner">
-                <h3>0</h3>
+                <h3>{{ \Tiqueso\producto::where('estado',1)->where('borrado',0)->count()  }}</h3>
                 <p>{{ "Productos Activos"  }}</p>
             </div>
             <div class="icon">

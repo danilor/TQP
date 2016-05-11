@@ -22,4 +22,6 @@
 <link rel="stylesheet" href="/js/assets/summernote/summernote.css">
 <!-- TIPSO -->
 <link rel="stylesheet" href="/js/assets/tipso/tipso.min.css">
+<!-- DatePicker -->
+<link rel="stylesheet" href="/js/assets/bootstrap-datepicker-1.6.1/css/bootstrap-datepicker3.min.css">
 <link rel="stylesheet" href="/css/general.css">

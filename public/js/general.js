@@ -21,6 +21,11 @@ function isset ( strVariableName ) { //Equivalente a la función de ISSET de PHP
 	return false;
 }
 
+/*Función para añadir ceros a los números*/
+function padDigits(number, digits) {
+	return Array(Math.max(digits - String(number).length + 1, 0)).join(0) + number;
+}
+
 function nuevoSeguimientoSubmit(){
 	$("#nuevoSeguimientoFormulario").submit(function(e){
 		var url = $(this).attr("action");
@@ -234,13 +239,15 @@ function actualizar_campos_localizacion(lat,lon){
 }
 
 
+
+
 $( document ).ready(function(){
 	validacionDeFormulario();
 	nuevoSeguimientoSubmit();
 	modificarSeguimientoSubmit();
 	revisionDeSeguimientos();
 	inicializarWYSIWYG();
-
+	inicializarCalendar();
 	/*La función de geolocalización siempre tiene que llamarse al final.*/
 	obtenerLocalizacion();
 });

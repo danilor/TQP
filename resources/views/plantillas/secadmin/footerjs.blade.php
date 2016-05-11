@@ -42,6 +42,15 @@
 <script src="/js/jquery.noty.js"></script>
 <script src="/js/jquery.confirm.js"></script>
 <script src="/js/assets/tipso/tipso.min.js"></script>
+
+<!-- Datepicker -->
+<script src="/js/assets/bootstrap-datepicker-1.6.1/js/bootstrap-datepicker.min.js"></script>
+<script src="/js/assets/bootstrap-datepicker-1.6.1/locales/bootstrap-datepicker.es.min.js"></script>
+
+<!-- BarCodes -->
+<script src="/js/JsBarcode.min.js"></script>
+
+
 <script src="/js/general.js"></script>
 
 <script type="text/javascript">
@@ -86,6 +95,21 @@
             useTitle : true //Le indicamos que use el título de manera predeterminada.
         });
     }
+
+    /*
+     * Función para inicializar calendario
+     * */
+    function inicializarCalendar(){
+        $('.datepicker').datepicker({
+            autoclose:true,
+            format:'{{config('region.formato_fecha_date_picker')}}',
+            language:lang,
+            todayBtn:true,
+            todayHighlight:true,
+            zIndexOffset:999
+        });
+    }
+
     $( document).ready(function(){
         @if(Input::get("salvado") === "y")
                 notification('{{  "Información Salvada" }}');

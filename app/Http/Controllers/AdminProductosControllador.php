@@ -30,6 +30,9 @@ class AdminProductosControllador extends Controller {
 		'post|salvar_tipo_producto'		=>	'salvarTipoProducto',
 		'post|anadir_tipo_producto'		=>	'anadirTipoProducto',
 		'get|borrar_tipo'          		=>  'borrar_tipo',
+		'get|registrar_nuevo'   		=>  'registrarProducto',
+		'post|salvar_producto'			=>	'salvarProducto',
+		'get|ver'						=>	'verProductos',
 
 	);
 
@@ -255,6 +258,78 @@ class AdminProductosControllador extends Controller {
 		$cat = \Tiqueso\tipo_producto::where("codigo",$id);
 		if($cat != null) $cat->delete(); //Borramos solamente si no es nulo
 		return Redirect::to("/admin_productos/tipos"); //Redirigimos de nuevo a la página de categorías
+	}
+
+	/*
+	 * Esta función muestra la página de registro de un producto nuevo.
+	 * */
+
+	public function registrarProducto($usuario){
+		$data["usuario"] = $usuario;
+		return view('admin_productos/registrar_producto')->with($data);
+	}
+
+	/*
+	 * Esta función almacena un producto por medio de post.
+	 * */
+	public function salvarProducto($usuario){
+
+		//Primero es necesario validar todos los campos.
+		$url = \URL::previous();
+		$url = explode("?", $url)[0]; //Removemos el query string en caso de que exista
+		$pt = null;
+
+		$rules = array(
+			'proveedor' 		=> Comunes::reglas('textogenerico', true,'exists:proveedores,codigo'),
+			'tipo_producto'		=> Comunes::reglas('textogenerico', true, 'exists:tipo_productos,codigo'),
+			'tanda' 			=> Comunes::reglas('numero', true),
+			'vencimiento' 		=> Comunes::reglas('fecha', true),
+			'unidades' 			=> Comunes::reglas('numero_libre', false),
+			'humedad' 			=> Comunes::reglas('numero_libre', false),
+		);
+		$validador = Validator::make(Input::all(), $rules);
+
+		if ($validador->fails()) {
+			return Redirect::to($url)->withErrors($validador)->withInput();;
+		}
+
+		$proveedor = \Tiqueso\proveedor::where("codigo",Input::get("proveedor"))->first();
+
+		$producto = new \Tiqueso\producto(); //Creamos el nuevo objeto de producto
+
+		$producto -> codigo_tipo		=		Input::get('tipo_producto');
+		$producto -> codigo_proveedor	=		Input::get('proveedor');
+		$producto -> nombre_proveedor	=		$proveedor->nombre; //Esto lo estamos almacenando como un registro histórico en caso de que el proveedor se elimine.
+		$producto -> dia_juliano		=		str_pad(date('z'),3,'0',STR_PAD_LEFT);
+		$producto -> tanda				=		Input::get('tanda');
+		$producto -> obtenerCodigoFinal();
+		$vencimiento = \DateTime::createFromFormat(config('region.formato_fecha'),Input::get('vencimiento'));
+		$producto -> vencimiento		=		$vencimiento;
+		$producto -> unidades			=		Input::get('unidades');
+		$producto -> humedad			=		Input::get('humedad');
+		$producto -> detalle			=		Input::get('detalle');
+		$producto -> estado				=		1;
+		$producto -> creado_por			=		$usuario->id;
+		$producto -> registrado			=		new \DateTime();
+		$producto -> modificado			=		new \DateTime();
+
+		$producto -> save(); //Salvamos la información
+
+
+		return Redirect::to('admin_productos/ver');
+
+	}
+
+	public function verProductos($usuario){
+		$data["usuario"] = $usuario;
+		$data["productos"] 	=
+							\Tiqueso\producto::select('productos.*','usuarios.nombre AS usuario_nombre','usuarios.apellido AS usuario_apellido','usuarios.correo AS usuario_correo','tipo_productos.nombre AS nombre_tipo')
+								->leftJoin('usuarios', 'usuarios.id', '=', 'productos.creado_por')
+								->leftJoin('tipo_productos', 'productos.codigo_tipo', '=', 'tipo_productos.codigo')
+								->where( "productos.estado" , "1" )
+								->where('productos.borrado',0)
+								-> get();
+		return view('admin_productos/ver')->with($data);
 	}
 
 }
