@@ -266,6 +266,15 @@ class AdminProductosControllador extends Controller {
 
 	public function registrarProducto($usuario){
 		$data["usuario"] = $usuario;
+
+                $tipos_productos = array() ;
+                foreach( \Tiqueso\tipo_producto::all('codigo','nombre','vida_util')  as $tipo_producto){
+                    $tipos_productos [ $tipo_producto->codigo ]["nombre"] = $tipo_producto-> nombre;
+                    $tipos_productos [ $tipo_producto->codigo ]["vida_util"]= $tipo_producto-> vida_util;
+                }
+              //  var_dump( $data["tipo_productos"] );
+                $data[ "tipos_productos" ] = $tipos_productos;
+                $data["proveedores"] = \Tiqueso\proveedor::all('codigo','nombre');
 		return view('admin_productos/registrar_producto')->with($data);
 	}
 
