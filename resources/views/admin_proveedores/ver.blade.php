@@ -23,54 +23,53 @@
     @endforeach
     </div>
 </div>
-    {!! Form::open(array('url' => '/admin_usuarios/salvar_informacion_de_usuario','class'=>'form-horizontal requiereValidacion','method'=>'post',"files"=>true,"file"=>true)) !!}
+    {!! Form::open(array('url' => '/admin_proveedores/salvar_informacion_de_proveedor','class'=>'form-horizontal requiereValidacion','method'=>'post',"files"=>true,"file"=>true)) !!}
     <div class="row formOverTable nuevoUsuarioFormulario" style="display: none;">
         <div class="col-xs-12">
             <div class="box box-info">
                 <div class="box-header with-border">
-                    <h3 class="box-title">{{ "Información de Usuario"  }}</h3> <button type="submit" class="btn btn-info pull-right">{{ "Salvar"  }}</button>
+                    <h3 class="box-title">{{ "Información de Proveedor"  }}</h3> <button type="submit" class="btn btn-info pull-right">{{ "Salvar"  }}</button>
                 </div><!-- /.box-header -->
                 <!-- form start -->
-
-
                 <div class="box-body">
+                    
                     <div class="form-group">
-                        <label for="" class="col-sm-2 control-label">{{ "Cédula"  }} <span>*</span></label>
+                        <label for="codigo" class="col-sm-2 control-label">{{ "Código"  }} <span>*</span></label>
                         <div class="col-sm-10">
-                            {!! Form::text("cedula", Input::old("cedula"), array('placeholder'=>"Cédula",'class'=>'form-control','required'=>'required')) !!}
+                            {!! Form::text("codigo", Input::old("codigo"), array('placeholder'=>"Código",'class'=>'form-control','required'=>'required','maxlength'=>'2','id'=>'codigo')) !!}
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="" class="col-sm-2 control-label">{{ "Nombre"  }} <span>*</span></label>
+                        <label for="nombre" class="col-sm-2 control-label">{{ "Nombre"  }} <span>*</span></label>
                         <div class="col-sm-10">
-                            {!! Form::text("nombre", Input::old("nombre"), array('placeholder'=>"Nombre",'class'=>'form-control','required'=>'required')) !!}
+                            {!! Form::text("nombre", Input::old("nombre"), array('placeholder'=>"Nombre",'class'=>'form-control','required'=>'required','maxlength'=>'255','id'=>'nombre')) !!}
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="" class="col-sm-2 control-label">{{ "Apellido"  }} <span>*</span></label>
+                        <label for="detalle" class="col-sm-2 control-label">{{ "Detalle"  }}</label>
                         <div class="col-sm-10">
-                            {!! Form::text("apellido",Input::old("apellido"), array('placeholder'=>"Apellido",'class'=>'form-control','required'=>'required')) !!}
+                            {!! Form::textarea("detalle", Input::old("detalle"), array('placeholder'=>"Detalle",'class'=>'form-control','maxlength'=>'255','id'=>'detalle')) !!}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="telefono" class="col-sm-2 control-label">{{ "Teléfono"  }} <span></span></label>
+                        <div class="col-sm-10">
+                            {!! Form::text("telefono", Input::old("telefono"), array('placeholder'=>"Teléfono",'class'=>'form-control','maxlength'=>'10','id'=>'telefono')) !!}
+                        </div>
+                    </div>                    
+                    <div class="form-group">
+                        <label for="correo" class="col-sm-2 control-label">{{ "Correo"  }} <span></span></label>
+                        <div class="col-sm-10">
+                            {!! Form::email("correo", Input::old("correo"), array('placeholder'=>"Correo",'class'=>'form-control','maxlength'=>'50','id'=>'correo')) !!}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="direccion" class="col-sm-2 control-label">{{ "Dirección"  }}</label>
+                        <div class="col-sm-10">
+                            {!! Form::textarea("direccion", Input::old("direccion"), array('placeholder'=>"Dirección",'class'=>'form-control','maxlength'=>'500','id'=>'direccion')) !!}
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="" class="col-sm-2 control-label">{{ "Correo"  }} <span>*</span></label>
-                        <div class="col-sm-10">
-                            {!! Form::email("correo", Input::old("correo"), array('placeholder'=>"Correo",'class'=>'form-control','required'=>'required')) !!}
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="" class="col-sm-2 control-label">{{ "Dirección"  }} <span>*</span></label>
-                        <div class="col-sm-10">
-                            {!! Form::text("direccion", Input::old("direccion"), array('placeholder'=>"Dirección",'class'=>'form-control','required'=>'required')) !!}
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="" class="col-sm-2 control-label">{{ "Sexo"  }} <span>*</span></label>
-                        <div class="col-sm-10">
-                            {!!  Form::select('sexo', array('M' => 'Masculino', 'F' => 'Femenino', 'O' => 'No Indica'), Input::old("sexo"),array("required"=>'required',"class"=>"form-control"))  !!}
-                        </div>
-                    </div>
                 </div><!-- /.box-body -->
                 <div class="box-footer">
                     <button type="submit" class="btn btn-info pull-right">{{ "Salvar"  }}</button>
@@ -110,7 +109,7 @@
                                 <td>{{ $p->created_at  }}</td>
                                 <td>{{ $p->updated_at  }}</td>
                                 <td>
-                                    <a href="/admin_usuarios/modificar_proveedor/{{$p->codigo}}" class="btn btn-block btn-success"><span class="fa fa-pencil"></span> {{ "Modificar"  }}</a>
+                                    <a href="/admin_proveedores/modificar_proveedor/{{$p->codigo}}" class="btn btn-block btn-success"><span class="fa fa-pencil"></span> {{ "Modificar"  }}</a>
                                 </td>
                                 <td>
                                     {!!  Form::open(array(
@@ -153,7 +152,7 @@
     <script type="text/javascript">
 
         $(document).ready(function(){
-            $(".anadirUsuario").click(function(e){
+            $(".anadirProveedor").click(function(e){
                 $( ".nuevoUsuarioFormulario" ).toggle( "normal", function() {
                     // Animation complete.
                 });

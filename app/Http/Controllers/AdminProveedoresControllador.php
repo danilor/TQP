@@ -83,14 +83,14 @@ class AdminProveedoresControllador  extends Controller {
 	 * */
 	public function modificarProveedor($usuario){
 		$id = Request::segment(3);
-		$u = \Tiqueso\usuario::where("activo",1)->where("id",$id)->first(); //Busca al usuario con el ID
-		if($u == null ){ //Es nulo! Volvamos a la lista de usuarios porque posiblemente sea un error.
-			return Redirect::to("admin_usuarios/ver_todos?modificar=usuario_no_encontrado&".str_random(16)); //añadimos un string aleatorio para dificultar la lectura del URL.
+		$p = \Tiqueso\proveedor::where("codigo",$id)->first(); //Busca al proveedor con el ID
+		if($p == null ){ //Es nulo! Volvamos a la lista de proveedores porque posiblemente sea un error.
+			return Redirect::to("admin_proveedores/ver_todos?modificar=proveedor_no_encontrado&".str_random(16)); //añadimos un string aleatorio para dificultar la lectura del URL.
 		}
 		//Podemos mostrar la página
 		$data["usuario"] = $usuario;
-		$data["u"] = $u; //Este es el usuario que estamos modificando, y no el que tenemos la sesión abierta (Aunque puede ser el mismo en ciertos momentos).
-		return view('admin_usuarios/modificar_usuario')->with($data);
+		$data["p"] = $p; //Este es el proveedor que estamos modificando,
+		return view('admin_proveedores/modificar_proveedor')->with($data);
 	}
 
 	/*
@@ -101,68 +101,55 @@ class AdminProveedoresControllador  extends Controller {
 		$url = \URL::previous();
 		$url = explode("?",$url)[0]; //Removemos el query string en caso de que exista
 
-		if(Input::get("id") != ""){ //Verificamos si el usuario existe o es nuevo
-			$u = \Tiqueso\usuario::where("activo",1)->where("id",Input::get("id"))->first();
-			if($u == null){
-				return Redirect::to($url) -> withErrors(["Usuario inválido"])->withInput();;
+		if( Input::get("codigo_original") != ""){ //Verificamos si el proveedor existe o es nuevo
+			$p = \Tiqueso\proveedor::where("codigo",Input::get("codigo_original"))->first();
+			if($p == null){
+				return Redirect::to($url) -> withErrors(["Proveedor invalido"])->withInput();
 			}
 		}else{
-			$u = new \Tiqueso\usuario();
+			$p = new \Tiqueso\proveedor();
 		}
 		$rules = array(
-			'cedula' 		=> Comunes::reglas('textogenerico', true),
+			'codigo' 		=> Comunes::reglas('textogenerico', true),
 			'nombre' 		=> Comunes::reglas('nombre', true),
-			'apellido' 		=> Comunes::reglas('apellido', true),
-			'correo' 		=> Comunes::reglas('correo', true),
-			'apodo' 		=> Comunes::reglas('nombre', false),
-			'sexo' 			=> Comunes::reglas('textogenerico_min', true),
-			'direccion' 	=> Comunes::reglas('textogenerico_min', true),
-			'direccion2' 	=> Comunes::reglas('textogenerico_min', false),
-			'caracteristicas'=> Comunes::reglas('textogenerico_min', false),
-			'notas' 		=> Comunes::reglas('textogenerico_min', false),
-			'educacion' 	=> Comunes::reglas('textogenerico_min', false),
-			'certificaciones'=> Comunes::reglas('textogenerico_min', false),
 		);
+                if( strlen( Input::get("codigo") )!== 2 ){ // Si el codigo de proveedor es distinto a 2 digitons entonces devolver error
+                    return Redirect::to($url) -> withErrors(["El código [".Input::get("codigo")."] es distinto de 2 digitos. El codigo debe usar 2 digitos."])->withInput();   
+                }
 		$validador = Validator::make(Input::all(), $rules);
 		if ($validador -> fails()) {
-			return Redirect::to($url) -> withErrors($validador)->withInput();;
-		}
+			return Redirect::to($url) -> withErrors($validador)->withInput();
+                }
 		//we have to check if the email already exists
-		if(		Input::get("correo")  != $u->correo ){
+		/*if(		Input::get("correo")  != $p->correo ){
 			//he is trying to change its email
-			if(Input::get("id") != ""){
-				$r = \Tiqueso\usuario::where("correo",Input::get("correo"))->where("activo",1)->where("id","<>",$u->id)->first();
+			if(Input::get("codigo") != ""){
+				$r = \Tiqueso\proveedor::where("correo",Input::get("correo"))->where("codigo","<>",$p->codigo)->first();
 			}else{
-				$r = \Tiqueso\usuario::where("correo",Input::get("correo"))->where("activo",1)->first();
+				$r = \Tiqueso\proveedor::where("correo",Input::get("correo"))->first();
 			}
 
 			if($r != null ){
 				//There is another use with that email
-				return Redirect::to($url) -> withErrors(["Correo [".Input::get("correo")."] ya está siendo utilizado por otro usuario"])->withInput();;
+				return Redirect::to($url) -> withErrors(["Correo [".Input::get("correo")."] ya está siendo utilizado por otro proveedor"])->withInput();
 			}
-		}
+		}*/
 		//Es momento de salvar la información
 
+                
+		$p->codigo = Input::get("codigo");
+		$p->nombre = Input::get("nombre");
+		$p->detalle = Input::get("detalle");
+		$p->correo = Input::get("correo");
+                $p->direccion = Input::get("direccion");
+                $p->telefono = Input::get("telefono");
+                $p->updated_at = new \DateTime(); //Actualizamos la fecha de la actualización
 
-		$u->cedula = Input::get("cedula");
-		$u->nombre = Input::get("nombre");
-		$u->apellido = Input::get("apellido");
-		$u->correo = Input::get("correo");
-		$u->apodo = Input::get("apodo");
-		$u->sexo = Input::get("sexo");
-		$u->direccion = Input::get("direccion");
-		$u->direccion2 = Input::get("direccion2");
-		$u->caracteristicas = Input::get("caracteristicas");
-		$u->notas = Input::get("notas");
-		$u->educacion = Input::get("educacion");
-		$u->certificaciones = Input::get("certificaciones");
-		$u->updated_at = new \DateTime(); //Actualizamos la fecha de la actualización
-
-		$u->save(); //Salvamos la información
+		$p->save(); //Salvamos la información
 
 		// Luego de salvado (primero salvamos en caso de que sea un nuevo usuario porque necesitamos el ID
 		// buscamos y almacenamos la imagen (si existe) y la asignamos
-		if(Input::file("image") != null) {
+		/*if(Input::file("image") != null) {
 			$IMAGE = Input::file("image");
 			$nuevoNombre = "USUARIO_" . $u->id . "_" . date("Ymd") . str_random(8) . '.' . $IMAGE->getClientOriginalExtension(); //Creamos el nuevo nombre con que lo vamos a almacenar
 
@@ -175,7 +162,7 @@ class AdminProveedoresControllador  extends Controller {
 			$u->foto = $nuevoNombre;
 			$u->save();
 		}
-
+                
 		//Ahora, tenemos que verificar los roles. Primero eliminamos todos los roles de usuario para asignar nuevos (si es que hay)
 		DB::table("usuarios_roles") -> where("id_usuario",$u->id) -> delete();
 		if(Input::get("roles") != null && is_array(Input::get("roles"))) foreach(Input::get("roles") AS $key => $value){
@@ -191,10 +178,11 @@ class AdminProveedoresControllador  extends Controller {
 				}
 				$u->save();
 		}
-
+                */
 
 		//Información almacenada
-		$url = "/admin_usuarios/modificar_usuario/".$u->id."?salvado=y&" . str_random(16); //Le añadimos un string random al final del URL para evitar el cache y para volver la URL más difícil de leer.
+		//$url = "/admin_proveedores/modificar_proveedor/".$p->codigo."?salvado=y&" . str_random(16); //Le añadimos un string random al final del URL para evitar el cache y para volver la URL más difícil de leer.
+                $url ="$url?salvado=y";//Agregado el resultado de salvado
 		return Redirect::to( $url  );
 	}
 
