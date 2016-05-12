@@ -57,6 +57,20 @@
                 </li>
             @endif
 
+            @if( Auth::user()->puede("administrar_procesos") )
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-gears"></i>
+                        <span>{{ "Procesos"  }}</span>
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="/admin_procesos/iniciar_proceso"><i class="fa fa-circle-o"></i> {{ "Iniciar Proceso"  }}</a></li>
+                        <li><a href="/admin_procesos/ver"><i class="fa fa-circle-o"></i> {{ "Ver procesos Activos"  }}</a></li>
+                    </ul>
+                </li>
+            @endif
+
             @if( Auth::user()->puede("administrar_almacenaje") )
                 <li class="treeview">
                     <a href="#">

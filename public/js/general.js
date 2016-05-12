@@ -247,7 +247,7 @@ $( document ).ready(function(){
 	modificarSeguimientoSubmit();
 	revisionDeSeguimientos();
 	inicializarWYSIWYG();
-	inicializarCalendar();
+
 	/*La función de geolocalización siempre tiene que llamarse al final.*/
 	obtenerLocalizacion();
 });

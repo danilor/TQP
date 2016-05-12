@@ -33,6 +33,8 @@ class AdminProductosControllador extends Controller {
 		'get|registrar_nuevo'   		=>  'registrarProducto',
 		'post|salvar_producto'			=>	'salvarProducto',
 		'get|ver'						=>	'verProductos',
+		'get|iniciar_proceso'			=>	'iniciarProceso',
+		'get|ficha_producto'			=>	'fichaProducto',
 
 	);
 
@@ -340,5 +342,21 @@ class AdminProductosControllador extends Controller {
 								-> get();
 		return view('admin_productos/ver')->with($data);
 	}
+
+	/*
+	 * Esta función recopila y muestra la ficha de un producto. Está basado en la pagina suministrada por Tiqueso.
+	 * */
+	public function fichaProducto($usuario){
+		$data["usuario"] = $usuario;
+		$codigo = Request::segment(3); //Se obtiene el valor que viene en la URL
+
+		$producto = \Tiqueso\producto::where('codigo',$codigo)->first();
+		if($producto == null){ //Si no encontramos el producto, entonces enviamos la pagina de error para producto no encontrado
+			return view('admin_productos/no_encontrado')->with($data);
+		}
+		$data['producto'] = $producto;
+		return view('admin_productos/ficha')->with($data);
+	}
+
 
 }

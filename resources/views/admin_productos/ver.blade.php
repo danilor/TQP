@@ -41,7 +41,7 @@
                     <table id="example1" class="table table-bordered table-striped tabla_completa">
                         <thead>
                         <tr>
-                            <th>{{ "CÓDICO"  }}</th>
+                            <th>{{ "CÓDIGO"  }}</th>
                             <th>{{ "TIPO"  }}</th>
                             <th>{{ "PROVEEDOR"  }}</th>
                             <th>{{ "UNIDADES"  }}</th>
@@ -71,7 +71,7 @@
                         </tbody>
                         <tfoot>
                         <tr>
-                            <th>{{ "CÓDICO"  }}</th>
+                            <th>{{ "CÓDIGO"  }}</th>
                             <th>{{ "PROVEEDOR"  }}</th>
                             <th>{{ "TIPO"  }}</th>
                             <th>{{ "UNIDADES"  }}</th>

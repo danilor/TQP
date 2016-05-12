@@ -140,3 +140,16 @@ li.disabled a{
 .modal-backdrop {
 	z-index: -1;
 }
+
+/*Para la ficha de producto*/
+.ficha-producto{
+	background-color: white;
+	padding-bottom: 10px;
+}
+#barcode2{
+		position: absolute;
+		float:right;
+		top: 0px;
+		right: 0px;
+	
+}
