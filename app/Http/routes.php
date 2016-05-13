@@ -39,6 +39,7 @@ Route::any('/admin_usuarios/{extra?}/{extra2?}/{extra3?}/{extra4?}/{extra5?}/{ex
 Route::any('/admin_productos/{extra?}/{extra2?}/{extra3?}/{extra4?}/{extra5?}/{extra6?}', 'AdminProductosControllador@principal');
 Route::any('/admin_proveedores/{extra?}/{extra2?}/{extra3?}/{extra4?}/{extra5?}/{extra6?}', 'AdminProveedoresControllador@principal');
 Route::any('/admin_procesos/{extra?}/{extra2?}/{extra3?}/{extra4?}/{extra5?}/{extra6?}', 'AdminProcesosControllador@principal');
+Route::any('/admin_reportes/{extra?}/{extra2?}/{extra3?}/{extra4?}/{extra5?}/{extra6?}', 'AdminReportesControllador@principal');
 Route::any('/perfil/{extra?}/{extra2?}/{extra3?}/{extra4?}/{extra5?}/{extra6?}', 'PerfilControlador@principal');
 Route::any('/seguimientos/{extra?}/{extra2?}/{extra3?}/{extra4?}/{extra5?}/{extra6?}', 'SeguimientosControllador@principal');
 

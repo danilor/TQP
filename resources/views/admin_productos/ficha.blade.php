@@ -89,6 +89,31 @@
                 </table>
             </div><!-- /.table-responsive -->
 
+
+            <br /> <!-- Una separación entre las tablas -->
+            <div class="table-responsive">
+                <table class="table no-margin table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <th>{{ "Detalles"  }}</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>
+                            @if($producto->detalle != "")
+                                    {{ $producto->detalle }}
+                                @else
+                                    {{ "Sin detalles"  }}
+                            @endif
+                        </td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div><!-- /.table-responsive -->
+
         </div><!-- /.row -->
 
         <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">

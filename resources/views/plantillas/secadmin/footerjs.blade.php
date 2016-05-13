@@ -119,5 +119,6 @@
         @endif
         preparar_dialogo_confirmacion();
         ejecutarTipso();
+        inicializarCalendar();
     });
 </script>
