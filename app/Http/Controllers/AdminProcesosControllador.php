@@ -24,6 +24,7 @@ class AdminProcesosControllador extends Controller {
 		'get|iniciar_proceso'			=>	'iniciarProceso',
 		'post|salvar_proceso'			=>	'salvarProceso',
 		'get|ver'						=>	'listarProcesos',
+		'get|registrar_de_proceso'		=>	'registrarDeProceso',
 
 	);
 
@@ -129,12 +130,25 @@ class AdminProcesosControllador extends Controller {
 	 * */
 	public function listarProcesos($usuario){
 		$data["usuario"] = $usuario;
-
 		$procesos = \Tiqueso\proceso::where('estado',1)->orderBy('iniciado_fecha','desc')->get();
 		$data["procesos"] 	= $procesos;
-
 		return view('admin_procesos/ver')->with($data);
+	}
 
+	/*
+	 * Esta función se encarga de mostrar la página para registrar un producto por medio de un proceso
+	 * */
+	public function registrarDeProceso($usuario){
+		$data["usuario"] = $usuario;
+		$id = Request::segment(3); //Obtenemos el ID.
+
+		$proceso = \Tiqueso\proceso::find($id); // Buscamos el proceso por ID
+		if($proceso == null){
+			//Si el proceso no existe, mostramos una página de error.
+			return view('admin_procesos/no_encontrado')->with($data);
+		}
+
+		return view('admin_procesos/registrar_producto')->with($data);
 	}
 
 

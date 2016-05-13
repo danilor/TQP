@@ -25,6 +25,7 @@
                             <th>{{ "INICIADO"  }}</th>
                             <th>{{ "INICIADO POR"  }}</th>
                             <th>{{ "PRODUCTOS"  }}</th>
+                            <th>{{ "ACCIÓN"  }}</th>
 
                         </tr>
                         </thead>
@@ -43,6 +44,9 @@
                                         <a href="/admin_productos/ficha_producto/{{$c}}">{{$c}}</a>&nbsp;
                                     @endforeach
                                 </td>
+                                <td>
+                                    <a class="btn btn-info" href="/admin_procesos/registrar_de_proceso/{{ $p->id  }}">{{"Concluir Proceso"}}</a>
+                                </td>
                             </tr>
                         @endforeach
                         </tbody>
@@ -51,6 +55,7 @@
                             <th>{{ "INICIADO"  }}</th>
                             <th>{{ "INICIADO POR"  }}</th>
                             <th>{{ "PRODUCTOS"  }}</th>
+                            <th>{{ "ACCIÓN"  }}</th>
                         </tr>
                         </tfoot>
                     </table>
