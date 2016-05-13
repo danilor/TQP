@@ -23,19 +23,7 @@
                     <li><a href="/perfil/foto"><i class="fa fa-circle-o"></i> {{ "Editar Foto"  }}</a></li>
                 </ul>
             </li>
-
-
-
-                <li class="treeview">
-                    <a href="#">
-                        <i class="fa fa-bar-chart"></i>
-                        <span>{{ "Registros"  }}</span>
-                        <i class="fa fa-angle-left pull-right"></i>
-                    </a>
-                    <ul class="treeview-menu">
-                        <li><a href=""><i class="fa fa-circle-o"></i> {{ "Registro de Ingreso"  }}</a></li>
-                    </ul>
-                </li>
+            
 
         </ul>
     </section>
