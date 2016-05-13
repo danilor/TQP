@@ -52,7 +52,7 @@
                         <tbody>
                         @foreach($productos AS $c)
                         <tr>
-                            <td>{{ $c->codigo  }}</td>
+                            <td><a href="/admin_productos/ficha_producto/{{ $c->codigo  }}">{{ $c->codigo  }}</a></td>
                             <td>
                                 {{ $c->nombre_tipo  }}
                             </td>

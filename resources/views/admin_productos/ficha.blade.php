@@ -40,7 +40,15 @@
                     <tr>
                         <td>{{ date(config('region.formato_fecha'),strtotime($producto->registrado)) }}</td>
                         <td>{{ $producto->obtener_tipo_producto()->nombre  }}</td>
-                        <td>{{ $producto->unidades  }} {{ $producto->obtener_tipo_producto()->unidad  }}</td>
+                        <td>
+                            @if((int)$producto->producto_tiqueso == 1)
+                                {{ $producto->obtenerPresentacion()->detalle  }}
+                            @else
+                                {{ $producto->unidades  }} {{ $producto->obtener_tipo_producto()->unidad  }}
+                            @endif
+
+
+                        </td>
                         <td>{{ $producto->dia_juliano  }}</td>
                     </tr>
                     </tbody>
@@ -59,13 +67,24 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>{{ "PRIMA"  }}</td>
-                        <td>{{ "CODIGO"  }}</td>
-                        <td>{{ "LOTE"  }}</td>
-                        <td>{{ "CANTIDAD"  }}</td>
-                        <td>{{ "OBSERVACIONES"  }}</td>
-                    </tr>
+                        @if($producto->materias_primas == "")
+                            <tr>
+                                <td colspan="5"><p>{{ "Sin materias primas que detallar"  }}</p></td>
+                            </tr>
+
+                        @else
+
+                            @foreach($producto->obtenerObjetosDeMateriasPrimas() AS $mp)
+                                <tr>
+                                    <td>{{$mp->obtener_tipo_producto()->nombre}}</td>
+                                    <td>{{$mp->codigo_tipo}}</td>
+                                    <td><a href="/admin_productos/ficha_producto/{{$mp->codigo}}">{{$mp->codigo}}</a></td>
+                                    <td>{{$mp->unidades}}</td>
+                                    <td>{{$mp->detalle}}</td>
+                                </tr>
+                            @endforeach
+                        @endif
+
                     </tbody>
                 </table>
             </div><!-- /.table-responsive -->

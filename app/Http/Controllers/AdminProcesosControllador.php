@@ -25,6 +25,7 @@ class AdminProcesosControllador extends Controller {
 		'post|salvar_proceso'			=>	'salvarProceso',
 		'get|ver'						=>	'listarProcesos',
 		'get|registrar_de_proceso'		=>	'registrarDeProceso',
+		'post|salvar_producto'			=>	'salvarProducto',
 
 	);
 
@@ -147,9 +148,69 @@ class AdminProcesosControllador extends Controller {
 			//Si el proceso no existe, mostramos una página de error.
 			return view('admin_procesos/no_encontrado')->with($data);
 		}
-
 		return view('admin_procesos/registrar_producto')->with($data);
 	}
 
+	/*
+	 * Esta función almacena un producto por medio de post.
+	 * */
+	public function salvarProducto($usuario){
+
+		//Primero es necesario validar todos los campos.
+		$url = \URL::previous();
+		$url = explode("?", $url)[0]; //Removemos el query string en caso de que exista
+		$pt = null;
+		$dated = new \DateTime(); //Obtenemos la fecha actual
+		$rules = array(
+			'proceso_id' 		=> Comunes::reglas('numero_libre', true,'exists:procesos,id'),
+			'presentacion' 		=> Comunes::reglas('textogenerico', true,'exists:producto_presentaciones,codigo'),
+			'tipo_producto'		=> Comunes::reglas('textogenerico', true, 'exists:tipo_productos,codigo'),
+			'tanda' 			=> Comunes::reglas('numero', true),
+			'vencimiento' 		=> Comunes::reglas('fecha', true),
+			'unidades' 			=> Comunes::reglas('numero_libre', false),
+			'humedad' 			=> Comunes::reglas('numero_libre', false),
+		);
+		$validador = Validator::make(Input::all(), $rules);
+
+		if ($validador->fails()) {
+			return Redirect::to($url)->withErrors($validador)->withInput();
+		}
+
+		$presentacion = \Tiqueso\producto_presentacion::where("codigo",Input::get("presentacion"))->first();
+		$proceso = \Tiqueso\proceso::find(Input::get("proceso_id")); //Obtenemos el objeto del proceso porque debemos de cerrar el proceso luego.
+
+
+		$producto = new \Tiqueso\producto(); //Creamos el nuevo objeto de producto
+
+		$producto -> codigo_tipo		=		Input::get('tipo_producto');
+		$producto -> codigo_proveedor	=		Input::get('presentacion');
+		$producto -> nombre_proveedor	=		'TIQUESO';
+		$producto -> dia_juliano		=		str_pad(date('z'),3,'0',STR_PAD_LEFT);
+		$producto -> tanda				=		Input::get('tanda');
+		$producto -> obtenerCodigoFinal();
+		$vencimiento = \DateTime::createFromFormat(config('region.formato_fecha'),Input::get('vencimiento'));
+		$producto -> vencimiento		=		$vencimiento;
+		$producto -> unidades			=		Input::get('unidades');
+		$producto -> humedad			=		Input::get('humedad');
+		$producto -> detalle			=		Input::get('detalle');
+		$producto -> estado				=		1;
+		$producto -> creado_por			=		$usuario->id;
+		$producto -> registrado			=		$dated;
+		$producto -> modificado			=		$dated;
+		$producto -> producto_tiqueso	=		1; //Esto indica que el producto es un producto tiqueso
+		$producto -> proceso_padre		=		$proceso ->id; // El proceso padre del cual fue obtenido el producto.
+		$producto -> materias_primas	=		$proceso -> productos_proceso; //Obtenemos todas las materias primas que entraron al proceso.
+
+		$producto -> save(); //Salvamos la información
+
+		// A continuación, cerramos el proceso
+		$proceso -> finalizado_fecha = $dated;
+		$proceso -> finalizado_por = $usuario->id;
+		$proceso -> estado = 0;
+		$proceso -> save();
+
+		return Redirect::to('admin_procesos/ver');
+
+	}
 
 }

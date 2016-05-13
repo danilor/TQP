@@ -17,9 +17,9 @@
     </div>
 
     {!! Form::open(array('url' => '/admin_procesos/salvar_producto','class'=>'form-horizontal requiereValidacion','method'=>'post')) !!}
+    <input type="hidden" value="{{Request::segment(3)}}" name="proceso_id" />
     <div class="row">
         <div class="col-md-8 col-xs-12 col-lg-8">
-
             @foreach ($errors->all() as $message)
                 <div class="alert alert-block alert-danger fade in">
                     <button data-dismiss="alert" class="close close-sm" type="button">
@@ -37,13 +37,12 @@
                 <!-- form start -->
                 <div class="box-body">
                     <div class="form-group">
-                        <label for="" class="col-sm-2 control-label">{{ "Proveedor"  }} <span>*</span></label>
+                        <label for="" class="col-sm-2 control-label">{{ "Presentación"  }} <span>*</span></label>
                         <div class="col-sm-10">
-                            <select name="proveedor" id="proveedor" required="required" class="form-control">
-                                <option value="">{{"Por favor seleccione un proveedor"}}</option>
-                                @foreach(\Tiqueso\proveedor::all('codigo','nombre') AS $proveedor )
-                                    <option value="{{$proveedor->codigo}}">[{{$proveedor->codigo}}] {{ $proveedor->nombre  }}</option>
-
+                            <select name="presentacion" id="presentacion" required="required" class="form-control">
+                                <option value="">{{"Por favor seleccione la presentación"}}</option>
+                                @foreach(\Tiqueso\producto_presentacion::all('codigo','detalle') AS $proveedor )
+                                    <option value="{{$proveedor->codigo}}">[{{$proveedor->codigo}}] {{ $proveedor->detalle  }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -154,7 +153,7 @@
                 cambiar_informacion_codigo();
                 establecer_codigo_final();
             });
-            $('#proveedor').change(function(){
+            $('#presentacion').change(function(){
                 cambiar_informacion_codigo();
                 establecer_codigo_final();
             });
@@ -199,10 +198,10 @@
         function establecer_codigo_final(){
 
             var tipo_producto = $('#tipo_producto').val();
-            var proveedor = $('#proveedor').val();
+            var proveedor = $('#presentacion').val();
             var tanda = $('#tanda').val();
             if(tipo_producto == "" ){ tipo_producto = "XX"; }
-            if(proveedor == "" ){ proveedor = "YY"; }
+            if(proveedor == "" ){ proveedor = "PP"; }
             if(tanda == "" ){ tanda = "Z"; }
 
             var codigo = tipo_producto + proveedor + dia_juliano + tanda;

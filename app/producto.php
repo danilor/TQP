@@ -9,6 +9,7 @@ class producto extends Model
 
     public $timestamps = false;
     private $tipo_producto = null;
+    private $presentacion = null;
 
     /*
      * Función solamente para establecer el código del producto
@@ -41,6 +42,35 @@ class producto extends Model
         $producto -> estado = 0;
         $producto -> save(); //Salvamos el cambio al producto
         return true;
+    }
+
+    /*
+     * Esta función obtiene la presentación del producto en caso de que sea diferente de 0
+     * */
+    public function obtenerPresentacion(){
+        if($this->presentacion == null && $this->codigo_proveedor != ""){
+            $this->presentacion = producto_presentacion::find($this->codigo_proveedor);
+        }
+        return $this->presentacion;
+    }
+
+    /*
+     * Esta función lee, construye y devuelve todos los objetos de materias primas
+     * */
+    public function obtenerObjetosDeMateriasPrimas(){
+
+        $aux_resultado = [];
+        $materias_primas = explode(',',$this->materias_primas); //Obtenemos todas las materias primas
+
+        foreach($materias_primas AS $mp){
+            $aux = producto::where('codigo',$mp)->first();
+            if($aux != null){ //Si el codigo no es null, entonces lo añadimos a la lista de materias primas
+                $aux_resultado[] = $aux;
+            }
+        }
+
+        return $aux_resultado;
+
     }
 
 
