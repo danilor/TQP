@@ -20,7 +20,7 @@ class CrearTablaClientes extends Migration
             $table->string('telefono')->nullable();
             $table->string('fax')->nullable();
             $table->timestamp('creado')->useCurrent();// crear columna creado con la hora actual del servidor de la base de datos como predeterminado
-            $table->timestamp('actualizado')->useCurrent();// crear columna actualizado con la hora actual del servidor de la base de datos como predeterminado
+            $table->timestamp('actualizado');// crear columna actualizado con la hora actual del servidor de la base de datos como predeterminado
         });
     }
 

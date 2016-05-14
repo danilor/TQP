@@ -23,7 +23,7 @@
                     <li><a href="/perfil/foto"><i class="fa fa-circle-o"></i> {{ "Editar Foto"  }}</a></li>
                 </ul>
             </li>
-            
+
 
         </ul>
     </section>

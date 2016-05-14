@@ -12,10 +12,9 @@
 */
 
 \App::setLocale("es"); //Por medio de esta linea se cambia el idioma general de la aplicación. Por el momento no se planea hacer multilenguaje así que no importa que esté quemado en el código
-
-Route::get('/', function () {
-    return view('welcome');
-});
+/*Páginas del sitio principal*/
+Route::get('/', 'SitioControllador@pagina_principal');
+Route::get('/recetas/{id}', 'SitioControllador@recetas');
 
 //Esta sentencia manda la dirección de "ingresar" al controlador para que muestre la página respectiva
 Route::get('/ingresar', 'IngresoControllador@ingreso');
