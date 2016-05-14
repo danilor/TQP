@@ -39,7 +39,18 @@
                     <li><a href="/admin_proveedores/ver_todos"><i class="fa fa-circle-o"></i> {{ "Ver proveedores"  }}</a></li>
                     <li><a href="/admin_proveedores/agregar"><i class="fa fa-circle-o"></i> {{ "Agregar nuevo provedor"  }}</a></li>
                 </ul>
-            </li>            
+            </li>
+            
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-users"></i>
+                    <span>{{ "Clientes"  }}</span>
+                    <i class="fa fa-angle-left pull-right"></i>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="/admin_clientes/ver"><i class="fa fa-circle-o"></i> {{ "Ver clientes"  }}</a></li>
+                </ul>
+            </li> 
 
             @if( Auth::user()->puede("administrar_productos") )
                 <li class="treeview">
