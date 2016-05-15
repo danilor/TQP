@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
         $this->call(TiposSeeder::class); //Asigna los tipos de productos iniciales
         $this->call(CategoriasSeeder::class); //Asigna las categorías
         $this->call(ProveedoresSeeder::class); //Asigna los proveedores
+        $this->call(ProductosPresentacionesSeeder::class); 
         Model::reguard();
     }
 }
