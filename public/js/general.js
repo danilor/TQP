@@ -195,7 +195,7 @@ function llamarAtencion(selector){
 function inicializarWYSIWYG(){
 	try{
 		$('.summernote').summernote({
-			height: 300,                 // el tamaño (alto)
+			height: 600,                 // el tamaño (alto)
 			minHeight: null,             // tamaño minimo para el editor
 			maxHeight: null,             // tamaño máximo para el editor
 			focus: false,                // no se quiere que obtenga foco justo despues de inicializar
