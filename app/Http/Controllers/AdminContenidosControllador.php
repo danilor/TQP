@@ -111,6 +111,9 @@ class AdminContenidosControllador  extends Controller {
 			}
 		}else{
 			$receta = new \Tiqueso\receta();
+			$receta -> modificado = $dated;
+			$receta -> creado = $dated;
+			$receta -> creado_por = $usuario->id;
 		}
 
 		$receta -> nombre = Input::get('nombre');
