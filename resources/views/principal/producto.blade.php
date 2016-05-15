@@ -1,6 +1,6 @@
 @extends('plantillas.publico')
 @section('titulo')
-    - Recetas -  {{ $receta-> nombre }}
+    - Producto - {{ $producto-> nombre }}
 @stop
 
 @section('extra_css')
@@ -27,9 +27,9 @@
             <div class="col-md-6 col-md-offset-3">
                 <div class="blogs">
                     <div class="text-center">
-                        <h2>{{ "Receta" }}</h2>
+                        <h2>{{ "Producto" }}</h2>
                         <h3>
-                            {{ $receta-> nombre }}
+                            {{ $producto-> nombre }}
                         </h3>
                     </div>
                     <hr>
@@ -37,53 +37,32 @@
             </div>
         </div>
     </div>
-
-
     <div class="container">
         <div class="row">
             <div class="col-md-8">
                 <div class="page-header">
                     <div class="blog">
-                        <!--<h5>{{$receta->obtenerFechaCreacion()}}</h5>-->
-                        {!! $receta->contenido  !!}
+                        <!--<h5></h5>-->
+                        @if($producto->foto != "")
+                            <div>
+                                <center>
+                                    <img src="{{$producto->obtenerFotoEspecial(200,200)}}" />
+                                </center>
+                            </div>
+                            @endif
+                        {!! $producto->caracteristicas  !!}
                     </div>
                 </div>
-
-
-                <div class="content">
-                    <div class="grid">
-                        <h2>{{ "Productos relacionados"  }}</h2>
-                        @foreach($receta->obtenerProductosRelacionados() AS $p)
-                            <a href="/producto/{{$p->codigo}}"><figure class="effect-zoe">
-                                    <img src="{{ $p->obtenerFotoEspecial(480,300)  }}" alt="/img27"/>
-                                    <figcaption>
-                                        <h2>{{$p->nombre}}</h2>
-                                        <!--<p class="icon-links">
-                                            <a href="#"><span class="icon-heart"></span></a>
-                                            <a href="#"><span class="icon-eye"></span></a>
-                                            <a href="#"><span class="icon-paper-clip"></span></a>
-                                        </p>-->
-
-                                    </figcaption>
-                                </figure></a>
-                        @endforeach
-
-                    </div>
-                </div>
-
             </div>
-
 
             <div class="col-md-4">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <strong>{{ "Otras Recetas" }}</strong>
+                        <strong>{{ "Recetas con este producto" }}</strong>
                     </div>
-
-                    @foreach(\Tiqueso\receta::orderByRaw("RAND()")->take(4)->where('id','<>',$receta->id)->get() AS $r)
+                    @foreach(\Tiqueso\receta::orderByRaw("RAND()")->where('productos_relacionados','LIKE',"%$producto->codigo%")->take(4)->get() AS $r)
                     <div class="panel-body">
                         <div class="media">
-
                             <div class="media-body">
                                 <h4 class="media-heading"><i class="fa fa-book"></i> {{ $r->nombre  }}</h4>
                                 <p>

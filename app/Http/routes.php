@@ -15,6 +15,12 @@
 /*Páginas del sitio principal*/
 Route::get('/', 'SitioControllador@pagina_principal');
 Route::get('/recetas/{id}', 'SitioControllador@recetas');
+Route::get('/productos/', 'SitioControllador@productos');
+Route::get('/producto/{id}', 'SitioControllador@producto_individual');
+Route::get('/recetas/', 'SitioControllador@recetas_lista');
+Route::get('/acerca_de/', 'SitioControllador@acerca_de');
+Route::get('/contacto/', 'SitioControllador@contacto');
+Route::post('/salvar_contacto/', 'SitioControllador@salvar_contacto');
 
 //Esta sentencia manda la dirección de "ingresar" al controlador para que muestre la página respectiva
 Route::get('/ingresar', 'IngresoControllador@ingreso');

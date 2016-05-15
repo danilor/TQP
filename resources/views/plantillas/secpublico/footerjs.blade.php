@@ -9,4 +9,7 @@
 <script type="text/javascript" src="/js/fliplightbox.min.js"></script>
 <script src="/js/functions.js"></script>
 <script type="text/javascript"></script>
+<script src="/js/jquery.validate.min.js"></script>
+<script type="text/javascript" src="/js/localization/messages_es.js"></script>
+<script type="text/javascript" src="/js/general.js"></script>
 @yield('extra_js')

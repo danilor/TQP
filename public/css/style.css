@@ -585,3 +585,9 @@ a.scrollup:hover{
 	background-color:#36CBD4;
 	color:#fff;;	
 }
+/*
+    Añadido por Danilo
+*/
+.error{
+    color:red!important;
+}

@@ -14,10 +14,10 @@
             <div class="menu">
                 <ul class="nav nav-tabs" role="tablist">
                     <li role="presentation"><a href="/">{{"Inicio"}}</a></li> <!-- class="active" -->
-                    <li role="presentation"><a href="services.html">{{"Productos"}}</a></li>
-                    <li role="presentation"><a href="blog.html">{{"Donde estamos"}}</a></li>
-                    <li role="presentation"><a href="portfolio.html">{{"Acerca de"}}</a></li>
-                    <li role="presentation"><a href="contact.html">{{"Contacto"}}</a></li>
+                    <li role="presentation"><a href="/productos">{{"Productos"}}</a></li>
+                    <li role="presentation"><a href="/recetas">{{"Recetas"}}</a></li>
+                    <li role="presentation"><a href="/acerca_de">{{"Acerca de"}}</a></li>
+                    <li role="presentation"><a href="/contacto">{{"Contacto"}}</a></li>
                 </ul>
             </div>
         </div>

@@ -15,7 +15,7 @@ class Comunes{
     }
 
     public static function enviar404(){
-        return Response::make(View::make('errores/404'), 404);
+        return Response::make(View::make('errors/404'), 404);
         dd("Pàgina 404");
     }
 
