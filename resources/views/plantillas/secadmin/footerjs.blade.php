@@ -117,6 +117,9 @@
          @if(Input::get("error") != "")
                 error('{{  Input::get("error") }}');
         @endif
+        @if(Input::get("sacado") === "y")
+                notification('{{  "Producto marcado como distribuido" }}');
+        @endif
         preparar_dialogo_confirmacion();
         ejecutarTipso();
         inicializarCalendar();

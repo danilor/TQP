@@ -47,6 +47,9 @@
                             <th>{{ "UNIDADES"  }}</th>
                             <th>{{ "REGISTRADO POR"  }}</th>
                             <th>{{ "VENCIMIENTO"  }}</th>
+                            <th>
+                                {{ "ACCIÓN"  }}
+                            </th>
                         </tr>
                         </thead>
                         <tbody>
@@ -66,6 +69,18 @@
                             <td>
                                 {{ date(config('region.formato_fecha'),strtotime($c->vencimiento))  }}
                             </td>
+                            <td>
+                                    {!!  Form::open(array(
+                                                            'url'                   =>  '/admin_productos/sacar_producto/'.$c->id,
+                                                            "class"                 =>  'confirmar_accion',
+                                                            "method"                =>  "get",
+                                                            "confirmacion_titulo"   =>  "Sacar Producto",
+                                                            "confirmacion_contenido"=>  "¿Está seguro que desea sacar este producto de la planta? Esto marcará el producto como enviado y distribuido, aunque seguirá apareciendo en el historial de productos para efectos de reportes y búsquedas.",
+                                                    )) !!}
+                                    {!! Form::token() !!}
+                                        <button type="submit" class="btn btn-block btn-success"><span class="fa fa-truck"></span> {{ "Sacar de la planta"  }}</button>
+                                    {!!  Form::close() !!}
+                            </td>
                         </tr>
                         @endforeach
                         </tbody>
@@ -77,6 +92,9 @@
                             <th>{{ "UNIDADES"  }}</th>
                             <th>{{ "REGISTRADO POR"  }}</th>
                             <th>{{ "VENCIMIENTO"  }}</th>
+                            <th>
+                                {{ "ACCIÓN" }}
+                            </th>
                         </tr>
                         </tfoot>
                     </table>

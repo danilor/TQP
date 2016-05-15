@@ -5,6 +5,7 @@ use Input;
 use Redirect;
 use Auth;
 use Tiqueso\categoria_producto;
+use Tiqueso\producto;
 use Validator;
 use Config;
 use Hash;
@@ -35,6 +36,8 @@ class AdminProductosControllador extends Controller {
 		'get|ver'						=>	'verProductos',
 		'get|iniciar_proceso'			=>	'iniciarProceso',
 		'get|ficha_producto'			=>	'fichaProducto',
+		'get|sacar_producto'			=>	'sacarProducto',
+		'get|buscar'					=>	'buscarProductos',
 
 	);
 
@@ -356,6 +359,40 @@ class AdminProductosControllador extends Controller {
 		}
 		$data['producto'] = $producto;
 		return view('admin_productos/ficha')->with($data);
+	}
+
+	/*
+	 * Esta función por el momento desactiva un producto para "sacarlo" de la planta
+	 * */
+	public function sacarProducto($usuario){
+		$id = Request::segment(3);
+		if($id != ""){
+			$producto = producto::find($id);
+			if($producto != null){
+				$producto->modificado = new \DateTime();
+				$producto->estado=0;
+				$producto->save();
+			}
+		}
+		return Redirect::to('/admin_productos/ver?sacado=y');
+	}
+
+	/*
+	 * Esta función es la que se encarga de buscar productos por código
+	 * */
+	public function buscarProductos($usuario){
+		$data["usuario"] = $usuario;
+
+		$productos = [];
+
+		if(Input::get('codigo') != ""){
+			$productos = \Tiqueso\producto::where('codigo','LIKE','%'.Input::get('codigo').'%')->get();
+
+		}
+
+		$data["productos"] = $productos;
+		return view('admin_productos/buscar')->with($data);
+
 	}
 
 

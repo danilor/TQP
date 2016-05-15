@@ -28,7 +28,7 @@
                 </ul>
             </li>
             @endif
-
+            @if( Auth::user()->puede("administrar_proveedores") )
             <li class="treeview">
                 <a href="#">
                     <i class="fa fa-users"></i>
@@ -40,7 +40,8 @@
                     <li><a href="/admin_proveedores/agregar"><i class="fa fa-circle-o"></i> {{ "Agregar nuevo provedor"  }}</a></li>
                 </ul>
             </li>
-            
+            @endif
+            @if( Auth::user()->puede("administrar_clientes") )
             <li class="treeview">
                 <a href="#">
                     <i class="fa fa-users"></i>
@@ -50,8 +51,8 @@
                 <ul class="treeview-menu">
                     <li><a href="/admin_clientes/ver"><i class="fa fa-circle-o"></i> {{ "Ver clientes"  }}</a></li>
                 </ul>
-            </li> 
-
+            </li>
+            @endif
             @if( Auth::user()->puede("administrar_productos") )
                 <li class="treeview">
                     <a href="#">
@@ -61,7 +62,8 @@
                     </a>
                     <ul class="treeview-menu">
                         <li><a href="/admin_productos/registrar_nuevo"><i class="fa fa-circle-o"></i> {{ "Registrar Producto"  }}</a></li>
-                        <li><a href="/admin_productos/ver"><i class="fa fa-circle-o"></i> {{ "Productos"  }}</a></li>
+                        <li><a href="/admin_productos/ver"><i class="fa fa-circle-o"></i> {{ "Ver Productos"  }}</a></li>
+                        <li><a href="/admin_productos/buscar"><i class="fa fa-circle-o"></i> {{ "Buscar Productos"  }}</a></li>
                         <li><a href="/admin_productos/tipos"><i class="fa fa-circle-o"></i> {{ "Tipos de Productos"  }}</a></li>
                         <li><a href="/admin_productos/categorias"><i class="fa fa-circle-o"></i> {{ "Categorías de Productos"  }}</a></li>
                     </ul>
