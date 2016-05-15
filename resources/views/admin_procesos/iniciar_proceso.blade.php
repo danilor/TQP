@@ -125,21 +125,51 @@
 
                         </tbody>
                     </table>
-
-
-
-
-
-
-
-
-
-
                 </div><!-- /.box-body -->
                 <div class="box-footer">
                     <button type="submit" class="btn btn-info pull-right">{{ "Salvar"  }}</button>
                 </div><!-- /.box-footer -->
             </div><!-- /.box -->
+
+
+            <div class="box box-info">
+                <div class="box-header with-border">
+                    <h3 class="box-title">{{ "Usuarios Participantes"  }}</h3><button type="submit" class="btn btn-info pull-right">{{ "Salvar"  }}</button>
+                </div><!-- /.box-header -->
+                <div class="box-body">
+
+
+                    <table id="asignados" class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th>{{"Usuario"}}</th>
+                            <th>{{"Correo"}}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            @foreach(\Tiqueso\usuario::where('activo',1)->orderBy('nombre','ASC')->get() AS $usuario)
+                                <tr>
+                                    <td>
+                                        <input value="{{ $usuario->id  }}"  id="checkbox-{{ $usuario->id }}" class="checkbox-custom" name="usuarios[]" type="checkbox">
+                                        <label for="checkbox-{{ $usuario->id }}" class="checkbox-custom-label"></label>
+                                    </td>
+                                    <td>
+                                        {{ $usuario->obtenerNombreCompleto() }}
+                                    </td>
+                                    <td>
+                                        {{$usuario->correo}}
+                                    </td>
+                                </tr>
+                                @endforeach
+                        </tbody>
+                    </table>
+                </div><!-- /.box-body -->
+                <div class="box-footer">
+                    <button type="submit" class="btn btn-info pull-right">{{ "Salvar"  }}</button>
+                </div><!-- /.box-footer -->
+            </div><!-- /.box -->
+
 
             <!-- About Me Box -->
 

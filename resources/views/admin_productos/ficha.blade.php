@@ -96,7 +96,6 @@
                     <thead>
                     <tr>
                         <th>{{ "Detalles"  }}</th>
-
                     </tr>
                     </thead>
                     <tbody>
@@ -109,13 +108,82 @@
                             @endif
                         </td>
                     </tr>
-
                     </tbody>
                 </table>
             </div><!-- /.table-responsive -->
 
-        </div><!-- /.row -->
 
+            @if($producto->esTiqueso())
+                <br /> <!-- Una separación entre las tablas -->
+                <div class="table-responsive">
+                    <table class="table no-margin table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <th colspan="2">{{ "Detalles del proceso"  }}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>
+                                Inicio:
+                            </td>
+                            <td>
+                                {{ date(config('region.formato_fecha_completo'),strtotime($producto->obtener_proceso()->iniciado_fecha))  }}
+                            </td>
+
+                        <tr>
+                            <td>
+                                Iniciado por:
+                            </td>
+                            <td>
+                                {{ $producto->obtener_proceso()->usuario_inicial()->obtenerNombreCompleto()  }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Finaliza:
+                            </td>
+                            <td>
+                                {{ date(config('region.formato_fecha_completo'),strtotime($producto->obtener_proceso()->finalizado_fecha ))  }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Finalizado por:
+                            </td>
+                            <td>
+                                {{ $producto->obtener_proceso()->usuario_final()->obtenerNombreCompleto()  }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Duración:
+                            </td>
+                            <td>
+                                {{ $producto->obtener_proceso()->obtenerDuracion()->h }} Horas {{ $producto->obtener_proceso()->obtenerDuracion()->i }} Minutos {{ $producto->obtener_proceso()->obtenerDuracion()->s }} Segundos
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Participantes:
+                            </td>
+                            <td>
+
+                                    @foreach($producto->obtener_proceso()->obtenerParticipantes() AS $u)
+                                                        {{ $u->obtenerNombreCompleto() }} ({{$u->correo}})<br />
+                                    @endforeach
+
+                            </td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+                </div><!-- /.table-responsive -->
+
+            @endif
+
+
+        </div><!-- /.row -->
         <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
             <div class="box box-info">
                 <div class="box-body">
@@ -124,18 +192,14 @@
                             <img id="imagen_tipo_producto" src="{{$producto->obtenerImagenTipoProducto(190,190)}}" alt="" />
                         </div>
                         <div>
-
                             <img id="barcode"/>
                         </div>
                     </center>
                 </div><!-- /.box-body -->
 
             </div><!-- /.box -->
-
         </div>
     </div>
-
-
 @stop
 
 @section("extra_js")

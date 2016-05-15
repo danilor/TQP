@@ -102,7 +102,6 @@ class AdminProcesosControllador extends Controller {
 			$productos_finales[] = $p;
 		}
 
-
 		foreach($productos_finales AS $p){ // Tenemos que cerrar cada uno de los productos finales
 			producto::cerrarProducto($p);
 		}
@@ -120,6 +119,23 @@ class AdminProcesosControllador extends Controller {
 		$proceso		->		detalle				=		Input::get('detalle');
 
 		$proceso		->		save(); //Salvamos la información del proceso
+
+
+		//Ya que salvamos el proceso, debemos de salvar también los usuarios involucrados.
+		//Primero borramos los existentes (que realmente no deberían de existir)
+
+		DB::table('usuario_proceso')->where('proceso_id',$proceso->id)->delete();
+		//Ahora verificamos si la variable de usuarios existe y viene completa.
+		if(  is_array(Input::get('usuarios'))  ){
+			foreach(Input::get('usuarios') AS $u){
+				DB::table('usuario_proceso')->insertGetId([
+					'usuario_id'			=>			$u,
+					'proceso_id'			=>			$proceso->id
+				]);
+			}
+
+		}
+
 
 		return Redirect::to('/admin_procesos/ver');
 

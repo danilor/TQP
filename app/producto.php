@@ -10,6 +10,7 @@ class producto extends Model
     public $timestamps = false;
     private $tipo_producto = null;
     private $presentacion = null;
+    private $proceso = null;
 
     /*
      * Función solamente para establecer el código del producto
@@ -29,6 +30,13 @@ class producto extends Model
             $this->tipo_producto = tipo_producto::where('codigo',$this->codigo_tipo)->first();
         }
         return $this->tipo_producto;
+    }
+
+    public function obtener_proceso(){
+        if($this->proceso == null){
+            $this->proceso= proceso::find($this->proceso_padre);
+        }
+        return $this->proceso;
     }
 
     /*
@@ -68,9 +76,17 @@ class producto extends Model
                 $aux_resultado[] = $aux;
             }
         }
-
         return $aux_resultado;
-
+    }
+    /*
+     * Esto solo devuelve si es un producto terminado de tiqueso o no
+     * */
+    public function esTiqueso(){
+        if( (int)$this->producto_tiqueso == 1 ){
+            return true;
+        }else{
+            return false;
+        }
     }
 
 
