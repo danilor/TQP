@@ -105,7 +105,11 @@
                         <i class="fa fa-angle-left pull-right"></i>
                     </a>
                     <ul class="treeview-menu">
-                        <li><a href="/admin_contenidos/recetas"><i class="fa fa-circle-o"></i> {{ "Recetas"  }}</a></li>
+                        <li><a href="/admin_contenidos/recetas"><i class="fa fa-circle-o"></i> {{ "Ver Recetas"  }}</a></li>
+                        <li><a href="/admin_contenidos/salvar_receta"><i class="fa fa-circle-o"></i> {{ "Añadir Receta"  }}</a></li>
+                        <li><a href="/admin_contenidos/banners"><i class="fa fa-circle-o"></i> {{ "Ver Banners"  }}</a></li>
+                        <li><a href="/admin_contenidos/subir_banner"><i class="fa fa-circle-o"></i> {{ "Subir Banner"  }}</a></li>
+
                     </ul>
                 </li>
             @endif

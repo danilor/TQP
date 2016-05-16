@@ -9,8 +9,9 @@
             <div class="slider">
                 <div class="/img-responsive">
                     <ul class="bxslider">
-                        <li><img src="/contenidos/banner/principal.jpg" alt=""/></li>
-                        <li><img src="/contenidos/banner/panaderia.jpg" alt=""/></li>
+                        @foreach(\Tiqueso\banner::where('activo',1)->orderBy('orden','ASC')->get() AS $b )
+                            <li><img src="{{ $b->obtenerRutaImagen()  }}" alt=""/></li>
+                        @endforeach
 
                     </ul>
                 </div>

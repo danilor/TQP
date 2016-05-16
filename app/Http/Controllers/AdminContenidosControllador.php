@@ -4,6 +4,7 @@ use Request;
 use Input;
 use Redirect;
 use Auth;
+use Tiqueso\banner;
 use Tiqueso\categoria_producto;
 use Tiqueso\producto;
 use Validator;
@@ -25,6 +26,11 @@ class AdminContenidosControllador  extends Controller {
 		'get|borrar_receta'             =>  'borrarReceta',
 		'get|salvar_receta'				=>	'mostrarSalvarReceta',
 		'post|salvar_receta'			=>	'salvarReceta',
+		'get|banners'					=>	'verBanners',
+		'get|subir_banner'				=>	'subirBanners',
+		'post|subir_banner'				=>	'salvarBanners',
+		'get|borrar_banner'				=>	'borrarBanner',
+		'get|actualizar_orden_banner'	=>	'actualizarOrdenBanner',
 
 	);
 
@@ -127,5 +133,83 @@ class AdminContenidosControllador  extends Controller {
 
 		return Redirect::to('/admin_contenidos/salvar_receta/'.$receta->id.'?salvado=y');
 
+	}
+
+	public function verBanners($usuario){
+		$data["usuario"] = $usuario;
+		return view('admin_contenidos/banners')->with($data);
+	}
+
+	public function subirBanners($usuario){
+		$data["usuario"] = $usuario;
+		return view('admin_contenidos/subir_banner')->with($data);
+	}
+
+	public function salvarBanners($usuario){
+
+		$url = \URL::previous();
+		$url = explode("?", $url)[0]; //Removemos el query string en caso de que exista
+
+
+		$codigo = date('Ymd').str_random(8);
+
+		if(Input::file("image") != null) {
+
+			$banner = new \Tiqueso\banner();
+			$banner -> creado_por = $usuario->id;
+
+
+			$IMAGE = Input::file("image");
+			$nuevoNombre = "BANNER_" . $codigo . '.' . $IMAGE->getClientOriginalExtension(); //Creamos el nuevo nombre con que lo vamos a almacenar
+			if ((int)$IMAGE->getClientSize() > (int)Config::get("archivos.tamano_maximo")) {
+				return Redirect::to($url)->withErrors(["Imágen supera el tamaño máximo"])->withInput();;
+			}
+			//dd(base_path() . '/public/'.Config::get("paths.UPLOADS").'/'.Config::get("paths.USERS").'/'. $imageName);
+			$ruta = public_path() . '/' . Config::get("rutas.contenidos") . '/' . Config::get("rutas.banners") . '/';
+			$IMAGE->move($ruta, $nuevoNombre);
+			$banner->nombre = $nuevoNombre;
+			$banner->url 	= $ruta;
+			$banner->creado = new \DateTime();
+			$banner->creado_por = $usuario->id;
+			$banner->save();
+		}else{
+			return Redirect::to($url)->withErrors(["La imágen es requerida"])->withInput();;
+		}
+
+		//Información almacenada
+		$url = '/admin_contenidos/banners' ."?salvado=y&" . str_random(16); //Le añadimos un string random al final del URL para evitar el cache y para volver la URL más difícil de leer.
+		return Redirect::to( $url  );
+	}
+
+	public function borrarBanner($usuario){
+		if(Request::segment(3) != ''){
+			$id = Request::segment(3);
+			$banner = banner::find($id);
+			if($banner != null){
+				$banner->delete();
+				return 1;
+			}
+			return 0;
+		}
+		return 0;
+	}
+
+	public function actualizarOrdenBanner($usuario){
+		if(Input::get('orden') != ''){
+			//así como viene el orden, tenemos que actualizar
+			$ids = explode(',',Input::get('orden'));
+			$cont = 1;
+			foreach($ids AS $id){
+				$aux = banner::find($id);
+				if($aux != null){
+					$aux->orden = $cont;
+					$aux->save();
+					$cont++;
+				}
+			}
+			echo Input::get('orden');
+
+		}
+		return 0;
 	}
 }
