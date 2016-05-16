@@ -129,8 +129,9 @@
                     </ul>
                 </li>
             @endif
-
-            <li><a href="documentation/index.html"><i class="fa fa-book"></i> <span>{{ "Documentación"  }}</span></a></li>
+            @if(Auth::user()->esAdministrador())
+            <li><a href="/admin_documentacion"><i class="fa fa-book"></i> <span>{{ "Documentación"  }}</span></a></li>
+            @endif
         </ul>
     </section>
     <!-- /.sidebar -->
