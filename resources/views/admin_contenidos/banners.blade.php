@@ -121,6 +121,7 @@
                     $.ajax({
                         url: "/admin_contenidos/actualizar_orden_banner/?orden="+orden_enviar,
                     }).done(function() {});
+                    notification('{{  "Orden Salvado" }}');
                 }
 
             });
