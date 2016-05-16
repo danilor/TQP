@@ -108,6 +108,7 @@ class SitioControllador  extends Controller {
 		$mensaje -> correo = Input::get('correo');
 		$mensaje -> telefono = Input::get('telefono');
 		$mensaje -> compania = Input::get('compania');
+		$mensaje -> creado = new \DateTime();
 
 		$mensaje -> save();
 

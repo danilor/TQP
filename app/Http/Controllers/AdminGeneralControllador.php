@@ -19,7 +19,7 @@ class AdminGeneralControllador extends Controller {
 
 	private $reglas = array(
 		/*DASHBOARD*/
-		'get|'                      	=>  'tablero||',
+		'get|'                      	=>  'tablero',
 
 	);
 
@@ -27,15 +27,68 @@ class AdminGeneralControllador extends Controller {
 		//$this->middleware('guest');
 	}
 
+
 	public function principal(){
-		$data["usuario"] = Auth::user();
+		$usuario = Auth::user();
 		if(!Auth::check()){
 			return Redirect::to('/ingresar?accesso&url='.Request::url());
 		}
-
-		if(!Auth::user()->esAdministrador()){
-			return Redirect::to('/ingresar?accesso&url='.Request::url());
+		$segmento = strtolower(Request::segment(2));
+		$request = strtolower(Request::getMethod());
+		$urlrule = "$request|$segmento";
+		if(isset($this->reglas[$urlrule])){
+			$g = $this->reglas[$urlrule];
+			return $this->$g($usuario);
+		}else{
+			return Comunes::enviar404();
 		}
+	}
+
+	public function tablero($usuario){
+		$data["usuario"] = $usuario;
+
+		/*
+		 * Ocupamos hacer las consultas de los gráficos
+		 * */
+		$informacion_grafico = [];
+		$ingresados = \DB::select('SELECT DATE_FORMAT(registrado,\'%Y-%m-%d\')AS fecha, COUNT(*) AS total FROM productos
+				WHERE
+					(registrado BETWEEN DATE_SUB(NOW(),INTERVAL 7 DAY) AND NOW())
+					AND borrado = 0
+				GROUP BY
+				DATE_FORMAT(registrado,\'%Y-%m-%d\')
+				;');
+
+		$salidas = \DB::select('SELECT DATE_FORMAT(modificado,\'%Y-%m-%d\')AS fecha, COUNT(*) AS total FROM productos
+						WHERE
+							(registrado BETWEEN DATE_SUB(NOW(),INTERVAL 7 DAY) AND NOW())
+							AND borrado = 0
+							AND estado = 0
+						GROUP BY
+						DATE_FORMAT(modificado,\'%Y-%m-%d\')
+						;');
+		foreach($ingresados AS $i){
+			if(!isset($informacion_grafico[$i->fecha])){
+				$informacion_grafico[$i->fecha] = [
+					'entradas'		=>		0,
+					'salidas'		=>		0,
+				];
+			}
+			$informacion_grafico[$i->fecha]['entradas'] = $i->total;
+		}
+
+		foreach($salidas AS $i){
+			if(!isset($informacion_grafico[$i->fecha])){
+				$informacion_grafico[$i->fecha] = [
+					'entradas'		=>		0,
+					'salidas'		=>		0,
+				];
+			}
+			$informacion_grafico[$i->fecha]['salidas'] = $i->total;
+		}
+
+		$data["grafico"] = $informacion_grafico;
+
 		return view('admin_general/tablero')->with($data);
 	}
 

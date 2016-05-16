@@ -78,7 +78,7 @@
                                                             "confirmacion_contenido"=>  "¿Está seguro que desea sacar este producto de la planta? Esto marcará el producto como enviado y distribuido, aunque seguirá apareciendo en el historial de productos para efectos de reportes y búsquedas.",
                                                     )) !!}
                                     {!! Form::token() !!}
-                                        <button type="submit" class="btn btn-block btn-success"><span class="fa fa-truck"></span> {{ "Sacar de la planta"  }}</button>
+                                        <button type="submit" class="btn btn-block btn-success"><span class="fa fa-truck"></span> {{ "Despachar"  }}</button>
                                     {!!  Form::close() !!}
                             </td>
                         </tr>
