@@ -92,7 +92,8 @@
                         <i class="fa fa-angle-left pull-right"></i>
                     </a>
                     <ul class="treeview-menu">
-                        <li><a href=""><i class="fa fa-circle-o"></i> {{ "Ver centros de almacenaje"  }}</a></li>
+                        <li><a href="/admin_almacenaje/ver"><i class="fa fa-circle-o"></i> {{ "Ver centros de almacenaje"  }}</a></li>
+                        <li><a href="/admin_almacenaje/salvar_almacenaje"><i class="fa fa-circle-o"></i> {{ "Crear centro de almacenaje"  }}</a></li>
                     </ul>
                 </li>
             @endif

@@ -51,3 +51,4 @@ Route::any('/admin_documentacion/{extra?}/{extra2?}/{extra3?}/{extra4?}/{extra5?
 Route::any('/perfil/{extra?}/{extra2?}/{extra3?}/{extra4?}/{extra5?}/{extra6?}', 'PerfilControlador@principal');
 Route::any('/seguimientos/{extra?}/{extra2?}/{extra3?}/{extra4?}/{extra5?}/{extra6?}', 'SeguimientosControllador@principal');
 Route::any('/admin_deslizadores/{extra?}/{extra2?}/{extra3?}/{extra4?}/{extra5?}/{extra6?}', 'AdminDeslizadoresControllador@principal');
+Route::any('/admin_almacenaje/{extra?}/{extra2?}/{extra3?}/{extra4?}/{extra5?}/{extra6?}', 'AdminAlmacenajesControllador@principal');

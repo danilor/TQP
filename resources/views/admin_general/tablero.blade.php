@@ -153,7 +153,7 @@
                 <table class="table no-margin">
                     <thead>
                     <tr>
-                        <th>CÓDICO</th>
+                        <th>CÓDIGO</th>
                         <th>PROVEEDOR</th>
                         <th>VENCE</th>
 
