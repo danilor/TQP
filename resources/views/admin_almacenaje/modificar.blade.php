@@ -7,7 +7,6 @@
 @section("contenido")
     {!! Form::open(array('url' => '/admin_almacenaje/salvar_almacenaje','class'=>'form-horizontal requiereValidacion','method'=>'post',"files"=>true,"file"=>true)) !!}
     <input type="hidden" name="id" value="{{ @$almacenaje->id  }}" />
-    <input type="hidden" name="codigo" value="{{ @$almacenaje->codigo}}" />
     <div class="row">
         <div class="col-md-8 col-xs-12 col-lg-8">
 

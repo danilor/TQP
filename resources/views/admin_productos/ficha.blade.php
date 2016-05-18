@@ -183,6 +183,62 @@
             @endif
 
 
+
+
+
+
+            <br /> <!-- Una separación entre las tablas -->
+            <div class="table-responsive">
+                <table class="table no-margin table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <th colspan="3">{{ "Historial de Ubicación"  }}</th>
+                        <th style="text-align: center!important;">
+
+                            {!! Form::open(array('url' => Request::fullUrl(),'class'=>'form-horizontal requiereValidacion','method'=>'post')) !!}
+                            <table border="0">
+                                <tr>
+                                    <td>
+                                        {{ "Cambiar Ubicación" }}
+                                    </td>
+                                    <td>
+                                        {!! Form::select("almacenaje", \App\clases\Almacenaje::obtenerSelectAlmacenaje(true) ,null, array('placeholder'=>"Detalle",'class'=>'form-control','required'=>'required')) !!}
+                                    </td>
+                                    <td>
+                                        <input type="submit" value="{{"Reubicar"}}" class="btn btn-success" />
+                                    </td>
+                                </tr>
+                            </table>
+
+                            {!! Form::close() !!}
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td><strong>{{ "Ubicación" }}</strong></td>
+                        <td><strong>{{ "Placa" }}</strong></td>
+                        <td><strong>{{ "Fecha de ubicación" }}</strong></td>
+                        <td><strong>{{ "Reubicado por" }}</strong></td>
+                    </tr>
+
+                    @foreach( \DB::table('historial_almacenajes')->select('historial_almacenajes.*','almacenajes.nombre AS almacenaje_nombre','almacenajes.placa AS almacenaje_placa','usuarios.nombre AS usuario_nombre','usuarios.apellido AS usuario_apellido','usuarios.correo AS usuario_correo')->leftJoin('almacenajes', 'historial_almacenajes.almacenaje_id', '=', 'almacenajes.id')->leftJoin('usuarios', 'historial_almacenajes.movido_por', '=', 'usuarios.id')->where('producto_codigo',$producto->codigo)->orderBy('fecha_movimiento','DESC')->get() AS $h )
+                            <tr>
+                                <td>{{ $h->almacenaje_nombre  }}</td>
+                                <td>{{ $h->almacenaje_placa  }}</td>
+                                <td>{{  date(config("region.formato_fecha_completo"),strtotime($h->fecha_movimiento))   }}</td>
+                                <td>{{ $h->usuario_nombre  }} {{ $h->usuario_apellido  }} ({{ $h->usuario_correo  }})</td>
+                            </tr>
+
+                    @endforeach
+
+                    </tbody>
+                </table>
+            </div><!-- /.table-responsive -->
+
+
+
+
         </div><!-- /.row -->
         <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
             <div class="box box-info">

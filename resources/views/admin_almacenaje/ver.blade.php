@@ -24,7 +24,7 @@
                 <button data-dismiss="alert" class="close close-sm" type="button">
                     <i class="fa fa-times"></i>
                 </button>
-                {{ "La temperatura en los centros de almacenaje es solo opr referencia" }}
+                {{ "La temperatura en los centros de almacenaje es solo por referencia" }}
             </div>
         </div>
     </div>

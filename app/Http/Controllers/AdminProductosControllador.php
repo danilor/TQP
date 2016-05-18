@@ -1,10 +1,12 @@
 <?php namespace Tiqueso\Http\Controllers;
+use App\clases\Almacenaje;
 use Illuminate\Support\Str;
 use Request;
 use Input;
 use Redirect;
 use Auth;
 use Tiqueso\categoria_producto;
+use Tiqueso\historial_almacenaje;
 use Tiqueso\producto;
 use Validator;
 use Config;
@@ -36,6 +38,7 @@ class AdminProductosControllador extends Controller {
 		'get|ver'						=>	'verProductos',
 		'get|iniciar_proceso'			=>	'iniciarProceso',
 		'get|ficha_producto'			=>	'fichaProducto',
+		'post|ficha_producto'			=>	'cambiarUbicacion',
 		'get|sacar_producto'			=>	'sacarProducto',
 		'get|buscar'					=>	'buscarProductos',
 
@@ -311,6 +314,7 @@ class AdminProductosControllador extends Controller {
 
 		$producto = new \Tiqueso\producto(); //Creamos el nuevo objeto de producto
 
+
 		$producto -> codigo_tipo		=		Input::get('tipo_producto');
 		$producto -> codigo_proveedor	=		Input::get('proveedor');
 		$producto -> nombre_proveedor	=		$proveedor->nombre; //Esto lo estamos almacenando como un registro histórico en caso de que el proveedor se elimine.
@@ -329,6 +333,19 @@ class AdminProductosControllador extends Controller {
 
 		$producto -> save(); //Salvamos la información
 
+		if((int)Input::get('almacenaje')>0){//Quiere decir que tenemos que guardar un registro de almacenaje
+
+				$almacenaje = \Tiqueso\Almacenaje::find((int)Input::get('almacenaje'));
+				if($almacenaje != null){ //Esto es para verificar con anticipación si el almacenaje realmente existe
+					$historial = new \Tiqueso\historial_almacenaje();
+					$historial -> producto_id = $producto->id;
+					$historial -> producto_codigo = $producto->codigo;
+					$historial -> almacenaje_id = $almacenaje->id;
+					$historial -> fecha_movimiento = new \DateTime();
+					$historial -> movido_por = $usuario->id;
+					$historial -> save();
+				}
+		}
 
 		return Redirect::to('admin_productos/ver');
 
@@ -376,23 +393,45 @@ class AdminProductosControllador extends Controller {
 		}
 		return Redirect::to('/admin_productos/ver?sacado=y');
 	}
-
 	/*
 	 * Esta función es la que se encarga de buscar productos por código
 	 * */
 	public function buscarProductos($usuario){
 		$data["usuario"] = $usuario;
-
 		$productos = [];
-
 		if(Input::get('codigo') != ""){
 			$productos = \Tiqueso\producto::where('codigo','LIKE','%'.Input::get('codigo').'%')->get();
-
 		}
-
 		$data["productos"] = $productos;
 		return view('admin_productos/buscar')->with($data);
 
+	}
+
+	public function cambiarUbicacion($usuario){
+		$data["usuario"] = $usuario;
+		$codigo = Request::segment(3); //Se obtiene el valor que viene en la URL
+
+		$producto = \Tiqueso\producto::where('codigo',$codigo)->first();
+		if($producto == null){ //Si no encontramos el producto, entonces enviamos la pagina de error para producto no encontrado
+			return view('admin_productos/no_encontrado')->with($data);
+		}
+		$data['producto'] = $producto;
+
+		if((int)\Input::get('almacenaje') > 0){ //Podemos cambiar el almacenaje
+			$nuevo_almacenaje = (int)\Input::get('almacenaje');
+			$almacenaje = \Tiqueso\Almacenaje::find($nuevo_almacenaje);
+			if($almacenaje != null){ //Esto es para verificar con anticipación si el almacenaje realmente existe
+				$historial = new \Tiqueso\historial_almacenaje();
+				$historial -> producto_id = $producto->id;
+				$historial -> producto_codigo = $producto->codigo;
+				$historial -> almacenaje_id = $almacenaje->id;
+				$historial -> fecha_movimiento = new \DateTime();
+				$historial -> movido_por = $usuario->id;
+				$historial -> save();
+			}
+		}
+
+		return Redirect::to('admin_productos/ficha_producto/'.$producto->codigo);
 	}
 
 

@@ -87,7 +87,12 @@
                             {!! Form::input("number","humedad", old('humedad'), array('placeholder'=>"Humedad",'class'=>'form-control')) !!}
                         </div>
                     </div>
-
+                    <div class="form-group">
+                        <label for="" class="col-sm-2 control-label">{{ "Centro de almacenaje"  }}</label>
+                        <div class="col-sm-10">
+                            {!! Form::select("almacenaje", \App\clases\Almacenaje::obtenerSelectAlmacenaje(true) , old('almacenaje'), array('placeholder'=>"Detalle",'class'=>'form-control')) !!}
+                        </div>
+                    </div>
                     <div class="form-group">
                         <label for="" class="col-sm-2 control-label">{{ "Detalle"  }}</label>
                         <div class="col-sm-10">
