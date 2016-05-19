@@ -87,5 +87,12 @@ class Comunes{
         return $timeleft ? (time() > $ptime ? null : '-') . implode(' ', $timeleft) : 0;
     }
 
+    public static function obtenerURLMapa($lat,$lon,$zoom = '14z'){
+        $base = 'http://www.google.com/maps/place/[LAT],[LON]/@[LAT],[LON],' . $zoom; //La URL Base
+        $url = str_replace([ "[LAT]" , "[LON]" ],[ $lat ,   $lon] , $base);
+        return $url;
+
+    }
+
 }
 ?>

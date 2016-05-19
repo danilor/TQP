@@ -124,9 +124,9 @@
                     </a>
                     <ul class="treeview-menu">
                         <li><a href="/admin_reportes/correos"><i class="fa fa-circle-o"></i> {{ "Registros de Correos"  }}</a></li>
-                        <li><a href=""><i class="fa fa-circle-o"></i> {{ "Historial de Procesos"  }}</a></li>
-                        <li><a href=""><i class="fa fa-circle-o"></i> {{ "Historial de Ingreso"  }}</a></li>
-                        <li><a href=""><i class="fa fa-circle-o"></i> {{ "Registro de acciones"  }}</a></li>
+                        <li><a href="/admin_reportes/procesos"><i class="fa fa-circle-o"></i> {{ "Historial de Procesos"  }}</a></li>
+                        <li><a href="/admin_reportes/ingresos"><i class="fa fa-circle-o"></i> {{ "Historial de Ingreso"  }}</a></li>
+                        <!--<li><a href=""><i class="fa fa-circle-o"></i> {{ "Registro de acciones"  }}</a></li>-->
                     </ul>
                 </li>
             @endif

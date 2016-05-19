@@ -27,6 +27,9 @@
   @endif
   {!! Form::open(array('url' => '/ingresar', 'method' => 'post',"class"=>'requiereValidacion')) !!}
 
+    <input type="hidden" name="geo_lat" value="" />
+    <input type="hidden" name="geo_lon" value="" />
+
     <div class="form-group has-feedback">
       <input type="text" class="form-control" placeholder="{{ "Usuario" }}" minlength="3" name="{{ "usuario" }}" id="{{ "usuario" }}" required>
       <!--<span class="fa fa-key form-control-feedback"></span>-->

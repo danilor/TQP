@@ -31,11 +31,23 @@ class IngresoControllador extends Controller {
 	}
 	public function recordar(){
 		$data = [];
-
 		if(Auth::check()){
 			return Redirect::to("/");
 		}
 		return view('ingreso/recordar')->with($data);
+	}
+
+	private function guardar_registro($estado,$usuario,$uid = null,$lon = null,$lat = null){
+		\DB::table('registro_ingreso')->insert([
+			'usuario'			=>		$usuario,
+			'usuario_id'		=>		$uid,
+			'fecha'				=>		new \DateTime(),
+			'estado'			=>		$estado,
+			'lat'				=>		$lat,
+			'lon'				=>		$lon,
+			'ip'				=>		Request::ip(true),
+
+		]);
 	}
 
 	public function accion_ingresar(){
@@ -54,6 +66,7 @@ class IngresoControllador extends Controller {
 		$validador = Validator::make(Input::all(), $rules);
 		// if the validator fails, redirect back to the form
 		if ($validador->fails()) {
+			$this->guardar_registro(0,Input::get('usuario'),null,Input::get('geo_lon'),Input::get('geo_lat'));
 			return Redirect::to('/ingresar')
 				->withErrors($validador) // devolvemos los errores al formulario
 				->withInput(Input::except('contrasena')); // devolvemos todo excepto la contraseña
@@ -68,11 +81,13 @@ class IngresoControllador extends Controller {
 			$usuario = ['usuario' => Input::get('usuario'), 'password' => Input::get('contrasena'),"activo"=>1];
 
 			if (Auth::attempt($usuario,$recordar)) {
+				$this->guardar_registro(1,Input::get('usuario'),null,Input::get('geo_lon'),Input::get('geo_lat'));
                             if( Request::segment(1) != "ingresar" ) // Si la solicitud no viene de la vista de ingresar entonces enviar a la url original
 				return Redirect::to( $url_original );
                             else
                                 return Redirect::to( "/admin_general" );//Redirigir la vista de ingresar al admin general
 			} else {
+				$this->guardar_registro(0,Input::get('usuario'),null,Input::get('geo_lon'),Input::get('geo_lat'));
 				return Redirect::to('/ingresar?e')->withInput(Input::except('contrasena','_token')); // Lo devolvemos con el error de que el usuario no existe
 			}
 		}

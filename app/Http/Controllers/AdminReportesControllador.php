@@ -20,6 +20,8 @@ class AdminReportesControllador  extends Controller {
 	private $reglas = array(
 		/*DASHBOARD*/
 		'get|correos'                      	=>  'reporteCorreos',
+		'get|ingresos'						=>	'reporteIngresos',
+		'get|procesos'						=>	'reporteProcesos',
 	);
 
 	public function __construct(){
@@ -47,12 +49,10 @@ class AdminReportesControllador  extends Controller {
 
 	public function reporteCorreos($usuario){
 		$data["usuario"] = $usuario;
-
 		$fecha_inicial 	= $date = (new \DateTime())->modify('-60 days');; //Establecemos la fecha inicial predeterminada
 		$fecha_inicial -> setTime(0,0,0);
 		$fecha_final 	= $date = (new \DateTime())->modify('+60 days');; //Establecemos la fecha inicial predeterminada
 		$fecha_final -> setTime(24,59,59);
-
 		if(Input::get('fechainicio') != "" ){
 			$fecha_inicial = \DateTime::createFromFormat(config('region.formato_fecha'),Input::get('fechainicio'));
 			$fecha_inicial -> setTime(0,0,0);
@@ -61,34 +61,53 @@ class AdminReportesControllador  extends Controller {
 			$fecha_final = \DateTime::createFromFormat(config('region.formato_fecha'),Input::get('fechafin'));
 			$fecha_final -> setTime(0,0,0);
 		}
-
 		$termino = '';
-
-
 		$correos = DB::table('registro_correos');
-
 		if(Input::get('termino') != "" ){
 			$termino = Input::get('termino');
 
 			$correos->where(function ($query) use($termino) {
 				$query->orWhere('tema', 'LIKE', "%$termino%")->orWhere('cuerpo', 'LIKE', "%$termino%")->orWhere('plantilla', 'LIKE', "%$termino%")->orWhere('para_correo', 'LIKE', "%$termino%")->orWhere('para_nombre', 'LIKE', "%$termino%");
 			});
-
 		}
-
-
 		$correos->where('created_at','>=',$fecha_inicial);
 		$correos->where('created_at','<=',$fecha_final);
-
-
 		$data['fecha_inicial'] 	= $fecha_inicial;
 		$data['fecha_final'] 	= $fecha_final;
-
 		$data['termino'] 	= $termino;
-
 		$data['correos'] = $correos->get();
-
 		return view('admin_reportes/correo')->with($data);
+	}
+
+	public function reporteIngresos($usuario){
+		$data["usuario"] = $usuario;
+		$query = DB::table('registro_ingreso')->orderBy('id','DESC')->take(1000)->get();
+		$data['ingresos'] = $query;
+		return view('admin_reportes/ingresos')->with($data);
+	}
+
+	public function reporteProcesos($usuario){
+		$data["usuario"] = $usuario;
+		$query = \Tiqueso\proceso::orderBy('id','DESC')->take(10000)->get();
+
+		$data["procesos"] = $query;
+
+		$grafico = [];
+		foreach($query AS $p){
+			if(!isset($grafico[date('Y-m-d',strtotime($p->iniciado_fecha))])){
+				$grafico[date('Y-m-d',strtotime($p->iniciado_fecha))]['ini'] = 0;
+				$grafico[date('Y-m-d',strtotime($p->iniciado_fecha))]['fin'] = 0;
+			}
+			if(!isset($grafico[date('Y-m-d',strtotime($p->finalizado_fecha))])){
+				$grafico[date('Y-m-d',strtotime($p->finalizado_fecha))]['ini'] = 0;
+				$grafico[date('Y-m-d',strtotime($p->finalizado_fecha))]['fin'] = 0;
+			}
+			$grafico[date('Y-m-d',strtotime($p->iniciado_fecha))]['ini']++;
+			$grafico[date('Y-m-d',strtotime($p->finalizado_fecha))]['fin']++;
+
+		}
+		$data["grafico"] = $grafico;
+		return view('admin_reportes/procesos')->with($data);
 	}
 
 }
