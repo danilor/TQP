@@ -96,6 +96,7 @@
 
 
     <div class="content">
+    <div class="row">
         <div class="grid">
             @foreach($productos AS $p)
                 <a href="/producto/{{$p->codigo}}"><figure class="effect-zoe">
@@ -112,6 +113,7 @@
                 </figure></a>
             @endforeach
 
+        </div>
         </div>
     </div>
 @stop
