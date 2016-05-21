@@ -19,7 +19,7 @@
                     {!! Form::open(array('url' => '/perfil/salvar_fotografia','class'=>'form-horizontal requiereValidacion','method'=>'post',"files"=>true,"file"=>true)) !!}
                 <div class="box box-info">
                     <div class="box-header with-border">
-                        <h3 class="box-title">{{ "Contraseña"  }}</h3>
+                        <h3 class="box-title">{{ "Fotografía"  }}</h3>
                         <button type="submit" class="btn btn-info pull-right">{{ "Actualizar Fotografía"  }}</button>
                     </div><!-- /.box-header -->
                     <!-- form start -->

@@ -143,6 +143,15 @@ class PerfilControlador extends Controller {
 
 	public function salvarFotografia($usuario){
 		$url = "/perfil/foto/";
+
+		$rules = array(
+			'image' 					=> 'image|required',
+		);
+		$validador = Validator::make(Input::all(), $rules);
+		if ($validador -> fails()) {
+			return Redirect::to($url) -> withErrors($validador);
+		}
+
 		if(Input::file("image") != null){
 			$IMAGE = Input::file("image");
 			$nuevoNombre = "USUARIO_". $usuario->id.  "_" . date("Ymd").str_random(8) . '.' . $IMAGE->getClientOriginalExtension(); //Creamos el nuevo nombre con que lo vamos a almacenar
