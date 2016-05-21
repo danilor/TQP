@@ -84,7 +84,6 @@ class AdminContenidosControllador  extends Controller {
 				$data['r'] = $receta;
 			}
 		}
-
 		return view('admin_contenidos/modificar_receta')->with($data);
 	}
 
@@ -101,7 +100,6 @@ class AdminContenidosControllador  extends Controller {
 		if ($validador->fails()) {
 			return Redirect::to($url)->withErrors($validador)->withInput();
 		}
-
 		$receta = null;
 		if(  Input::get('id')  != "" ){
 			//Viene con un ID modificable
@@ -152,7 +150,13 @@ class AdminContenidosControllador  extends Controller {
 
 
 		$codigo = date('Ymd').str_random(8);
-
+		$rules = array(
+			'image' 					=> 'image|required',
+		);
+		$validador = Validator::make(Input::all(), $rules);
+		if ($validador -> fails()) {
+			return Redirect::to($url)->withErrors(["Imágen inválida"])->withInput();;
+		}
 		if(Input::file("image") != null) {
 
 			$banner = new \Tiqueso\banner();

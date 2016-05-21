@@ -205,19 +205,28 @@ class AdminProductosControllador extends Controller {
 
 
 		// Luego de salvado (primero salvamos en caso de que sea un nuevo usuario porque necesitamos el ID
-		// buscamos y almacenamos la imagen (si existe) y la asignamos
-		if(Input::file("image") != null) {
-			$IMAGE = Input::file("image");
-			$nuevoNombre = "TIPO_PRODUCTO_" . $pt->codigo . "_" . date("Ymd") . str_random(8) . '.' . $IMAGE->getClientOriginalExtension(); //Creamos el nuevo nombre con que lo vamos a almacenar
-			if ((int)$IMAGE->getClientSize() > (int)Config::get("archivos.tamano_maximo")) {
-				return Redirect::to($url)->withErrors(["Imágen supera el tamaño máximo"])->withInput();;
+		// buscamos y almacenamos la imagen (si existe) y la
+
+		$rules = array(
+			'image' 					=> 'image|required',
+		);
+		$validador = Validator::make(Input::all(), $rules);
+		if (!$validador -> fails()) {
+			if(Input::file("image") != null) {
+				$IMAGE = Input::file("image");
+				$nuevoNombre = "TIPO_PRODUCTO_" . $pt->codigo . "_" . date("Ymd") . str_random(8) . '.' . $IMAGE->getClientOriginalExtension(); //Creamos el nuevo nombre con que lo vamos a almacenar
+				if ((int)$IMAGE->getClientSize() > (int)Config::get("archivos.tamano_maximo")) {
+					return Redirect::to($url)->withErrors(["Imágen supera el tamaño máximo"])->withInput();;
+				}
+				//dd(base_path() . '/public/'.Config::get("paths.UPLOADS").'/'.Config::get("paths.USERS").'/'. $imageName);
+				$ruta = public_path() . '/' . Config::get("rutas.contenidos") . '/' . Config::get("rutas.tipo_productos") . '/';
+				$IMAGE->move($ruta, $nuevoNombre);
+				$pt->foto = $nuevoNombre;
+				$pt->save();
 			}
-			//dd(base_path() . '/public/'.Config::get("paths.UPLOADS").'/'.Config::get("paths.USERS").'/'. $imageName);
-			$ruta = public_path() . '/' . Config::get("rutas.contenidos") . '/' . Config::get("rutas.tipo_productos") . '/';
-			$IMAGE->move($ruta, $nuevoNombre);
-			$pt->foto = $nuevoNombre;
-			$pt->save();
 		}
+
+
 
 
 

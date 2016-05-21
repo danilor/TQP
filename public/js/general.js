@@ -221,7 +221,7 @@ function geo_error() {
 
 function obtenerLocalizacion(){
 	if ("geolocation" in navigator) {
-		navigator.geolocation.getCurrentPosition(geo_success, geo_error); // Obtenemos la pocisión actual
+		navigator.geolocation.getCurrentPosition(geo_success, geo_error,{maximumAge:60000, timeout:5000, enableHighAccuracy:true}); // Obtenemos la ubicación actual
 	} else {
 		logM("Locación no disponible");
 	}
