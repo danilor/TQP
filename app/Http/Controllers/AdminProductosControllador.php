@@ -34,6 +34,8 @@ class AdminProductosControllador extends Controller {
 		'post|anadir_tipo_producto'		=>	'anadirTipoProducto',
 		'get|borrar_tipo'          		=>  'borrar_tipo',
 		'get|registrar_nuevo'   		=>  'registrarProducto',
+		'get|registrar_ingreso'   		=>  'registrarIngreso',
+		'post|registrar_ingreso_ajax'	=>  'registrarIngresoAjax',
 		'post|salvar_producto'			=>	'salvarProducto',
 		'get|ver'						=>	'verProductos',
 		'get|iniciar_proceso'			=>	'iniciarProceso',
@@ -294,6 +296,72 @@ class AdminProductosControllador extends Controller {
                 $data["proveedores"] = \Tiqueso\proveedor::all('codigo','nombre');
 		return view('admin_productos/registrar_producto')->with($data);
 	}
+
+	/*
+	 * Esta función muestra la página de ingreso de producto en lista.
+	 * */
+
+	public function registrarIngreso($usuario){
+		$data["usuario"] = $usuario;
+
+		$id = Request::segment(3);
+		$registro = \Tiqueso\registro_producto::find($id);
+
+		if($registro == null){ //Creamos un nuevo registro para iniciar
+			$registro = new \Tiqueso\registro_producto();
+			$registro -> iniciado = new \DateTime();
+			$registro -> usuario = $usuario->id;
+			$registro -> save();
+			return Redirect::to("/admin_productos/registrar_ingreso/".$registro->id);
+		}
+		if($registro->finalizado != ""){
+			Comunes::enviar404();
+		}
+
+		$tipos_productos = array() ;
+		foreach( \Tiqueso\tipo_producto::all('codigo','nombre','vida_util')  as $tipo_producto){
+			$tipos_productos [ $tipo_producto->codigo ]["nombre"] = $tipo_producto-> nombre;
+			$tipos_productos [ $tipo_producto->codigo ]["vida_util"]= $tipo_producto-> vida_util;
+		}
+		//  var_dump( $data["tipo_productos"] );
+		$data[ "tipos_productos" ] = $tipos_productos;
+		$data[ "registro" ] = $registro;
+		$data["proveedores"] = \Tiqueso\proveedor::all('codigo','nombre');
+		return view('admin_productos/registrar_ingreso')->with($data);
+	}
+
+
+	public function registrarIngresoAjax($usuario){
+
+		$respuesta = new \App\clases\RespuestaAjax("RegistrarIngreso");
+
+
+		$id = Request::segment(3);
+		$registro = \Tiqueso\registro_producto::find($id);
+		if($registro == null){
+			$respuesta ->establecerErrores("10","Registro inexistente");
+		}else{
+			$registro->formulario = serialize(Input::all());
+			if(Input::get("proveedor") != ""){
+				$proveedor = \Tiqueso\proveedor::find( Input::get("proveedor") );
+				if($proveedor != null){
+					$registro -> proveedor = $proveedor->codigo;
+					$registro -> proveedor_nombre = $proveedor->nombre;
+				}
+			}
+			if(Input::get("detalle") != ""){
+				$registro -> detalle = Input::get("detalle");
+			}
+			$registro -> save();
+		}
+
+		$respuesta -> setRespuesta(["Almacenado completado"]);
+
+
+		return $respuesta->generarEstructura();
+
+	}
+
 
 	/*
 	 * Esta función almacena un producto por medio de post.

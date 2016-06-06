@@ -61,7 +61,7 @@
                         <i class="fa fa-angle-left pull-right"></i>
                     </a>
                     <ul class="treeview-menu">
-                        <li><a href="/admin_productos/registrar_nuevo"><i class="fa fa-circle-o"></i> {{ "Registrar Producto"  }}</a></li>
+                        <li><a href="/admin_productos/registrar_ingreso/"><i class="fa fa-circle-o"></i> {{ "Registrar Producto"  }}</a></li>
                         <li><a href="/admin_productos/ver"><i class="fa fa-circle-o"></i> {{ "Ver Productos"  }}</a></li>
                         <li><a href="/admin_productos/buscar"><i class="fa fa-circle-o"></i> {{ "Buscar Productos"  }}</a></li>
                         <li><a href="/admin_productos/tipos"><i class="fa fa-circle-o"></i> {{ "Tipos de Productos"  }}</a></li>

@@ -89,6 +89,10 @@ class AdminGeneralControllador extends Controller {
 
 		$data["grafico"] = $informacion_grafico;
 
+		$data["registros_ingreso"] = \Tiqueso\registro_producto::whereRaw('finalizado IS NULL')->get();
+
+		// dd($data["registros_progreso"] );
+
 		return view('admin_general/tablero')->with($data);
 	}
 
