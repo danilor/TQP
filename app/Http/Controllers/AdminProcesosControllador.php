@@ -82,7 +82,7 @@ class AdminProcesosControllador extends Controller {
 		//Ahora necesitamos hacer unas validaciones manuales
 
 		if(Input::get('productos') === null){
-			return Redirect::to($url)->withErrors(["No existe ningún producto"])->withInput();;
+			return Redirect::to($url)->withErrors(["No existe ningún producto"])->withInput();
 		}
 
 		if(!is_array(Input::get('productos'))){

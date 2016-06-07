@@ -6,6 +6,19 @@
 @section("contenido")
 
 
+    @foreach ($errors->all() as $message)
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="alert alert-block alert-danger fade in">
+                    <button data-dismiss="alert" class="close close-sm" type="button">
+                        <i class="fa fa-times"></i>
+                    </button>
+                    {{ $message }}
+                </div>
+            </div>
+        </div>
+    @endforeach
+
     <div class="" id="contenido_row_table_dinamico" style="display: none;">
         <table id="tabla_oculta">
             <tr>
@@ -41,7 +54,7 @@
         ?>
     @endif
 
-    {!! Form::open(array('url' => '/admin_productos/salvar_ingreso','class'=>'form-horizontal requiereValidacion','method'=>'post','id'=>'registro_formulario')) !!}
+    {!! Form::open(array('url' => '/admin_productos/salvar_registrar_ingreso/'.Request::segment(3),'class'=>'form-horizontal requiereValidacion','method'=>'post','id'=>'registro_formulario')) !!}
     <div class="row">
         <div class="col-md-12 col-xs-12 col-lg-12">
 
@@ -156,7 +169,7 @@
                 enviarFormularioAutoSalvado();
             });
 
-            bind_borrar_linea();
+
             @if($registro->formulario == "")
                     agregar_linea_nueva();
             @endif
@@ -173,7 +186,36 @@
                     @endforeach
                 @endif
             @endif
+
+
+            bind_borrar_linea();
+            bind_cambio_tipo_producto();
+
         });
+
+        function bind_cambio_tipo_producto(){
+            $(".tipo_producto").change(function(e){
+                var codigo_tipo_producto = $(this).val();
+                try{
+                    var vencimiento_tentativa = eval('vida_util_' + codigo_tipo_producto);
+                }catch (err){
+                    return; //Todavía no se ha seleccionado un producto para ver la vida útil
+                }
+                if(vencimiento_tentativa != 'undefined'){
+                    if(parseInt(vencimiento_tentativa) == -1){
+                        vencimiento_tentativa = 0;
+                    }
+                    fecha_nueva = new Date();
+                    fecha_futura = new Date();
+                    fecha_futura.setDate(fecha_nueva.getDate() + parseInt(vencimiento_tentativa));
+                    var dd = fecha_futura.getDate();
+                    var mm = fecha_futura.getMonth() + 1;
+                    var y = fecha_futura.getFullYear();
+                    var fecha_string = padDigits(dd, 2)+'/'+padDigits(mm, 2)+'/'+padDigits(y, 2);
+                   $(this).closest("tr").find(".vencimiento").val(fecha_string);
+                }
+            });
+        }
 
         function bind_borrar_linea(){
             $(".borrar_linea_producto").click(function(e){
@@ -194,6 +236,7 @@
             var contenido = $("#contenido_row_table_dinamico").find("#tabla_oculta").find("tbody").html();
             $("#tabla_productos_cuerpo").append(contenido);
             bind_borrar_linea();
+            bind_cambio_tipo_producto();
             inicializarCalendar();
             if(salvar)enviarFormularioAutoSalvado();
         }

@@ -17,7 +17,7 @@ class CreateRegistroProductosTable extends Migration
             $table->bigInteger('usuario');
             $table->dateTime('iniciado'); //La fecha en que se inicia el proceso de registro
             $table->dateTime('finalizado')->nullable(); //La fecha en que se finaliza el registro
-            $table->bigInteger('proveedor')->nullable(); //El proveedor de este registro
+            $table->string('proveedor')->nullable(); //El proveedor de este registro
             $table->string('proveedor_nombre')->nullable(); //Almacenamos el nombre solo por si en un futuro cambia, así podemos saber exactamente que nombre tenía en el momento de almacenarse
             $table->longText('formulario')->nullable(); //El formulario completo
             $table->longText('detalle')->nullable(); //El detalle del ingreso

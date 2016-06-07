@@ -8,6 +8,8 @@ use Auth;
 use Tiqueso\categoria_producto;
 use Tiqueso\historial_almacenaje;
 use Tiqueso\producto;
+use Tiqueso\proveedor;
+use Tiqueso\registro_producto;
 use Validator;
 use Config;
 use Hash;
@@ -35,6 +37,7 @@ class AdminProductosControllador extends Controller {
 		'get|borrar_tipo'          		=>  'borrar_tipo',
 		'get|registrar_nuevo'   		=>  'registrarProducto',
 		'get|registrar_ingreso'   		=>  'registrarIngreso',
+		'post|salvar_registrar_ingreso'	=>  'salvarRegistrarIngreso',
 		'post|registrar_ingreso_ajax'	=>  'registrarIngresoAjax',
 		'post|salvar_producto'			=>	'salvarProducto',
 		'get|ver'						=>	'verProductos',
@@ -43,6 +46,7 @@ class AdminProductosControllador extends Controller {
 		'post|ficha_producto'			=>	'cambiarUbicacion',
 		'get|sacar_producto'			=>	'sacarProducto',
 		'get|buscar'					=>	'buscarProductos',
+		'get|resumen_registro'			=>	'resumenRegistro',
 
 	);
 
@@ -509,6 +513,84 @@ class AdminProductosControllador extends Controller {
 		}
 
 		return Redirect::to('admin_productos/ficha_producto/'.$producto->codigo);
+	}
+
+	public function salvarRegistrarIngreso(){
+
+		$url = "/admin_productos/registrar_ingreso/";
+
+		$id = Request::segment(3);
+		$url .= $id;
+		$registro_producto = registro_producto::find($id);
+		if($registro_producto == null){
+			return Redirect::to($url)->withErrors(["Registro de producto inexistente"])->withInput();
+		}
+
+		if( count(Input::get("tipo_producto")) !=  count(Input::get("lote")) || count(Input::get("lote")) != count(Input::get("vencimiento"))   ||  count(Input::get("vencimiento")) != count(Input::get("unidades"))  ){
+			return Redirect::to($url)->withErrors(["Error en los datos de los productos"])->withInput();
+		}
+
+		$proveedor = proveedor::find(Input::get("proveedor"));
+		if($proveedor == null){
+			return Redirect::to($url)->withErrors(["Proveedor Inválido"])->withInput();
+		}
+
+
+		$registro_producto -> finalizado = new \DateTime();
+		$registro_producto -> detalle = Input::get("detalle");
+		$registro_producto -> proveedor = Input::get("proveedor");
+		$registro_producto -> proveedor_nombre = $proveedor->nombre;
+
+		$productos_final = [];
+
+		foreach((array)Input::get("tipo_producto") AS $key => $value){
+			$codigo = Input::get("tipo_producto")[$key] . $proveedor->codigo . Input::get("lote")[$key];
+			if(!isset($productos_final[$codigo])){
+				$productos_final[$codigo]["unidades"] = (float)0.0;
+				$productos_final[$codigo]["vencimiento"] = "";
+			}
+			$productos_final[$codigo]["unidades"] += (float)Input::get("unidades")[$key];
+			$productos_final[$codigo]["vencimiento"] = Input::get("vencimiento")[$key];
+			$productos_final[$codigo]["tipo"] = Input::get("tipo_producto")[$key];
+			$productos_final[$codigo]["lote"] = Input::get("lote")[$key];
+		}
+
+		$registro_producto -> formulario = serialize($productos_final);
+		$registro_producto -> save();
+
+		return Redirect::to("/admin_productos/resumen_registro/".$registro_producto->id);
+
+
+	}
+
+	public function resumenRegistro($usuario){
+		$data["usuario"] = $usuario;
+		$id = Request::segment(3);
+		$producto_registro = registro_producto::find($id);
+
+		if( $producto_registro == null ){
+			return Comunes::enviar404();
+		}
+
+		if($producto_registro->finalizado == ""){
+			return Comunes::enviar404();
+		}
+
+		$data["producto_registro"] = $producto_registro;
+
+		if(Input::get("t") == "pdf") {
+			$pdf = \PDF::loadView('admin_productos.resumen_registro_pdf', $data);
+			return $pdf->stream('resumen.pdf');
+		}elseif(Input::get("t") == "pdfd"){
+				$pdf = \PDF::loadView('admin_productos.resumen_registro_pdf', $data);
+				return $pdf->download('resumen.pdf');
+		}else{
+
+			return view('admin_productos/resumen_registro')->with($data);
+		}
+
+
+
 	}
 
 
