@@ -20,6 +20,7 @@ class AdminGeneralControllador extends Controller {
 	private $reglas = array(
 		/*DASHBOARD*/
 		'get|'                      	=>  'tablero',
+		'get|mi_tablero'                =>  'mi_tablero',
 
 	);
 
@@ -89,11 +90,22 @@ class AdminGeneralControllador extends Controller {
 
 		$data["grafico"] = $informacion_grafico;
 
+		$res = DB::select("SELECT SUM(inventarios.cantidad) AS cantidad, inventarios.codigo AS codigo, tipo_productos.nombre AS nombre FROM inventarios LEFT JOIN tipo_productos ON tipo_productos.codigo = inventarios.codigo WHERE inventarios.estado = 1 GROUP BY inventarios.codigo");
+
+		$data["grafico_circular"] = $res;
+
 		$data["registros_ingreso"] = \Tiqueso\registro_producto::whereRaw('finalizado IS NULL')->get();
 
 		// dd($data["registros_progreso"] );
 
 		return view('admin_general/tablero')->with($data);
+	}
+
+	public function mi_tablero($usuario){
+		$data["usuario"] = $usuario;
+		$data["registros_ingreso"] = \Tiqueso\registro_producto::whereRaw('finalizado IS NULL')->where("usuario",$usuario->id)->get();
+		return view('admin_general/mi_tablero')->with($data);
+
 	}
 
 }

@@ -42,13 +42,21 @@ class producto extends Model
     /*
      * Cuando un producto entra a un proceso, es necesario el cerrarlo para que no esté mas en la lista de productos disponibles
      * */
-    public static function cerrarProducto($codigo){
+    public static function cerrarProducto($codigo,$cantidad = null){
         $producto = self::where('codigo',$codigo)->first();
         if($producto == null){
             return false;
         }
-        $producto -> estado = 0;
-        $producto -> save(); //Salvamos el cambio al producto
+        if($cantidad == null){
+            $producto -> estado = 0;
+            $producto -> save(); //Salvamos el cambio al producto
+        }else{
+            $producto -> unidades = (float)$producto -> unidades - (float)$cantidad;
+            if((float)$producto -> unidades <= 0 ){
+                $producto -> estado = 0;
+            }
+            $producto -> save(); //Salvamos el cambio al producto
+        }
         return true;
     }
 

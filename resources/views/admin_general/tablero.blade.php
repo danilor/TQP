@@ -70,13 +70,75 @@
 </div><!-- /.row -->
 
 <!-- Gráficos -->
+
+<div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+        <div class="nav-tabs-custom">
+            <!-- Tabs within a box -->
+            <ul class="nav nav-tabs pull-right">
+
+                <li class="pull-left header"><i class="fa fa-inbox"></i> {{ "Disponibilidad de productos (KG)"  }}</li>
+            </ul>
+            <div class="tab-content no-padding">
+                <!-- Morris chart - Sales -->
+                <div class="chart tab-pane active" id="disponibilidad-grafico" style="position: relative; height: 300px;"></div>
+                <!--<div class="chart tab-pane" id="sales-chart" style="position: relative; height: 300px;"></div>-->
+            </div>
+        </div><!-- /.nav-tabs-custom -->
+    </div>
+
+
+    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+        <div class="box box-info">
+            <div class="box-header with-border">
+                <h3 class="box-title">{{ "Productos próximos a vencer"  }}</h3>
+                <div class="box-tools pull-right">
+                    <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                </div>
+            </div><!-- /.box-header -->
+            <div class="box-body">
+                <div class="table-responsive">
+                    <table class="table no-margin">
+                        <thead>
+                        <tr>
+                            <th>CÓDIGO</th>
+                            <th>PROVEEDOR</th>
+                            <th>VENCE</th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach(\Tiqueso\producto::where('estado',1)->orderBy('vencimiento','ASC')->take(10)->get() AS $p)
+                            <tr>
+                                <td><a href="/admin_productos/ficha_producto/{{ $p->codigo  }}">{{ $p->codigo  }}</a> </td>
+                                <td>{{ $p->nombre_proveedor }}</td>
+                                <td>
+                                    {{ date(config('region.formato_fecha'),strtotime($p->vencimiento))  }}
+                                </td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                </div><!-- /.table-responsive -->
+            </div><!-- /.box-body -->
+            <div class="box-footer clearfix">
+                <a href="/admin_productos/registrar_nuevo" class="btn btn-sm btn-info btn-flat pull-left">{{ "Registrar Producto Nuevo"  }}</a>
+                <a href="/admin_productos/ver" class="btn btn-sm btn-default btn-flat pull-right">{{ "Ver todos los productos activos"  }}</a>
+            </div><!-- /.box-footer -->
+        </div><!-- /.box -->
+
+    </div>
+
+</div>
+
+
 <div class="row">
     <div class="col-xs-12">
         <div class="nav-tabs-custom">
             <!-- Tabs within a box -->
             <ul class="nav nav-tabs pull-right">
-                <li class="active"><a href="#revenue-chart" data-toggle="tab">{{ "Gráfico lineal"  }}</a></li>
-                <!--<li><a href="#sales-chart" data-toggle="tab">{{ "Gráfico Circular"  }}</a></li>-->
+
                 <li class="pull-left header"><i class="fa fa-inbox"></i> {{ "Entrada y Salida de Productos"  }}</li>
             </ul>
             <div class="tab-content no-padding">
@@ -136,11 +198,6 @@
     </div><!-- /.col -->
 
 
-
-
-
-
-
     <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
         <div class="box box-info">
             <div class="box-header with-border">
@@ -183,58 +240,9 @@
     </div>
 
 
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-        <div class="box box-info">
-            <div class="box-header with-border">
-                <h3 class="box-title">{{ "Productos próximos a vencer"  }}</h3>
-                <div class="box-tools pull-right">
-                    <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-                    <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-                </div>
-            </div><!-- /.box-header -->
-            <div class="box-body">
-                <div class="table-responsive">
-                    <table class="table no-margin">
-                        <thead>
-                        <tr>
-                            <th>CÓDIGO</th>
-                            <th>PROVEEDOR</th>
-                            <th>VENCE</th>
-
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @foreach(\Tiqueso\producto::where('estado',1)->orderBy('vencimiento','ASC')->take(10)->get() AS $p)
-                            <tr>
-                                <td><a href="/admin_productos/ficha_producto/{{ $p->codigo  }}">{{ $p->codigo  }}</a> </td>
-                                <td>{{ $p->nombre_proveedor }}</td>
-                                <td>
-                                    {{ date(config('region.formato_fecha'),strtotime($p->vencimiento))  }}
-                                </td>
-                            </tr>
-                        @endforeach
-                        </tbody>
-                    </table>
-                </div><!-- /.table-responsive -->
-            </div><!-- /.box-body -->
-            <div class="box-footer clearfix">
-                <a href="/admin_productos/registrar_nuevo" class="btn btn-sm btn-info btn-flat pull-left">{{ "Registrar Producto Nuevo"  }}</a>
-                <a href="/admin_productos/ver" class="btn btn-sm btn-default btn-flat pull-right">{{ "Ver todos los productos activos"  }}</a>
-            </div><!-- /.box-footer -->
-        </div><!-- /.box -->
-
-    </div>
-
 
 
     </div>
-
-
-
-
-
-
-
 
 
 <div class="row">
@@ -325,6 +333,17 @@
                 ],
                 hideHover: 'auto'
             });*/
+
+            Morris.Donut({
+                element: 'disponibilidad-grafico',
+                data: [
+                        @if(isset($grafico_circular) && count($grafico_circular) > 0)
+                            @foreach($grafico_circular AS $g)
+                                {label: "{{ $g->nombre  }}", value: {{ (float)$g->cantidad }} },
+                            @endforeach
+                        @endif
+                ]
+            });
         });
     </script>
 @stop

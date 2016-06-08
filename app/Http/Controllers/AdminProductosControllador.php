@@ -515,7 +515,7 @@ class AdminProductosControllador extends Controller {
 		return Redirect::to('admin_productos/ficha_producto/'.$producto->codigo);
 	}
 
-	public function salvarRegistrarIngreso(){
+	public function salvarRegistrarIngreso($usuario){
 
 		$url = "/admin_productos/registrar_ingreso/";
 
@@ -557,6 +557,39 @@ class AdminProductosControllador extends Controller {
 
 		$registro_producto -> formulario = serialize($productos_final);
 		$registro_producto -> save();
+
+		foreach($productos_final AS $key => $p){
+			$producto = new \Tiqueso\producto(); //Creamos el nuevo objeto de producto
+
+			$producto -> codigo_tipo		=		$p["tipo"];
+			$producto -> codigo_proveedor	=		Input::get('proveedor');
+			$producto -> nombre_proveedor	=		$proveedor->nombre; //Esto lo estamos almacenando como un registro histórico en caso de que el proveedor se elimine.
+			$producto -> dia_juliano		=		'';
+			$producto -> tanda				=		$p["lote"];
+			$producto -> obtenerCodigoFinal();
+			$vencimiento = \DateTime::createFromFormat(config('region.formato_fecha'),$p["vencimiento"]);
+			$producto -> vencimiento		=		$vencimiento;
+			$producto -> unidades			=		$p["unidades"];
+			$producto -> humedad			=		0;
+			$producto -> detalle			=		Input::get('detalle');
+			$producto -> estado				=		1;
+			$producto -> creado_por			=		$usuario->id;
+			$producto -> registrado			=		new \DateTime();
+			$producto -> modificado			=		new \DateTime();
+			$producto -> save(); //Salvamos la información
+
+			$inventario = new \Tiqueso\inventario();
+			$inventario -> usuario = $usuario->id;
+			$inventario -> codigo = $p["tipo"];
+			$inventario -> cantidad = (float)$p["unidades"];
+			$inventario -> creado = new \DateTime();
+			$inventario -> lotes_involucrados = $p["lote"];
+			$inventario -> vencimientos_involucrados = $p["vencimiento"];
+			$inventario -> detalle = "Aumento de inventario por medio del registro: " . $registro_producto->id . ' y con el proveedor: ' . $registro_producto->proveedor . ' :: ' . $registro_producto->proveedor_nombre;
+			$inventario -> estado = 1;
+			$inventario -> save();
+
+		}
 
 		return Redirect::to("/admin_productos/resumen_registro/".$registro_producto->id);
 

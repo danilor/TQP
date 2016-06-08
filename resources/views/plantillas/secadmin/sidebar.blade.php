@@ -9,8 +9,10 @@
         <ul class="sidebar-menu">
             <li class="header">{{ "MENÚ PRINCIPAL"  }}</li>
             @if(Auth::user()->esAdministrador())
-            <li><a href="/admin_general"><i class="fa fa-dashboard"></i> <span>{{ "Inicio" }}</span></a></li>
+                <li><a href="/admin_general"><i class="fa fa-dashboard"></i> <span>{{ "Inicio" }}</span></a></li>
+
             @endif
+            <li><a href="/admin_general/mi_tablero"><i class="fa fa-dashboard"></i> <span>{{ "Mi Tablero" }}</span></a></li>
 
 
             @if( Auth::user()->puede("administrar_usuarios") )
@@ -126,6 +128,7 @@
                         <li><a href="/admin_reportes/correos"><i class="fa fa-circle-o"></i> {{ "Registros de Correos"  }}</a></li>
                         <li><a href="/admin_reportes/procesos"><i class="fa fa-circle-o"></i> {{ "Historial de Procesos"  }}</a></li>
                         <li><a href="/admin_reportes/ingresos"><i class="fa fa-circle-o"></i> {{ "Historial de Ingreso"  }}</a></li>
+                        <li><a href="/admin_reportes/inventarios"><i class="fa fa-circle-o"></i> {{ "Historial de Inventarios"  }}</a></li>
                         <!--<li><a href=""><i class="fa fa-circle-o"></i> {{ "Registro de acciones"  }}</a></li>-->
                     </ul>
                 </li>

@@ -23,7 +23,7 @@
             </div>
         </div>
 
-        <div class="col-md-8 col-xs-12 col-lg-8">
+        <div class="col-md-9 col-xs-12 col-lg-9">
 
             @foreach ($errors->all() as $message)
                 <div class="alert alert-block alert-danger fade in">
@@ -49,12 +49,13 @@
                         <label class="col-sm-2 control-label">
                             {{ "Selección de productos"  }}
                         </label>
-                            <div class="col-sm-10">
+                            <div class="col-sm-12">
                                 <table id="example1" class="table table-bordered table-striped tabla_completa">
                                     <thead>
                                     <tr>
                                         <th>{{ "CÓDIGO"  }}</th>
                                         <th>{{ "TIPO" }}</th>
+                                        <th>{{ "UNIDADES DISPONIBLES" }}</th>
                                         <th>{{ "PROVEEDOR"  }}</th>
                                         <th>{{ "VENCIMIENTO"  }}</th>
                                         <th>{{ "ACCIÓN"  }}</th>
@@ -65,6 +66,7 @@
                                         <tr class="producto_{{$c->codigo}}" codigo="{{$c->codigo}}" nombre="{{$c->nombre_tipo}}">
                                             <td>{{ $c->codigo  }}</td>
                                             <td>{{ $c->nombre_tipo }}</td>
+                                            <td>{{ number_format((float)$c->unidades,2) }}</td>
                                             <td>
                                                 {{$c->nombre_proveedor}}
                                             </td>
@@ -72,6 +74,8 @@
                                                 {{ date(config('region.formato_fecha'),strtotime($c->vencimiento))  }}
                                             </td>
                                             <td>
+                                                <input type="number" class="form-control cantidad_anadir" value="{{ (float)$c->unidades  }}" max="{{ (float)$c->unidades  }}" min="0" style="width: 80px;"   />
+
                                                 <button class="btn btn-success anadir_producto"><i class="fa fa-plus-circle"></i> {{ "Añadir" }}</button>
                                             </td>
                                         </tr>
@@ -81,6 +85,7 @@
                                     <tr>
                                         <th>{{ "CÓDIGO"  }}</th>
                                         <th>{{ "TIPO" }}</th>
+                                        <th>{{ "UNIDADES DISPONIBLES" }}</th>
                                         <th>{{ "PROVEEDOR"  }}</th>
                                         <th>{{ "VENCIMIENTO"  }}</th>
                                         <th>{{ "ACCIÓN"  }}</th>
@@ -88,9 +93,7 @@
                                     </tfoot>
                                 </table>
                             </div>
-
                     </div>
-
 
                     <div class="form-group">
                         <label for="" class="col-sm-2 control-label">{{ "Detalle"  }}</label>
@@ -105,7 +108,7 @@
             </div><!-- /.box -->
         </div>
 
-        <div class="col-md-4 col-xs-12 col-lg-4">
+        <div class="col-md-3 col-xs-12 col-lg-3">
             <!-- Profile Image -->
             <div class="box box-info">
                 <div class="box-header with-border">
@@ -119,6 +122,7 @@
                             <tr>
                                 <th>{{"Código"}}</th>
                                 <th>{{"Tipo"}}</th>
+                                <th>{{"Cantidad"}}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -193,8 +197,9 @@
             $(".anadir_producto").click(function(e){
                 var codigo = $(this).closest('tr').attr('codigo');
                 var nombre = $(this).closest('tr').attr('nombre');
+                var cantidad = $(this).closest('tr').find(".cantidad_anadir").val();
                 table.row( $(this).parents('tr') ).remove().draw();
-                asignar_producto(codigo,nombre);
+                asignar_producto(codigo,nombre,cantidad);
                 e.preventDefault();
             });
 
@@ -204,14 +209,17 @@
             });
         }
 
-        function asignar_producto(codigo,nombre){
+        function asignar_producto(codigo,nombre,cantidad){
             $("#asignados").find('tbody')
                     .append($('<tr>')
                             .append($('<td>')
-                                    .text(codigo).append($('<input>').attr('value',codigo).attr('name','productos[]').attr('type','hidden'))
+                                    .text(codigo).append($('<input>').attr('value',codigo).attr('name','productos[]').attr('type','hidden')).append($('<input>').attr('value',cantidad).attr('name','cantidades[]').attr('type','hidden'))
                             )
                             .append($('<td>')
                                     .text(nombre)
+                            )
+                            .append($('<td>')
+                                    .text(cantidad)
                             )
                     );
         }
