@@ -91,7 +91,14 @@ class Comunes{
         $base = 'http://www.google.com/maps/place/[LAT],[LON]/@[LAT],[LON],' . $zoom; //La URL Base
         $url = str_replace([ "[LAT]" , "[LON]" ],[ $lat ,   $lon] , $base);
         return $url;
+    }
 
+    public static function pre_var_dump( $var, $title = NULL )
+    {
+        ?><div class="vardump"><?php
+        if ( $title != NULL )
+            echo '<h3>' . $title . '</h3>';
+        ?><pre><?php var_dump( $var ) ?></pre></div><?php
     }
 
 }

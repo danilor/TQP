@@ -151,5 +151,15 @@ li.disabled a{
 		float:right;
 		top: 0px;
 		right: 0px;
+}
+
+#tabla_productos_cuerpo tr{
+	padding-bottom: 3px;
+	padding-top: 3px;
+}
+
+.icono_borrar{
+	color:red;
+	margin:3px;
 
 }

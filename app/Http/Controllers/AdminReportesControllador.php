@@ -22,6 +22,7 @@ class AdminReportesControllador  extends Controller {
 		'get|correos'                      	=>  'reporteCorreos',
 		'get|ingresos'						=>	'reporteIngresos',
 		'get|procesos'						=>	'reporteProcesos',
+		'get|inventarios'					=>	'reporteInventarios',
 	);
 
 	public function __construct(){
@@ -108,6 +109,15 @@ class AdminReportesControllador  extends Controller {
 		}
 		$data["grafico"] = $grafico;
 		return view('admin_reportes/procesos')->with($data);
+	}
+
+	public function reporteInventarios($usuario){
+
+		$inventarios = DB::table("inventarios")->select('inventarios.*','usuarios.nombre AS usuario_nombre','usuarios.apellido AS usuario_apellido')->where("estado",1)->leftJoin('usuarios', 'usuarios.id', '=', 'inventarios.usuario')->orderBy("id","DESC")->take(5000)->get();
+		$data["usuario"] = $usuario;
+		$data["inventarios"] = $inventarios;
+		return view('admin_reportes/inventarios')->with($data);
+
 	}
 
 }

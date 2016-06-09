@@ -5,6 +5,7 @@ use Input;
 use Redirect;
 use Auth;
 use Tiqueso\categoria_producto;
+use Tiqueso\inventario;
 use Tiqueso\producto;
 use Validator;
 use Config;
@@ -82,17 +83,21 @@ class AdminProcesosControllador extends Controller {
 		//Ahora necesitamos hacer unas validaciones manuales
 
 		if(Input::get('productos') === null){
-			return Redirect::to($url)->withErrors(["No existe ningún producto"])->withInput();;
+			return Redirect::to($url)->withErrors(["No existe ningún producto"])->withInput();
 		}
 
-		if(!is_array(Input::get('productos'))){
-			return Redirect::to($url)->withErrors(["Lista de productos inválidos"])->withInput();;
+		if(   !is_array(Input::get('productos')) ||  !is_array(Input::get('cantidades')) ){
+			return Redirect::to($url)->withErrors(["Lista de productos inválidos"])->withInput();
+		}
+
+		if( count(Input::get('productos')) != count(Input::get('cantidades'))  ){
+			return Redirect::to($url)->withErrors(["Lista de productos inválidos (count match error)"])->withInput();
 		}
 
 		$productos_temporales = Input::get('productos');
 		$productos_finales = [];
 
-		foreach($productos_temporales AS $p){
+		foreach($productos_temporales AS $key => $p){
 			if( trim($p) == "" ){
 				return Redirect::to($url)->withErrors(["Uno o más de los códigos viene vacío"])->withInput();
 			}
@@ -102,9 +107,7 @@ class AdminProcesosControllador extends Controller {
 			$productos_finales[] = $p;
 		}
 
-		foreach($productos_finales AS $p){ // Tenemos que cerrar cada uno de los productos finales
-			producto::cerrarProducto($p);
-		}
+
 
 		//Si llega hasta aquí quiere decir que todo está bien. Podemos almacenar la información
 
@@ -119,6 +122,24 @@ class AdminProcesosControllador extends Controller {
 		$proceso		->		detalle				=		Input::get('detalle');
 
 		$proceso		->		save(); //Salvamos la información del proceso
+
+
+		foreach($productos_finales AS $key => $p){ // Tenemos que cerrar cada uno de los productos finales
+			$res = producto::cerrarProducto($p , (float)Input::get("cantidades")[$key]);
+			if($res){
+				$producto = producto::where("codigo",$p)->first();
+				$inventario = new inventario();
+				$inventario -> usuario = $usuario->id;
+				$inventario -> codigo = $producto->codigo_tipo;
+				$inventario -> cantidad = (float)Input::get("cantidades")[$key] * -1;
+				$inventario -> creado = new \DateTime();
+				$inventario -> lotes_involucrados = $p;
+				$inventario -> detalle = "Disminución del producto por proceso ID " . $proceso -> id . " en " . (float)Input::get("cantidades")[$key] * -1 ;
+				$inventario -> save();
+			}
+
+
+		}
 
 
 		//Ya que salvamos el proceso, debemos de salvar también los usuarios involucrados.
@@ -218,6 +239,17 @@ class AdminProcesosControllador extends Controller {
 		$producto -> materias_primas	=		$proceso -> productos_proceso; //Obtenemos todas las materias primas que entraron al proceso.
 
 		$producto -> save(); //Salvamos la información
+
+
+		$inventario = new inventario();
+		$inventario -> usuario = $usuario->id;
+		$inventario -> codigo = $producto -> codigo_tipo;
+		$inventario -> cantidad = (float)Input::get('unidades');
+		$inventario -> creado = new \DateTime();
+		$inventario -> lotes_involucrados = $proceso -> productos_proceso;
+		$inventario -> detalle = "Aumento del producto por finalización del proceso ID " . $proceso -> id . " en " . (float)Input::get('unidades') ;
+		$inventario -> save();
+
 
 
 		if((int)Input::get('almacenaje')>0){//Quiere decir que tenemos que guardar un registro de almacenaje
