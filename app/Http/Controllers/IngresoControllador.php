@@ -216,8 +216,7 @@ class IngresoControllador extends Controller {
 			if($usuario == null){
 				return Comunes::enviar404();
 			}
-			$usuario -> password = Hash::make(Input::get("contrasena"));
-			$usuario -> save();
+			DB::table("usuarios")->where("id",$usuario->id)->update(["password"=>bcrypt(Input::get('contrasena'))]);
 
 			$cuerpo = "
 					<p>Su contraseña ha sido cambiada exitosamente. Si usted no ha realizado ningún cambio de contraseña por favor comuníquese con nosotros lo antes posible.</p>
