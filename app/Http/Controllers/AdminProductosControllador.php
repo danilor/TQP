@@ -416,7 +416,7 @@ class AdminProductosControllador extends Controller {
 
 		if((int)Input::get('almacenaje')>0){//Quiere decir que tenemos que guardar un registro de almacenaje
 
-				$almacenaje = \Tiqueso\Almacenaje::find((int)Input::get('almacenaje'));
+				$almacenaje = \Tiqueso\almacenaje::find((int)Input::get('almacenaje'));
 				if($almacenaje != null){ //Esto es para verificar con anticipación si el almacenaje realmente existe
 					$historial = new \Tiqueso\historial_almacenaje();
 					$historial -> producto_id = $producto->id;
