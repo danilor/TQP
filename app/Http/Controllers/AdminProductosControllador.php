@@ -1,5 +1,5 @@
 <?php namespace Tiqueso\Http\Controllers;
-use App\clases\Almacenaje;
+use App\clases\almacenaje;
 use Illuminate\Support\Str;
 use Request;
 use Input;
@@ -500,7 +500,7 @@ class AdminProductosControllador extends Controller {
 
 		if((int)\Input::get('almacenaje') > 0){ //Podemos cambiar el almacenaje
 			$nuevo_almacenaje = (int)\Input::get('almacenaje');
-			$almacenaje = \Tiqueso\Almacenaje::find($nuevo_almacenaje);
+			$almacenaje = \Tiqueso\almacenaje::find($nuevo_almacenaje);
 			if($almacenaje != null){ //Esto es para verificar con anticipación si el almacenaje realmente existe
 				$historial = new \Tiqueso\historial_almacenaje();
 				$historial -> producto_id = $producto->id;
