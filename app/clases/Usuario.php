@@ -56,7 +56,7 @@ class Usuario{
                     //Ahora generamos el correo. Aunque no se envíe inmediatamente, hay un proceso existente que lo envía luego.
                     $url = Request::root() . "/recobrar/$codigo";
                     $cuerpo = "
-                                <p>Este correo le ha sido enviado porque se ha solicitado un proceso de recuperación de contraseña. Si usted no ha solicitado este proceso por favor hacer caso omiso a este mensaje.</p>
+                                <p>Este correo le ha sido enviado porque se ha solicitado un proceso de recuperación de contraseña para el usuario <strong>" . $usuario->usuario . "</strong>. Si usted no ha solicitado este proceso por favor hacer caso omiso a este mensaje.</p>
                                 <p>Para recuperar y reestablecer su contraseña por favor hacer clic al siguiente vínculo:</p>
                                 <ul>
                                     <li><a href='$url'>$url</a></li>
