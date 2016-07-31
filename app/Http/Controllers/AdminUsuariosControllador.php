@@ -62,6 +62,17 @@ class AdminUsuariosControllador  extends Controller {
 	 * */
 	public function verUsuarios($usuario){
 		$data["usuario"] = $usuario;
+
+		if( Input::get("modcontrasena") != "" ){
+				$usuario = \Tiqueso\usuario::find(Input::get("modcontrasena"));
+				if($usuario != null ){
+					Usuario::enviarContraseña($usuario);
+					return Redirect::to('/admin_usuarios/ver_todos?enviado');
+
+				}
+
+		}
+
 		return view('admin_usuarios/ver')->with($data);
 	}
 
