@@ -181,6 +181,17 @@ class usuario extends Model implements AuthenticatableContract,
     }
 
     /*
+     * Esta función obtiene todos los seguimientos asignados a un usuario
+     * */
+    public function obtenerSeguimientosEnviados($estado = [0,1]){
+        if($this -> seguimientos_enviados == null){
+            $this -> seguimientos_enviados = \Tiqueso\seguimiento::whereIn("estado",$estado)->where("asignado_a", $this->id ) -> orderBy("creado","desc")->groupBy("unico")->get();
+        }
+        return $this -> seguimientos_enviados;
+    }
+
+
+    /*
      * Esta función devuelve el total se seguimientos asignados a un usuario
      * */
     public function totalSeguimientos($estado = [1]){

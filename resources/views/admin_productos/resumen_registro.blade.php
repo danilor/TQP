@@ -40,21 +40,21 @@
                     <thead>
                     <tr>
                         <th>{{ "Tipo Producto"  }}</th>
-                        <th>{{ "Lote"  }}</th>
-                        <th>{{ "Unidades"  }}</th>
+                        <th >{{ "Lote"  }}</th>
+                        <th >{{ "Unidades"  }}</th>
                         <th>{{ "Vencimiento"  }}</th>
-                        <th>{{ "Código"  }}</th>
+                        <th >{{ "Código"  }}</th>
                         <!--<th>{{ "Imágen"  }}</th>-->
                     </tr>
                     </thead>
                     <tbody>
-                        @foreach( unserialize($producto_registro->formulario) AS $key => $value )
+                        @foreach( $producto_registro->obtenerFormulario() AS $key => $value )
                             <tr>
-                                <td>{{ $value["tipo"]  }}</td>
-                                <td>{{ $value["lote"]  }}</td>
-                                <td>{{ (float)$value["unidades"]  }}</td>
+                                <td>{{ $value["tipo"]  }} ({{ @$tipos[ $value["tipo"] ]  }})</td>
+                                <td class="text-right">{{ $value["lote"]  }}</td>
+                                <td class="text-right">{{ number_format((float)$value["unidades"],2)  }}</td>
                                 <td>{{ $value["vencimiento"]  }}</td>
-                                <td>{{ $key  }}</td>
+                                <td class="text-right">{{ $key  }}</td>
                                 <!--<td><img id="codigo{{ $key  }}" /></td>-->
                             </tr>
                         @endforeach
@@ -62,6 +62,28 @@
                 </table>
             </div><!-- /.table-responsive -->
 
+            <br /> <!-- Una separación entre las tablas -->
+            <div class="table-responsive">
+                <table class="table no-margin table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <th>{{ "Tipo"  }}</th>
+                        <th>{{ "Total de lotes"  }}</th>
+                        <th>{{ "Total de Unidades"  }}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($totales AS $key => $total)
+                            <tr>
+                                <td>{{ $key }} ({{ @$tipos[ $key ]  }})</td>
+                                <td class="text-right">{{ (int)$total["lotes"] }}</td>
+                                <td class="text-right">{{ number_format($total["unidades"],2) }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div><!-- /.table-responsive -->
+            <br /> <!-- Una separación entre las tablas -->
             <div class="table-responsive">
                 <table class="table no-margin table table-bordered table-striped">
                     <thead>

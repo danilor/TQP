@@ -20,4 +20,8 @@ class registro_producto extends Model
         return $this->usuario_objeto;
     }
 
+    public function obtenerFormulario(){
+        return unserialize( $this->formulario );
+    }
+
 }

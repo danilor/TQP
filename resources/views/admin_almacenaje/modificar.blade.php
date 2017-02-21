@@ -48,9 +48,16 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="" class="col-sm-2 control-label">{{ "Tipo"  }} {{@$almacenaje->tipo}}</label>
+                        <label for="" class="col-sm-2 control-label">{{ "Tipo"  }}</label>
                         <div class="col-sm-10">
                             {!! Form::select("tipo", ['0'=>'Estático','1'=>'Vehículo'] , @$almacenaje->tipo, array('placeholder'=>"Tipo",'class'=>'form-control','id'=>'tipo_centro')) !!}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="" class="col-sm-2 control-label">{{ "Centro Principal"  }}</label>
+                        <div class="col-sm-10">
+                            <p>{!! Form::checkbox("principal" , 'y', (bool)@$almacenaje->principal )  !!} {{ "Marcar un centro como centro principal hace que todos los nuevos productos sean asignados a este centro de almacenaje automáticamente"  }}</p>
                         </div>
                     </div>
 
@@ -60,6 +67,9 @@
                             {!! Form::text("placa", @$almacenaje->placa, array('placeholder'=>"Placa",'class'=>'form-control')) !!}
                         </div>
                     </div>
+
+
+
 
                 </div><!-- /.box-body -->
 

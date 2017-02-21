@@ -39,7 +39,7 @@
                 </a>
                 <ul class="treeview-menu">
                     <li><a href="/admin_proveedores/ver_todos"><i class="fa fa-circle-o"></i> {{ "Ver proveedores"  }}</a></li>
-                    <li><a href="/admin_proveedores/agregar"><i class="fa fa-circle-o"></i> {{ "Agregar nuevo provedor"  }}</a></li>
+
                 </ul>
             </li>
             @endif
@@ -125,10 +125,12 @@
                         <i class="fa fa-angle-left pull-right"></i>
                     </a>
                     <ul class="treeview-menu">
+                        <li><a href="/admin_reportes/ingresos_producto"><i class="fa fa-circle-o"></i> {{ "Registros de Ingresos de Producto"  }}</a></li>
                         <li><a href="/admin_reportes/correos"><i class="fa fa-circle-o"></i> {{ "Registros de Correos"  }}</a></li>
                         <li><a href="/admin_reportes/procesos"><i class="fa fa-circle-o"></i> {{ "Historial de Procesos"  }}</a></li>
                         <li><a href="/admin_reportes/ingresos"><i class="fa fa-circle-o"></i> {{ "Historial de Ingreso"  }}</a></li>
                         <li><a href="/admin_reportes/inventarios"><i class="fa fa-circle-o"></i> {{ "Historial de Inventarios"  }}</a></li>
+                        <li><a href="/admin_reportes/seguimientos"><i class="fa fa-circle-o"></i> {{ "Historial de Seguimientos"  }}</a></li>
                         <!--<li><a href=""><i class="fa fa-circle-o"></i> {{ "Registro de acciones"  }}</a></li>-->
                     </ul>
                 </li>

@@ -110,42 +110,17 @@ class AdminAlmacenajesControllador extends Controller {
 		$p->placa = Input::get("placa");
 		$p->tipo = Input::get("tipo");
 
-		$p->save(); //Salvamos la información
-		// Luego de salvado (primero salvamos en caso de que sea un nuevo usuario porque necesitamos el ID
-		// buscamos y almacenamos la imagen (si existe) y la asignamos
-		/*if(Input::file("image") != null) {
-			$IMAGE = Input::file("image");
-			$nuevoNombre = "USUARIO_" . $u->id . "_" . date("Ymd") . str_random(8) . '.' . $IMAGE->getClientOriginalExtension(); //Creamos el nuevo nombre con que lo vamos a almacenar
-
-			if ((int)$IMAGE->getClientSize() > (int)Config::get("archivos.tamano_maximo")) {
-				return Redirect::to($url)->withErrors(["Imágen supera el tamaño máximo"])->withInput();;
-			}
-			//dd(base_path() . '/public/'.Config::get("paths.UPLOADS").'/'.Config::get("paths.USERS").'/'. $imageName);
-			$ruta = public_path() . '/' . Config::get("rutas.contenidos") . '/' . Config::get("rutas.usuarios") . '/';
-			$IMAGE->move($ruta, $nuevoNombre);
-			$u->foto = $nuevoNombre;
-			$u->save();
+		if( Input::get("principal") == "y" ){
+			/**
+			 * Tenemos que quitar de principal todos y poner este único como principal.
+			 */
+			 \Tiqueso\almacenaje::where("principal",1)->update(["principal" => 0]);
+			 $p -> principal = 1;
+			 $p -> save();
 		}
 
-		//Ahora, tenemos que verificar los roles. Primero eliminamos todos los roles de usuario para asignar nuevos (si es que hay)
-		DB::table("usuarios_roles") -> where("id_usuario",$u->id) -> delete();
-		if(Input::get("roles") != null && is_array(Input::get("roles"))) foreach(Input::get("roles") AS $key => $value){
-			DB::table("usuarios_roles") -> insertGetId(["id_rol"=>$value,"id_usuario"=>$u->id]);
-		}
+		$p->save();
 
-		//Por último verificamos la administración del sitio.
-		if($usuario->esAdministrador()){
-				if( Input::get("administrador") == "y" ){
-					$u->super_administrador = 1;
-				}else{
-					$u->super_administrador = 0;
-				}
-				$u->save();
-		}
-                */
-
-		//Información almacenada
-		//$url = "/admin_proveedores/modificar_proveedor/".$p->codigo."?salvado=y&" . str_random(16); //Le añadimos un string random al final del URL para evitar el cache y para volver la URL más difícil de leer.
 		$url ="/admin_almacenaje/ver?salvado=y";//Agregado el resultado de salvado
 		return Redirect::to( $url  );
 

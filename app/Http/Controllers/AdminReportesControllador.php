@@ -23,6 +23,8 @@ class AdminReportesControllador  extends Controller {
 		'get|ingresos'						=>	'reporteIngresos',
 		'get|procesos'						=>	'reporteProcesos',
 		'get|inventarios'					=>	'reporteInventarios',
+		'get|ingresos_producto'				=>	'reporteIngresoDeProductos',
+		'get|seguimientos'					=>	'reporteSeguimientos',
 	);
 
 	public function __construct(){
@@ -118,6 +120,32 @@ class AdminReportesControllador  extends Controller {
 		$data["inventarios"] = $inventarios;
 		return view('admin_reportes/inventarios')->with($data);
 
+	}
+
+
+	public function reporteIngresoDeProductos( \Tiqueso\usuario $Usuario ){
+		$data["usuario"] = $Usuario;
+		$data["max"] = 100;
+		if( \Input::get("max") != "" && is_numeric(\Input::get("max")) ){
+			$data["max"] = \Input::get("max");
+		}
+		$q = \Tiqueso\registro_producto::orderBy("id","desc");
+		$data["registros"] = $q->take( (int)$data["max"] )->get();
+		return view('admin_reportes/registros_productos')->with($data);
+	}
+
+	public function reporteSeguimientos( \Tiqueso\usuario $Usuario ){
+		$data["usuario"] = $Usuario;
+		$data["usuarios"] = [];
+
+		$Usuarios = \Tiqueso\usuario::all();
+
+		foreach( $Usuarios AS $usuario ){
+				$data["usuarios"][ $usuario->id ] = $usuario->obtenerNombreCompleto() . ' (' . $usuario->correo . ')';
+
+		}
+
+		return view('admin_reportes/seguimientos')->with($data);
 	}
 
 }

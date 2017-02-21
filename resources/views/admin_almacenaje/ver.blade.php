@@ -46,6 +46,7 @@
                             <th>{{ "VEHÍCULO"  }}</th>
                             <th>{{ "PLACA"  }}</th>
                             <th>{{ "TEMPERATURA"  }}</th>
+                            <th>{{ "PRINCIPAL"  }}</th>
                             <th>{{ "MODIFICAR"  }}</th>
                             <th>{{ "BORRAR"  }}</th>
 
@@ -69,6 +70,13 @@
                                     {{$a->placa}}
                                 </td>
                                 <td>{{ $a->temperatura  }}</td>
+                                <td>
+                                    @if( (bool)$a->principal )
+                                        <center>
+                                            <i class="fa fa-check fa-x1" style="color:green;" ></i>
+                                        </center>
+                                    @endif
+                                </td>
                                 <td>
                                     <a class="btn btn-success" href="/admin_almacenaje/salvar_almacenaje/{{ $a->id  }}">{{ "Modificar"  }}</a>
                                 </td>
@@ -94,6 +102,7 @@
                             <th>{{ "VEHÍCULO"  }}</th>
                             <th>{{ "PLACA"  }}</th>
                             <th>{{ "TEMPERATURA"  }}</th>
+                            <th>{{ "PRINCIPAL"  }}</th>
                             <th>{{ "MODIFICAR"  }}</th>
                             <th>{{ "BORRAR"  }}</th>
                         </tr>

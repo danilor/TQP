@@ -10,6 +10,7 @@ use Tiqueso\historial_almacenaje;
 use Tiqueso\producto;
 use Tiqueso\proveedor;
 use Tiqueso\registro_producto;
+use Tiqueso\tipo_producto;
 use Validator;
 use Config;
 use Hash;
@@ -558,6 +559,8 @@ class AdminProductosControllador extends Controller {
 		$registro_producto -> formulario = serialize($productos_final);
 		$registro_producto -> save();
 
+		$centroPrincipal = \Tiqueso\almacenaje::where("principal",1)->first();
+
 		foreach($productos_final AS $key => $p){
 			$producto = new \Tiqueso\producto(); //Creamos el nuevo objeto de producto
 
@@ -577,6 +580,20 @@ class AdminProductosControllador extends Controller {
 			$producto -> registrado			=		new \DateTime();
 			$producto -> modificado			=		new \DateTime();
 			$producto -> save(); //Salvamos la información
+
+
+			if( $centroPrincipal != null ){
+				/**
+				 * Si existe un centro principal, de manera predeterminada tenemos que mover todo ahí.
+				 */
+				 $historial = new \Tiqueso\historial_almacenaje();
+				$historial -> producto_id = $producto->id;
+				$historial -> producto_codigo = $producto->codigo;
+				$historial -> almacenaje_id = $centroPrincipal->id;
+				$historial -> fecha_movimiento = new \DateTime();
+				$historial -> movido_por = $usuario->id;
+				$historial -> save();
+			}
 
 			$inventario = new \Tiqueso\inventario();
 			$inventario -> usuario = $usuario->id;
@@ -605,11 +622,36 @@ class AdminProductosControllador extends Controller {
 			return Comunes::enviar404();
 		}
 
+		$tipos_de_producto = tipo_producto::all();
+
+		$data["tipos"] = [];
+
+		$totales = [];
+
+		foreach( $tipos_de_producto AS $tp ){
+			$data["tipos"][$tp->codigo] = $tp->nombre;
+		}
+
 		if($producto_registro->finalizado == ""){
 			return Comunes::enviar404();
 		}
 
 		$data["producto_registro"] = $producto_registro;
+
+
+		foreach( $producto_registro->obtenerFormulario() AS $registro ){
+			if( !isset($totales[ $registro["tipo"] ]) ){
+				$totales[ $registro["tipo"] ]["unidades"] = (float)0;
+				$totales[ $registro["tipo"] ]["lotes"] = 0;
+			}
+			$totales[ $registro["tipo"] ]["unidades"] += (float)$registro["unidades"];
+			$totales[ $registro["tipo"] ]["lotes"] += 1;
+
+		}
+
+		$data["totales"] = $totales;
+
+
 
 		if(Input::get("t") == "pdf") {
 			$pdf = \PDF::loadView('admin_productos.resumen_registro_pdf', $data);
@@ -618,7 +660,6 @@ class AdminProductosControllador extends Controller {
 				$pdf = \PDF::loadView('admin_productos.resumen_registro_pdf', $data);
 				return $pdf->download('resumen.pdf');
 		}else{
-
 			return view('admin_productos/resumen_registro')->with($data);
 		}
 

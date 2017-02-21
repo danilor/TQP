@@ -10,10 +10,10 @@
                 <div class="nav-tabs-custom">
                     <ul class="nav nav-tabs">
                         <li class="active"><a href="#activity" data-toggle="tab">{{ "Seguimientos"  }}</a></li>
-
+                        <li class=""><a href="#responded" data-toggle="tab">{{ "Seguimientos Respondidos"  }}</a></li>
                     </ul>
 
-                    @if( (int)$usuario->totalSeguimientos() > 0 )
+
 
                     <div class="tab-content">
                         <div class="active tab-pane" id="activity">
@@ -60,14 +60,39 @@
                             @endforeach
                         </div><!-- /.tab-pane -->
 
+
+                        <div class="tab-pane" id="responded">
+                            <!-- Post -->
+                            @foreach( $usuario -> obtenerSeguimientosEnviados() AS $key => $seguimiento )
+                            <div class="post clearfix">
+                                <div class="user-block">
+                                    <img class="img-circle img-bordered-sm" src="{{ $seguimiento->obtenerUsuarioCreado()->obtenerFotoEspecial(100,100)  }}" alt="user image">
+                        <span class="username">
+                          <a href="javascript:void(0);">{{ $seguimiento->obtenerUsuarioCreado()->obtenerNombreCompleto()  }}</a>
+
+                        </span>
+                                    <span class="description">{{ $seguimiento->obtenerFecha()  }}
+                                        <a href="/seguimientos/historial/{{ $seguimiento->unico  }}"><i class="fa fa-history"></i> {{ "Historial"  }}</a>
+                                        @if( $seguimiento -> latitud != "" && $seguimiento -> longitud != "")
+                                            &nbsp;<a target="_blank" href="{{ $seguimiento -> obtenerURLMapa()  }}"><i class="fa fa-map"></i> {{ "Localización"  }}</a>
+                                        @endif
+                                    </span>
+                                </div><!-- /.user-block -->
+                                {!! Form::open(array('url' => '/seguimientos/nuevo_seguimiento','id'=>'','class'=>'requiereValidacionAjax modificarSeguimientoFormulario','method'=>'post')) !!}
+
+                                <div class="col-xs-12">
+                                <p>
+                                    {{ $seguimiento->mensaje  }}
+                                </p>
+                                </div>
+                                {!! Form::close() !!}
+                            </div><!-- /.post -->
+
+                            @endforeach
+                        </div><!-- /.tab-pane -->
+
                 </div><!-- /.nav-tabs-custom -->
 
-                @else
-                        <center>
-                            <p><br /> {{ "Sin seguimientos"  }}<br /></p>
-                        </center>
-
-                @endif
 
 
             </div><!-- /.col -->
