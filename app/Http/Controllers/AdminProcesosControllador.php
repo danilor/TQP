@@ -101,9 +101,9 @@ class AdminProcesosControllador extends Controller {
 			if( trim($p) == "" ){
 				return Redirect::to($url)->withErrors(["Uno o más de los códigos viene vacío"])->withInput();
 			}
-			if( strlen($p) != (int) config('data.largo_codigos') ){
+			/*if( strlen($p) != (int) config('data.largo_codigos') ){
 				return Redirect::to($url)->withErrors(["Código $p inválido. No cumple con el formato y largo requerido"])->withInput();
-			}
+			}*/
 			$productos_finales[] = $p;
 		}
 

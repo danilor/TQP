@@ -36,6 +36,12 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <label for="" class="col-sm-2 control-label">{{ "Usuario"  }} <span>*</span></label>
+                        <div class="col-sm-10">
+                            {!! Form::text("usuario", $u->usuario, array('placeholder'=>"Usuario",'class'=>'form-control','required'=>'required')) !!}
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label for="" class="col-sm-2 control-label">{{ "Nombre"  }} <span>*</span></label>
                         <div class="col-sm-10">
                             {!! Form::text("nombre", $u->nombre, array('placeholder'=>"Nombre",'class'=>'form-control','required'=>'required')) !!}

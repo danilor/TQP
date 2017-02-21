@@ -49,5 +49,26 @@ class Usuario{
         return $codigo;
     }
 
+
+    public static function enviarContraseña($usuario){
+            //Primero generamos y obtenemos el código con el que vamos a trabajar
+                    $codigo = self::registrarRecuperarContrasena($usuario->id);
+                    //Ahora generamos el correo. Aunque no se envíe inmediatamente, hay un proceso existente que lo envía luego.
+                    $url = Request::root() . "/recobrar/$codigo";
+                    $cuerpo = "
+                                <p>Este correo le ha sido enviado porque se ha solicitado un proceso de recuperación de contraseña para el usuario <strong>" . $usuario->usuario . "</strong>. Si usted no ha solicitado este proceso por favor hacer caso omiso a este mensaje.</p>
+                                <p>Para recuperar y reestablecer su contraseña por favor hacer clic al siguiente vínculo:</p>
+                                <ul>
+                                    <li><a href='$url'>$url</a></li>
+                                </ul>
+                                <p>Este código es válido por las próximas 2 horas.</p>
+                                <p>Si al hacer clic no se abre su navegador, por favor copiar el enlace y pegarlo directamente en su navegador para poder acceder al proceso indicado.</p>
+                                <p>Si tiene alguna duda o consulta puede contactarnos mediante nuestro sistema de <i>CONTACTO</i> y le atenderemos lo más pronto posible.</p>
+                            ";
+                    Correo::generarCorreo("Recuperación de Contraseña","basica",$usuario->correo,"$usuario->nombre $usuario->apellido",$cuerpo);
+                    //Con el correo generado solo queda esperar que el proceso prosiga su camino automáticamente
+
+    }
+
 }
 ?>

@@ -19,10 +19,10 @@ class AdminProveedoresControllador  extends Controller {
 
 	private $reglas = array(
 		/*DASHBOARD*/
-		'get|ver_todos' =>  'verProveedores',
-                'get|borrar_proveedor' =>  'borrarProveedor',
-		'get|modificar_proveedor' => 'modificarProveedor',
-		'post|salvar_informacion_de_proveedor' =>'salvarInformacionDeProveedor'
+		'get|ver_todos' 						=>  'verProveedores',
+		'get|borrar_proveedor' 					=>  'borrarProveedor',
+		'get|modificar_proveedor' 				=> 	'modificarProveedor',
+		'post|salvar_informacion_de_proveedor' 	=>	'salvarInformacionDeProveedor'
         );
 
 	public function __construct(){
@@ -116,6 +116,7 @@ class AdminProveedoresControllador  extends Controller {
                 if( strlen( Input::get("codigo") )!== 2 ){ // Si el codigo de proveedor es distinto a 2 digitons entonces devolver error
                     return Redirect::to($url) -> withErrors(["El código [".Input::get("codigo")."] es distinto de 2 digitos. El codigo debe usar 2 digitos."])->withInput();   
                 }
+
 		$validador = Validator::make(Input::all(), $rules);
 		if ($validador -> fails()) {
 			return Redirect::to($url) -> withErrors($validador)->withInput();
@@ -145,7 +146,14 @@ class AdminProveedoresControllador  extends Controller {
                 $p->telefono = Input::get("telefono");
                 $p->updated_at = new \DateTime(); //Actualizamos la fecha de la actualización
 
-		$p->save(); //Salvamos la información
+		try{
+
+			$p->save(); //Salvamos la información
+		}catch(\Exception $r){
+
+			return Redirect::to($url) -> withErrors(["Se ha producido un error al insertar el proveedor. Verifique que el código utilizado no pertenezca a ningún otro proveedor e inténtelo de nuevo"])->withInput();
+		}
+
 
 		// Luego de salvado (primero salvamos en caso de que sea un nuevo usuario porque necesitamos el ID
 		// buscamos y almacenamos la imagen (si existe) y la asignamos

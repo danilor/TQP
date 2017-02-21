@@ -21,6 +21,15 @@
             {{ $message }}
         </div>
     @endforeach
+        @if( isset($_GET["enviado"]) )
+            <div class="alert alert-block alert-success fade in">
+                <button data-dismiss="alert" class="close close-sm" type="button">
+                    <i class="fa fa-times"></i>
+                </button>
+                {{ "El correo con las instrucciones para modificar la contraseña ha sido enviado"  }}
+            </div>
+
+        @endif
     </div>
 </div>
     {!! Form::open(array('url' => '/admin_usuarios/salvar_informacion_de_usuario','class'=>'form-horizontal requiereValidacion','method'=>'post',"files"=>true,"file"=>true)) !!}
@@ -71,6 +80,12 @@
                             {!!  Form::select('sexo', array('M' => 'Masculino', 'F' => 'Femenino', 'O' => 'No Indica'), Input::old("sexo"),array("required"=>'required',"class"=>"form-control"))  !!}
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-2 control-label">{{ "Usuario"  }} <span>*</span></label>
+                        <div class="col-sm-10">
+                            {!! Form::text("usuario", Input::old("usuario"), array('placeholder'=>"Usuario",'class'=>'form-control','required'=>'required')) !!}
+                        </div>
+                    </div>
                 </div><!-- /.box-body -->
                 <div class="box-footer">
                     <button type="submit" class="btn btn-info pull-right">{{ "Salvar"  }}</button>
@@ -99,6 +114,7 @@
                             <th>{{ "CORREO"  }}</th>
                             <th>{{ "CELULAR"  }}</th>
                             <th>{{ "SEXO"  }}</th>
+                            <th>{{ "CONTRASEÑA"  }}</th>
                             <th>{{ "MODIFICAR"  }}</th>
 
                             <th>{{ "ELIMINAR"  }}</th>
@@ -114,6 +130,9 @@
                                 <td>{{ $u->correo  }}</td>
                                 <td>{{ $u->celular  }}</td>
                                 <td>{{ $u->sexo  }}</td>
+                                <td>
+                                    <a href="?modcontrasena={{$u->id}}" class="btn btn-block btn-success"><span class="fa fa-key"></span> {{ "Recuperar"  }}</a>
+                                </td>
                                 <td>
                                     <a href="/admin_usuarios/modificar_usuario/{{$u->id}}" class="btn btn-block btn-success"><span class="fa fa-pencil"></span> {{ "Modificar"  }}</a>
                                 </td>
@@ -144,6 +163,7 @@
                             <th>{{ "CORREO"  }}</th>
                             <th>{{ "CELULAR"  }}</th>
                             <th>{{ "SEXO"  }}</th>
+                            <th>{{ "CONTRASEÑA"  }}</th>
                             <th>{{ "MODIFICAR"  }}</th>
                             <th>{{ "ELIMINAR"  }}</th>
                         </tr>

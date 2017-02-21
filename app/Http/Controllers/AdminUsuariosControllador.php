@@ -62,6 +62,17 @@ class AdminUsuariosControllador  extends Controller {
 	 * */
 	public function verUsuarios($usuario){
 		$data["usuario"] = $usuario;
+
+		if( Input::get("modcontrasena") != "" ){
+				$usuario = \Tiqueso\usuario::find(Input::get("modcontrasena"));
+				if($usuario != null ){
+					Usuario::enviarContraseña($usuario);
+					return Redirect::to('/admin_usuarios/ver_todos?enviado');
+
+				}
+
+		}
+
 		return view('admin_usuarios/ver')->with($data);
 	}
 
@@ -134,6 +145,7 @@ class AdminUsuariosControllador  extends Controller {
 			'notas' 		=> Comunes::reglas('textogenerico_min', false),
 			'educacion' 	=> Comunes::reglas('textogenerico_min', false),
 			'certificaciones'=> Comunes::reglas('textogenerico_min', false),
+			'usuario'		=> Comunes::reglas('textogenerico_min', true),
 		);
 		$validador = Validator::make(Input::all(), $rules);
 		if ($validador -> fails()) {
@@ -157,6 +169,7 @@ class AdminUsuariosControllador  extends Controller {
 
 
 		$u->cedula = Input::get("cedula");
+		$u->usuario = Input::get("usuario");
 		$u->nombre = Input::get("nombre");
 		$u->apellido = Input::get("apellido");
 		$u->correo = Input::get("correo");
